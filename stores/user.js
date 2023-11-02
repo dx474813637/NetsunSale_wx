@@ -43,19 +43,9 @@ export const userStore = defineStore('user', {
 		// 		this.tmp_id_list = res.list
 		// 	}
 		// },
-		// async getUserInfo() {
-		// 	this.user_loading = true
-		// 	const res = await apis.my_info();
-		// 	this.user_loading = false
-		// 	if(res.code == 1) {
-		// 		this.user_info = res.list || {}
-				
-		// 	}else {
-		// 		this.user_info = {}
-		// 	}
-		// 	// uni.setStorageSync('WebSocketInfo', res)
-		// 	return res
-		// },
+		async getUserInfo(data) { 
+			this.user_info = data
+		},
 		// async getCpyInfo() {
 		// 	this.cpy_loading = true
 		// 	const res = await apis.my_company();
@@ -105,8 +95,7 @@ export const userStore = defineStore('user', {
 		// 	}
 		// },
 		saveUserInfo(data) {
-			this.user = data;
-			
+			this.user = data; 
 			uni.setStorageSync('poster', data.poster) 
 			uni.setStorageSync('user', data) 
 			uni.setStorageSync('userid', data.userid) 

@@ -192,7 +192,8 @@ export const menusStore = defineStore('menus', {
 				const res = await apis.memu()  
 				if(res.code == 1) {  
 					let user = userStore()
-					user.saveUserInfo(res.info)
+					// user.saveUserInfo(res.info)
+					user.getUserInfo(res.info)
 					//获取底部导航菜单
 					// this.menus = res.list.map((ele, index) => {
 					// 	let paramsStr = ele.url.split('?')[1] || ''

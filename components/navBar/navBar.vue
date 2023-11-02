@@ -13,12 +13,12 @@
 					<!-- <view @click="base.handleGoto({url: '/pages/index/home', type: 'reLaunch'})" class="btn u-m-l-20"> 
 						<i class="custom-icon custom-icon-zhuye2" :style="{color: bgColor? base.themeColor : '#fff'}"  ></i>
 					</view>  -->
-					<view @click="loginBtn" class="btn u-m-l-20 u-primary" v-if="u.login == '0' || !u.login" > 
+					<!-- <view @click="loginBtn" class="btn u-m-l-20 u-primary" v-if="u.login == '0' || !u.login" > 
 						登录
 					</view>  
 					<view @click="logoutBtn" class="btn u-m-l-20 u-error-dark" v-else> 
 						登出
-					</view>  
+					</view>  -->
 				</view>
 				
 			</template>

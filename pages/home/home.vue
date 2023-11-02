@@ -1,9 +1,7 @@
 <template>
 	<view class="header u-p-20">
 		<input type="nickname" class="weui-input" placeholder="请输入昵称"/>
-		<button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-		  <image class="avatar" :src="avatarUrl"></image>
-		</button> 
+		 
 		<view class="search-w u-flex u-flex-items-center">
 			<u-search
 				placeholder="请输入商品关键词" 
@@ -169,7 +167,6 @@
 			url: '/pages/cateList/cateList'
 		},
 	])
-	const avatarUrl = ref('https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0')
 	const shopTabs = ref([
 		{
 			name: '店铺1'
@@ -278,11 +275,6 @@
 	function shopTabsClick(e) {
 		shopCurrent.value = +e.index
 	}
-	function onChooseAvatar(e) {
-		console.log(e)
-		const { avatarUrl: avatarUrl2 } = e.detail 
-		avatarUrl.value = avatarUrl2
-	  }
 </script>
 
 <style lang="scss" scoped>
