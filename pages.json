@@ -1,0 +1,372 @@
+{
+	"easycom": {
+		// 注意一定要放在custom里，否则无效，https://ask.dcloud.net.cn/question/131175
+		"custom": {
+			"^u--(.*)": "uview-plus/components/u-$1/u-$1.vue",
+			"^up-(.*)": "uview-plus/components/u-$1/u-$1.vue",
+			"^u-([^-].*)": "uview-plus/components/u-$1/u-$1.vue"
+		}
+	},
+	"pages": [{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#cee2ff"
+			}
+
+		},
+        {
+            "path" : "pages/home/home2",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#b7d4fe"
+            }
+            
+        },{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/reservation/reservation",
+			"style": {
+				"navigationBarTitleText": "预约申请"
+			}
+		},
+		{
+			"path": "pages/web_danye/web_danye",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/web_danye/web_danye_2",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		}, {
+			"path": "pages/cateList/cateList",
+			"style": {
+				"navigationBarTitleText": "分类",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/product/productList",
+			"style": {
+				"navigationBarTitleText": "商品列表",
+				"enablePullDownRefresh": false,
+				"onReachBottomDistance": 80
+			}
+
+		}, {
+			"path": "pages/product/productDetail",
+			"style": {
+				"navigationBarTitleText": "商品详情",
+				"enablePullDownRefresh": false
+			}
+
+		}, 
+		{
+			"path": "pages/reservation_list/reservation_list",
+			"style": {
+				"navigationBarTitleText": "预约列表",
+				"onReachBottomDistance": 80
+			}
+		}, {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#f8f8f8"
+			}
+
+		}, {
+			"path": "pages/login/reg",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#f8f8f8"
+			}
+
+		}
+	    ,{
+            "path" : "pages/shop/shop",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/index_51xp",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/forms/51xp_gys",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "参展供应商",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/forms/51xp_mcn",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "独立主播/MCN机构",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"subPackages": [{
+		"root": "pages_user",
+		"pages": [{
+				"path": "index/index",
+				"style": {
+					"navigationBarTitleText": "个人中心",
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "info/info",
+				"style": {
+					"navigationBarTitleText": "我的信息"
+				}
+			},
+			{
+				"path": "reservation_list/reservation_list",
+				"style": {
+					"navigationBarTitleText": "我的预约",
+					"onReachBottomDistance": 80
+				}
+			}, {
+				"path": "address/addressList",
+				"style": {
+					"navigationBarTitleText": "地址管理",
+					"enablePullDownRefresh": false,
+					"onReachBottomDistance": 80
+				}
+
+			}, {
+				"path": "address/addressDetail",
+				"style": {
+					"navigationBarTitleText": "地址详情",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "cart/cart",
+				"style": {
+					"navigationBarTitleText": "选品车",
+					"enablePullDownRefresh": false,
+					"navigationBarBackgroundColor": "#f8f8f8"
+				}
+
+			}, {
+				"path": "info/user_info",
+				"style": {
+					"navigationBarTitleText": "个人名片",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "info/cpy_info",
+				"style": {
+					"navigationBarTitleText": "企业信息",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "order/orderDetail",
+				"style": {
+					"navigationBarTitleText": "订单详情",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "order/orderList",
+				"style": {
+					"navigationBarTitleText": "订单列表",
+					"enablePullDownRefresh": false,
+					"onReachBottomDistance": 80,
+					"navigationBarBackgroundColor": "#f8f8f8"
+				}
+
+			}, {
+				"path": "order/orderCreate",
+				"style": {
+					"navigationBarTitleText": "创建订单",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "haibao/haibao",
+				"style": {
+					"navigationBarTitleText": "海报分享",
+					"enablePullDownRefresh": false
+				}
+
+			}
+		    ,{
+                    "path" : "sign_detail/sign_detail",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "报名详情",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
+	},{
+		"root": "pages_finance",
+		"pages": [
+			{
+				"path": "account/account",
+				"style": {
+					"navigationBarTitleText": "认证信息",
+					"navigationBarBackgroundColor": "#326dbd",
+					"navigationBarTextStyle": "white",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "user_apply/user_apply",
+				"style": {
+					"navigationBarTitleText": "融资个人认证表单",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "user_verify/user_verify",
+				"style": {
+					"navigationBarTitleText": "融资个人验证",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "company_apply/company_apply",
+				"style": {
+					"navigationBarTitleText": "融资企业认证表单",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "company_verify/company_verify",
+				"style": {
+					"navigationBarTitleText": "融资企业验证",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "no_order_buyer/no_order_buyer",
+				"style": {
+					"navigationBarTitleText": "无订单融资借款人信息",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "no_order_white_sell_list/no_order_white_sell_list",
+				"style": {
+					"navigationBarTitleText": "无订单卖家白名单列表",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "no_order_white_sell/no_order_white_sell",
+				"style": {
+					"navigationBarTitleText": "无订单卖家白名单编辑",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "query_product_list/query_product_list",
+				"style": {
+					"navigationBarTitleText": "",
+					"navigationBarBackgroundColor": "#326dbd",
+					"navigationBarTextStyle": "white",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "query_product/query_product",
+				"style": {
+					"navigationBarTitleText": "融资产品详情",
+					"navigationBarBackgroundColor": "#326dbd",
+					"navigationBarTextStyle": "white",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "pacc_type_detail/pacc_type_detail",
+				"style": {
+					"navigationBarTitleText": "预授信申请详情",
+					"navigationBarBackgroundColor": "#326dbd",
+					"navigationBarTextStyle": "white",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "pacc_query/pacc_query",
+				"style": {
+					"navigationBarTitleText": "预授信申请详情",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "pacc_query_edit/pacc_query_edit",
+				"style": {
+					"navigationBarTitleText": "预授信申请表单",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "pacc_query_list/pacc_query_list",
+				"style": {
+					"navigationBarTitleText": "预授信申请列表",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "order_rz_pay_list/order_rz_pay_list",
+				"style": {
+					"navigationBarTitleText": "融资记录",
+					"enablePullDownRefresh": false
+				} 
+			},
+			{
+				"path": "order_rz_pay/order_rz_pay",
+				"style": {
+					"navigationBarTitleText": "融资记录详情",
+					"enablePullDownRefresh": false
+				} 
+			} ,
+			{
+				"path": "order_rz_pay_edit/order_rz_pay_edit",
+				"style": {
+					"navigationBarTitleText": "发起无订单融资提款请求",
+					"enablePullDownRefresh": false
+				} 
+			} 
+		]
+	}],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#fff",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {}
+}
