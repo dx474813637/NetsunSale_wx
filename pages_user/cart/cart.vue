@@ -25,6 +25,7 @@
 				class="items u-p-l-20 u-p-r-20 u-m-b-20 "
 				v-for="(item, index) in cart_list"
 				:key="item.shop.id"
+				style="width: 100%;"
 				>
 				
 				<view class="shop-card u-radius-16 bg-white u-p-b-50">

@@ -9,12 +9,16 @@
 							width="60px"
 							height="60px"
 							radius="8px"
+							:customStyle="{
+								border: '1px solid #f8f8f8'
+							}"
 							:src="product_img_preview"
 							@click="onImgClick"
 						></u--image>
 					</view>
 					<view class="u-m-l-20">
-						<view>{{product_base_data.label}}</view>
+						<view class="text-bold u-line-1 u-m-b-20">{{product_base_data.name}}</view>
+						<view class="text-error">￥{{active_sku_price}}</view>
 					</view>
 					
 				</view>
@@ -166,6 +170,17 @@
 			img = active_sku_preview_img.value;
 		}
 		return img 
+	})
+	const active_sku_price = computed(() => {
+		let price = '';
+		let i = findIndexby()
+		if(i == -1) {
+			price = props.product_base_data.price
+		}
+		else {
+			price = props.spec_prices[i].price
+		} 
+		return price 
 	})
 	
 	watch(

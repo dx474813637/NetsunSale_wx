@@ -49,6 +49,8 @@ export const get_tmp_id_time = (data) => http.get('get_tmp_id_time', data)
 export const order_list = (data) => http.get('order_list', data)
 // `order_detail` 订单详情 参数order_id
 export const order_detail = (data) => http.get('order_detail', data)
+// orderConfirm 创建订单 地址参数 
+export const orderConfirm = (data) => http.get('orderConfirm', data)
  
 // create_order 创建订单 tid团id 不是必填。 address_id  pid_array
 // pid_array = array(

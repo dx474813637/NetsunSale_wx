@@ -1,14 +1,14 @@
 <template>
 	<view class="shop-card u-radius-16 bg-white u-p-b-50 u-p-10" @click="gotoDetail">
 		<view class="shop-card-header u-flex u-flex-items-center u-flex-between u-p-15">
-			<view class="u-flex u-flex-items-center">
+			<view class="u-flex u-flex-items-center"> 
 				<view class="u-m-r-10">
-					<u-icon name="home" color="#999" size="20"></u-icon>
+					<u-icon name="order" color="#999" size="20"></u-icon>
 				</view>
-				<view class="u-font-30 u-line-1">{{ dataList.company }}</view>
-				<view class="u-m-l-20">
+				<view class="u-font-30 u-line-1">{{ dataList.id }}</view>
+				<!-- <view class="u-m-l-20">
 					<u-icon name="arrow-right" color="#999" size="14"></u-icon>
-				</view>
+				</view> -->
 			</view>
 			<view class="u-m-l-20 u-primary text-nowrap u-font-30">
 				{{ order_zt2str }}
@@ -27,6 +27,7 @@
 					width="70px" 
 					height="70px" 
 					radius="8"
+					:customStyle="{border: '1rpx solid #f8f8f8'}"
 					></up-image>
 				</view>
 				<view class="item u-flex-1 u-m-l-15 info u-font-28" >
@@ -57,11 +58,14 @@
 			</view>
 			
 			<view class="u-flex u-flex-between u-flex-items-center u-p-10">
-				<view class="item"></view>
+				<view class="item u-info u-font-26 u-flex u-flex-items-center">
+					<u-icon name="calendar-fill" size="18" color="#999"></u-icon>
+					<view class="u-m-l-10">{{dataList.ctime}}</view>
+				</view>
 				<view class="item u-flex u-flex-items-center u-font-28">
 					<view class="u-m-r-10">合计</view>
 					<view class="u-flex u-flex-items-center">
-						<view >￥</view>
+						<view style="color: #fd2e2e;">￥</view>
 						<u-count-to 
 						:autoplay="false" 
 						:startVal="dataList.total_fee" 
@@ -69,7 +73,7 @@
 						:decimals="2"
 						fontSize="16"
 						bold
-						color="#000"
+						color="#fd2e2e"
 						></u-count-to>
 					</view>
 				</view>
@@ -148,6 +152,9 @@
 </script>
 
 <style lang="scss" scoped>
+	.shop-card-header {
+		border-bottom: 1rpx solid #f8f8f8;
+	}
 	.shop-card-main {
 		.product-item {
 			.item {

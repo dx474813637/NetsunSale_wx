@@ -145,9 +145,14 @@
 		uni.$off('create_order_address_update')
 	})
 	async function getInitData() {
-		const res = await $api.orderConfirm()
+		// const res = await $api.orderConfirm()
+		// if(res.code == 1) {
+		// 	morenAddress.value = res.moren
+		// 	addressList.value = res.list
+		// }
+		const res = await $api.address()
 		if(res.code == 1) {
-			morenAddress.value = res.moren
+			morenAddress.value = res.list[0]
 			addressList.value = res.list
 		}
 	}

@@ -8,7 +8,7 @@
 				</view>
 				<view class="u-m-l-20 u-flex u-flex-items-center">
 					<u-icon name="phone-fill" size="16" color="#afd2ff"></u-icon>
-					<text class="u-m-l-10">{{origin.mobile}}</text> 
+					<text class="u-m-l-10">{{origin.tel}}</text> 
 				</view>
 			</view>
 			<!-- <view class="item text-nowrap u-m-l-20">
