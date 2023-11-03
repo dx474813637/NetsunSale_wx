@@ -46,6 +46,12 @@ export const userStore = defineStore('user', {
 		async getUserInfo(data) { 
 			this.user_info = data
 		},
+		async refreshUserData() {
+			const res = await apis.memu()
+			if(res.code == 1) {  
+				this.user_info = res.info 
+			}
+		},
 		// async getCpyInfo() {
 		// 	this.cpy_loading = true
 		// 	const res = await apis.my_company();

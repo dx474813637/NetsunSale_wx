@@ -109,7 +109,7 @@
 			</view>
 			
 			
-			<view class="u-radius-8 u-m-b-20 u-p-30 shop-card">  
+			<!-- <view class="u-radius-8 u-m-b-20 u-p-30 shop-card">  
 				<view class="u-flex u-flex-center u-flex-items-center u-font-36 u-m-b-20">
 					<view class="item u-m-r-20" v-if="company_list.img">
 						<u--image 
@@ -148,7 +148,7 @@
 						<text class="u-line-2">{{ company_list.info }}</text> 
 					</view>
 				</view>
-			</view> 
+			</view> -->
 			
 			
 			

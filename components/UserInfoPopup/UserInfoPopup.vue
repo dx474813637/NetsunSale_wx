@@ -1,8 +1,15 @@
 <template>
 	<view>
-		<u-popup :show="show" mode="center" @close="emits('onUpdateShow', false)" round="10" :safeAreaInsetBottom="false">
+		<u-popup 
+			:show="show" 
+			mode="center" 
+			@close="emits('onUpdateShow', false)" 
+			round="10" 
+			:safeAreaInsetBottom="false" 
+			closeOnClickOverlay
+		>
 			<view class="u-p-20 wrap u-radius-8">
-				<view class="main">
+				<view class="main u-p-b-30">
 					<view class="header text-white u-flex u-flex-center u-flex-items-center u-p-20 text-bold">
 						{{user_info.title}}
 					</view>
@@ -16,25 +23,51 @@
 						</button>
 						
 					</view>
-					<view class="nick-w u-m-b-20">
-						<u-input 
-							v-model="nick" 
-							:customStyle="{background: '#f8f8f8', padding: '10px'}" 
-							placeholder="输入昵称"
-							fontSize="14px" 
-							border="none"
-						>
-							<template #prefix>
-								<view class="u-font-28 text-base">
-									昵称
-								</view>
-							</template>
-						</u-input>
+					<view class="u-p-l-30 u-p-r-30">
+						<view class="nick-w u-m-b-30 u-flex u-flex-items-center">
+							<!-- <u-input 
+								type="nick"
+								v-model="nick" 
+								:customStyle="{background: '#f8f8f8', padding: '10px'}" 
+								placeholder="输入昵称"
+								fontSize="14px" 
+								border="none"
+								clearable 
+							>
+								<template #prefix>
+									<view class="u-font-28 text-base">
+										昵称：
+									</view>
+								</template>
+							</u-input> -->
+							<view class="u-font-28 text-base">昵称：</view>
+							<view class="uni-input-wrapper u-flex u-flex-items-center u-flex-1">
+								<input 
+									type="nickname" 
+									class="weui-input u-font-28 u-flex-1" 
+									:value="nick" 
+									@input="clearInput" 
+									@blur="changeValue"
+									placeholder="请输入昵称"  
+									:cursor-spacing="50"
+								/>
+								<!-- <input class="uni-input" placeholder="带清除按钮的输入框" :value="inputClearValue" @input="clearInput" /> -->
+								<u-icon name="close-circle-fill" v-if="showClearIcon" @click="clearIcon" size="20" color="#aaa"></u-icon>
+								<!-- <text class="uni-icon" v-if="showClearIcon" @click="clearIcon">&#xe434;</text> -->
+							</view>
+							
+						</view>
+						<view class="tishi-w u-m-b-40 u-info u-font-26 u-flex u-flex-items-center">
+							<!-- <view class="item u-radius-4 u-flex u-flex-items-center u-flex-center" style="width: 35px; height: 35px;background-color: #D6EAFE;">
+								<u-icon name="info-circle-fill" color="#4f9ef3" size="24"></u-icon>
+							</view> -->
+							<view class="item u-flex-1">
+								{{user_info.info}}
+							</view> 
+						</view>
+						<u-button type="primary" @click="submit" >立 即 保 存</u-button>
 					</view>
-					<view class="tishi-w u-m-b-30 u-p-20 u-info u-font-26">
-						{{user_info.info}}
-					</view>
-					<u-button type="primary" @click="submit">立即登录</u-button>
+					
 				</view>
 				<!-- <view class="img-w">
 					<u--image
@@ -79,6 +112,7 @@
 	}) 
 	const avatarUrl = ref('')
 	const nick = ref('')
+	const showClearIcon = ref(false)
 	watch(
 		() => user_info.value,
 		(n) => {
@@ -127,15 +161,49 @@
 		})
 	}
 	async function submit() {
+		uni.showLoading({
+			title: '保存中'
+		})
 		const res = await $api.save_info({
 			params: {
 				name: nick.value,
 				img: avatarUrl.value
 			}
 		})
+		if(res.code == 1) {
+			emits('onUpdateShow', false)
+			uni.showLoading({
+				title: '获取最新信息'
+			})
+			await user.refreshUserData()
+			uni.showToast()
+		}
+	} 
+	function clearInput (event) {
+		nick.value = event.detail.value;
+		if (event.detail.value.length > 0) {
+			showClearIcon.value = true;
+		} else {
+			showClearIcon.value = false;
+		}
+	} 
+	function clearIcon () {
+		nick.value = '';
+		showClearIcon.value = false;
 	}
-	
-	
+	function changeValue(event) {
+		nick.value = event.detail.value; 
+		// nick.value = filterWeChatNicknameEmoji(event.detail.value); 
+	}
+	function filterWeChatNicknameEmoji(text) {
+	  // 定义正则表达式匹配微信昵称表情
+	  const emojiRegex = /u4e88-u9fa5 a-zA-Z8-97+$/g;
+	  
+	  // 使用正则表达式替换为空字符串
+	  const filteredText = text.replace(emojiRegex, '');
+	  
+	  return filteredText;
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -152,7 +220,7 @@
 			width: 100%;
 			height: 100px;
 			border-radius: 0 0 100% 100%;
-			background-color: #007aff;
+			background-color: #539ef1;
 		}
 		.main {
 			position: relative;
@@ -181,5 +249,10 @@
 			}
 		}
 		
+	}
+	.nick-w {
+		background-color: #f2f2f2;
+		border-radius: 4px;
+		padding: 10px;
 	}
 </style>

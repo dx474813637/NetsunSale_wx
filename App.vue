@@ -14,7 +14,7 @@
 	} from "@dcloudio/uni-app";
 	// const $ws = inject('$ws')
 	const $api = inject('$api')
-	
+	const $http = inject('$http')
 	const base = baseStore() 
 	const user = userStore() 
 	onLaunch(async () => {
@@ -47,7 +47,7 @@
 				}
 			});
 		}
-		routingIntercept()  
+		// routingIntercept()  
 		 // await user.getMallUserInfo()
 		
 	});
@@ -56,6 +56,16 @@
 		if(options.query?.share_other) { 
 			base.saveShareInfo(options.query.share_other) 
 		} 
+		if (options.query?.poster) {
+			$http.setToken({
+				poster: options.poster
+			})
+		}
+		if (options.query?.tid) {
+			$http.setToken({
+				tid: options.tid
+			})
+		}
 		// if(uni.getStorageSync('WebSocketInfo')) $ws.init()
 		 
 		 // if(options.query?.route && options.query.route != '/pages/home/home2' && user.user.login == 0) {

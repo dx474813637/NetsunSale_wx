@@ -19,20 +19,20 @@
 			</u-form-item>
 			<u-form-item
 				label="手机号"
-				prop="mobile"
-				ref="addressData_mobile"
+				prop="tel"
+				ref="addressData_tel"
 				required
 			>
 				<u--input
-					v-model="addressData.mobile"
+					v-model="addressData.tel"
 					clearable
 					type="number"
 				></u--input>
 			</u-form-item>
 			<u-form-item
 				label="地区"
-				prop="regional"
-				ref="addressData_regional"
+				prop="area"
+				ref="addressData_area"
 				required
 			> 
 				<view style="width: 100%;">
@@ -40,8 +40,12 @@
 						placeholder="所在地" 
 						popup-title="请选择所在地区" 
 						:localdata="regional_list" 
-						v-model="addressData.regional"  
+						v-model="addressData.area"  
 						@change="handleValArea"
+						:map="{
+							text: 'label',
+							value: 'value',
+						}"
 					></uni-data-picker>
 				</view>
 				
@@ -63,12 +67,12 @@
 				label="设为默认" 
 			>
 				<u-switch 
-				v-model="addressData.auto" 
+				v-model="addressData.default" 
 				:activeValue="1"
 				:inactiveValue="0"
 				></u-switch>
 			</u-form-item>
-			<u-form-item
+			<!-- <u-form-item
 				label="备注"
 				prop="remark"
 				ref="addressData_remark"
@@ -78,13 +82,13 @@
 					placeholder="备注" 
 					height="90"
 				></u--textarea>
-			</u-form-item>
+			</u-form-item> -->
 		</u--form>
 		
 		<view class="u-p-t-20">
 			<u-button type="primary" @click="submit">提交</u-button>
 		</view>
-		<!-- <view class="u-p-t-20 u-m-b-40" v-if="addressData.address_id">
+		<!-- <view class="u-p-t-20 u-m-b-40" v-if="addressData.id">
 			<u-button type="error" @click="delAddrClick">删除地址</u-button>
 		</view> -->
 	</view>
@@ -100,13 +104,14 @@
 	
 	const uForm = ref()
 	const addressData = ref({
-		address_id: '',
+		id: '',
 		name: '',
-		mobile: '',
-		regional: '',
+		tel: '',
+		area: '',
+		area_name: '',
 		address: '',
 		remark: '',
-		auto: 0,  
+		default: 0,  
 	})
 	const rules = {
 		name: [
@@ -116,7 +121,7 @@
 				trigger: ['change', 'blur'],
 			}
 		],
-		mobile: [
+		tel: [
 			{
 				validator: (rule, value, callback) => { 
 					return uni.$u.test.mobile(value);
@@ -125,7 +130,7 @@
 				trigger: ['change', 'blur'],
 			}
 		],
-		regional: [
+		area: [
 			{
 				required: true,
 				message: '地区不得为空',
@@ -141,11 +146,12 @@
 		],
 	}
 	onLoad(async (options) => {
-		if(regional_list.value.length == 0 && !regional_list_loading.value ) {
-			base.get_regional_list()
-		}
+		// if(regional_list.value.length == 0 && !regional_list_loading.value ) {
+		// 	base.get_regional_list()
+		// }
+		// console.log(regional_list.value)
 		if(options.hasOwnProperty('id')) {
-			addressData.value.address_id = options.id
+			addressData.value.id = options.id
 			await getData()
 		} 
 	})
@@ -156,15 +162,15 @@
 	async function getData() {
 		const res = await $api.address_detail({
 			params: {
-				address_id: addressData.value.address_id
+				id: addressData.value.id
 			}
 		})
 		if(res.code == 1 ) {
 			addressData.value = {
 				...addressData.value,
 				...res.list,
-				regional: res.list.regional+'',
-				autoCheck: res.list.auto == 1? true: false
+				area: res.list.area+'',
+				defaultCheck: res.list.default == 1? true: false
 			}
 		}
 	}
@@ -172,7 +178,7 @@
 	function submit() {
 		uForm.value.validate().then(async () => {
 			uni.showLoading()
-			const res = await $api.address_change({params: {
+			const res = await $api.address_save({params: {
 				...addressData.value
 			}})
 			if(res.code == 1) { 
@@ -180,7 +186,7 @@
 					title: res.msg
 				})
 				let data = {data: addressData.value, type: 'add'}
-				if(addressData.value.address_id) {
+				if(addressData.value.id) {
 					data.type = 'edit'
 				}
 				uni.$emit('address_update', data )
@@ -195,7 +201,9 @@
 			uni.$u.toast('检查表单')
 		})
 	}
-	
+	function handleValArea(e) { 
+		addressData.value.area_name = e.detail.value.map(ele => ele.text).join('')
+	}
 	
 </script>
 <style>

@@ -137,7 +137,10 @@
 				"path": "index/index",
 				"style": {
 					"navigationBarTitleText": "个人中心",
-					"navigationStyle": "custom"
+					"navigationStyle": "custom",
+					"mp-weixin": {
+						"softinputMode": "adjustPan"
+					}
 				}
 			},
 			{
@@ -368,5 +371,5 @@
 		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#F8F8F8"
 	},
-	"uniIdRouter": {}
+	"uniIdRouter": {}  
 }

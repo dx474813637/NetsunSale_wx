@@ -4,10 +4,11 @@ import {
 } from 'pinia';
 import pinia from '@/stores/index.js'
 import apis from '@/config/apis/index';
+import {initAddressData} from '@/utils/base.js'
+let addressData = initAddressData()
 import { userStore } from '@/stores/user'; 
 // const extConfig = uni.getExtConfigSync ? uni.getExtConfigSync():{}
 // console.log(extConfig) 
-
 let pageRoute = uni.getStorageSync('noTokenNeedPermissionRoute') || ''
 export const baseStore = defineStore('base', {
 	state: () => {
@@ -33,8 +34,9 @@ export const baseStore = defineStore('base', {
 			roomList: [],
 			home_loading: false,
 			noTokenNeedPermissionRoute: pageRoute,
-			regional_list: [],
-			regional_list_loading: false
+			regional_list: addressData,
+			regional_list_loading: false,
+			addressData: addressData
 		};
 	}, 
 	actions: {
@@ -127,7 +129,7 @@ export const menusStore = defineStore('menus', {
 				options: {}
 			},
 			cpy_type_origin: [[]],
-			cpy_type: [[]]
+			cpy_type: [[]],
 		};
 	},
 	getters: {

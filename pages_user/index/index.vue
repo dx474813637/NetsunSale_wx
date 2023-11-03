@@ -130,7 +130,8 @@
 		ref,
 		reactive,
 		computed,
-		toRefs
+		toRefs,
+		watch
 	} from 'vue' 
 	import { inject } from 'vue' 
 	// import menusBar from '@/components/menusBar/menusBa	r.vue'
@@ -152,9 +153,13 @@
 	const showUserInfo = ref(false)
 	onLoad(async () => {
 		// await user.getMallUserInfo()
-		// await user.getCpyInfo()
-	})
-	
+		// await user.getCpyInfo() 
+		await user.refreshUserData();
+		if(user_info.value.gx === 0 || user_info.value.gx === '0') {
+			showUserInfo.value = true
+		}
+		
+	}) 
 	function handleMenusClick(item) {
 		console.log(item)
 		if(item.type == 1 ){
@@ -175,6 +180,10 @@
 		
 		
 		
+	}
+	
+	function handleChangeShow(v) {
+		showUserInfo.value = v
 	}
 </script>
 

@@ -32,7 +32,7 @@ export default function($ws) {
 		http.config.header = {
 			...http.config.header,
 			...obj
-		}
+		} 
 		// http.config.header['userid'] = token
 		// if(!md5flag) {
 		// 	// 不存在md5时保存userid
@@ -72,7 +72,7 @@ export default function($ws) {
 		config.header = {
 			...config.header,
 			...base.configHeader
-		}
+		} 
 		return config
 	})
 

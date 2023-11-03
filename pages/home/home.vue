@@ -1,7 +1,5 @@
 <template>
-	<view class="header u-p-20">
-		<input type="nickname" class="weui-input" placeholder="请输入昵称"/>
-		 
+	<view class="header u-p-20"> 
 		<view class="search-w u-flex u-flex-items-center">
 			<u-search
 				placeholder="请输入商品关键词" 
@@ -22,12 +20,13 @@
 						>搜索</u-button>
 				</view>
 		</view>
-		<view class="swiper u-m-t-30 u-m-b-30">
+		<view class="swiper u-m-t-30 u-m-b-30" v-if="swiperList.length > 0">
 			<u-swiper
 				:list="swiperList" 
 				keyName="img"
 				radius="10"
 				@click="swiperclick"
+				bgColor="transparent"
 			></u-swiper>
 		</view>
 		<view class="nav u-flex u-flex-wrap u-flex-items-start">
@@ -48,7 +47,7 @@
 			</view>
 		</view>
 	</view>
-	<view class="u-flex u-flex-items-center u-flex-between u-p-20">
+	<!-- <view class="u-flex u-flex-items-center u-flex-between u-p-20">
 		<view class="text-bold u-font-38  text-black">
 			优选店铺
 		</view> 
@@ -76,8 +75,8 @@
 						></up-avatar> 
 					</view>
 					<view class="item u-flex-1">
-						<view class="u-m-b-5">网盛图书</view>
-						<view class="u-font-28 text-thin">地址：杭州市滨江区立业路788号</view>
+						<view class="u-m-b-5">{{shopCurrentData.company.company}}</view>
+						<view class="u-font-28 text-thin">{{shopCurrentData.company.address}}</view>
 					</view>
 				</view>
 				<scroll-view 
@@ -102,7 +101,7 @@
 				</view>
 			</view>
 		</view>
-	</view>
+	</view> -->
 	<view class="u-flex u-flex-items-center u-flex-between u-p-20">
 		<view class="text-bold u-font-38  text-black">
 			推荐商品
@@ -153,34 +152,8 @@
 	const $api = inject('$api')
 	const keyword = ref('')
 	const shopCurrent = ref(0)
-	const swiperList = ref([
-		{
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-			url: '/pages/cateList/cateList'
-		},
-		{
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper2.png',
-			url: '/pages/cateList/cateList'
-		},
-		{
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png',
-			url: '/pages/cateList/cateList'
-		},
-	])
-	const shopTabs = ref([
-		{
-			name: '店铺1'
-		},
-		{
-			name: '店铺2'
-		},
-		{
-			name: '店铺3'
-		},
-		{
-			name: '店铺4'
-		},
-	])
+	const swiperList = ref([])
+	const shopTabs = ref([])
 	const navList = ref([
 		{
 			name: '当季新品',
@@ -233,7 +206,10 @@
 			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
 		},
 	])
-	  
+	const shopCurrentLogin = computed(() => {
+		return shopTabs.value[shopCurrent.value]?.login || ''
+	})
+	const shopCurrentData = ref({})
 	const options = computed(() => {
 		return {
 			params: {},
@@ -262,9 +238,35 @@
 	} = useDataList(options)
 	onLoad(async () => {
 		initDataList()
+		initHomeData()
 	})
-	 
-	
+	async function initHomeData() {
+		await getHomeData()
+		// await getTuijianData()
+	}
+	async function getHomeData() {
+		const res = await $api.web_home();
+		if(res.code == 1) {
+			swiperList.value = res.swiper
+		}
+	}
+	async function getTuijianData() {
+		const res = await $api.web_tuijian2({
+			params: {
+				login: shopCurrentLogin.value
+			}
+		});
+		if(res.code == 1) {
+			shopTabs.value = res.list.map(ele => {
+				ele.disabled = false;
+				return ele
+			})
+			shopCurrentData.value = {
+				company: res.company,
+				product: res.product,
+			}
+		}
+	}
 	function swiperclick(e) {
 		if(swiperList.value[e].url) {
 			uni.navigateTo({

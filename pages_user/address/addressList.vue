@@ -61,16 +61,16 @@
 			console.log(type)
 			uni.$emit('create_order_address_update', data )
 			if(type == 'edit') {
-				let i = indexList.value.findIndex(ele => ele.id == data.address_id) 
+				let i = indexList.value.findIndex(ele => ele.id == data.id) 
 				if(i != -1) {
-					if(data.auto == '1') {
+					if(data.default == '1') {
 						indexList.value.forEach(ele => {
-							ele.auto = 0
+							ele.default = 0
 						})
 					}
 				    indexList.value[i] = {
 						...data,
-						id: data.address_id
+						id: data.id
 				    }
 				}
 			} 
@@ -105,10 +105,10 @@
 	async function getData() {
 		if(loadstatus.value != 'loadmore') return;
 		loadstatus.value = 'loading'
-		const res = await $api.addresss_list({params: params.value});
+		const res = await $api.address({params: params.value});
 		if(res.code == 1) {
-			indexList.value = [...indexList.value, ...res.list.list];
-			if(curP.value >= res.list.pw_page_total) {
+			indexList.value = [...indexList.value, ...res.list];
+			if(indexList.value.length >= res.total) {
 				loadstatus.value = 'nomore'
 			}
 			else {

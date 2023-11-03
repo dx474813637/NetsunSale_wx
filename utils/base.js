@@ -55,3 +55,22 @@ export async function getImageBase64_readFile(tempFilePath) {
 		});
 	});
 }
+
+
+import provinces from '@/utils/province.js';
+import citys from '@/utils/city.js';
+import areas from '@/utils/area.js';
+
+// console.log(provinces)
+// console.log(citys)
+// console.log(areas)
+export function initAddressData() {
+	let data = uni.$u.deepClone(provinces);
+	data.forEach((province, index) => {
+		province.children = uni.$u.deepClone(citys[index]).map((item, i) => {
+			item.children = uni.$u.deepClone(areas[index][i])
+			return item
+		}) 
+	}) 
+	return data
+}

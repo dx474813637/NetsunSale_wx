@@ -6,7 +6,7 @@
 			</template> -->
 			<view class="list-w u-flex">
 				<view class="list-item item-left">
-					<u-list >
+					<u-list height="100%">
 						<u-list-item
 							v-for="(item, index) in nav_left"
 							:key="item.name"

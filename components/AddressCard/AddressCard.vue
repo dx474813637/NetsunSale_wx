@@ -8,18 +8,18 @@
 				</view>
 				<view class="u-m-l-20 u-flex u-flex-items-center">
 					<u-icon name="phone-fill" size="16" color="#afd2ff"></u-icon>
-					<text class="u-m-l-10">{{origin.mobile}}</text> 
+					<text class="u-m-l-10">{{origin.tel}}</text> 
 				</view>
 			</view>
 			<view class="item text-nowrap u-m-l-20">
-				<u-tag type="primary" size="mini" text="默认" v-if="origin.auto == '1'"></u-tag>
+				<u-tag type="primary" size="mini" text="默认" v-if="origin.default == '1'"></u-tag>
 			</view>
 		</view>
 		<view class="card-row u-flex u-flex-items-center u-flex-between u-m-b-20">
 			<u-icon name="map-fill" size="16" color="#afd2ff"></u-icon>
 			<view class="item u-line-2 u-flex-1 u-m-l-10 u-info-dark">
 				<text >
-					{{origin.regional_name}}
+					{{origin.area_name}}
 				</text> 
 				<text class="u-m-l-10">
 					{{origin.address}}
