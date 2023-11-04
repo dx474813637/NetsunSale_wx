@@ -60,7 +60,7 @@ export const orderConfirm = (data) => http.get('orderConfirm', data)
 // json字符串  id是库存的id
 export const create_order = (data) => http.get('create_order', data)
 // xcx_pay  微信支付 参数order_id 订单id
-export const xcx_pay = (data) => http.get('xcx_pay', data)
+export const xcx_pay =  (data, config={}) => http.post('xcx_pay', data, config)
 
 // 订单状态  0 待付款 1付款成功 2待收货 3订单完成 
 // 4评分完成 5支付中 6支付失败

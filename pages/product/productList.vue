@@ -99,9 +99,13 @@
 			terms.value = options.terms
 		}
 		if(cate_list.value.length == 0) {
-			cate.getCateData()
+			await cate.getCateData() 
 		}
-		await initData()
+		if(options.hasOwnProperty('cate')) {
+			cateId.value = options.cate
+			initCateLabel()
+		}
+		await initData() 
 	})
 	
 	
@@ -148,6 +152,23 @@
 		cate_label.value = obj.cate_label
 		handleChangeShow(false)
 		initData()
+	}
+	
+	function initCateLabel() {
+		cate_list.value.some(ele => {
+			if(ele.id == cateId.value) {
+				cate_label.value = `${ele.name} - 全部`
+			}
+			else {
+				ele.children.some(item => {
+					if(item.id == cateId.value) {
+						cate_label.value = `${ele.name} - ${item.name}`
+					}
+					return item.id == cateId.value
+				})
+			}
+			return ele.id == cateId.value
+		})
 	}
 	 
 	

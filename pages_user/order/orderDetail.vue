@@ -1,37 +1,45 @@
 <template>
-	<view class="u-p-20" v-if="list.code == 1">
-		<view class="u-m-b-20">
+	<view class="u-p-20" >
+		<view class="u-m-b-20" v-if="list.id">
 			<OrderCard
-				:origin="list.list"
+				:origin="list"
 				:gotoDetail="false"
 			></OrderCard>
 		</view>
 		
 		<view class="bg-white u-radius-12 u-p-30 u-info-dark u-m-b-30">
-			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
+			<!-- <view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">买家</view>
-				<view class="item u-flex-1 u-text-right">{{ list.buy_info.company }} - {{ list.buy_info.contacts }}</view>
+				<view class="item u-flex-1 u-text-right text-base">{{ list.buy_info.company }} - {{ list.buy_info.contacts }}</view>
 			</view>
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">卖家</view>
-				<view class="item u-flex-1 u-text-right">{{ list.sell_info.company }} - {{ list.sell_info.contacts }}</view>
-			</view>
+				<view class="item u-flex-1 u-text-right text-base">{{ list.sell_info.company }} - {{ list.sell_info.contacts }}</view>
+			</view> -->
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">订单号</view>
-				<view class="item u-flex-1 u-text-right">{{ list.list.id }}</view>
+				<view class="item u-flex-1 u-text-right text-base">{{ list.id }}</view>
 			</view>
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">订单状态</view>
-				<view class="item u-flex-1 u-text-right">{{ order_zt2str }}</view>
+				<view class="item u-flex-1 u-text-right text-base">{{ order_zt2str }}</view>
 			</view>
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">总金额</view>
-				<view class="item u-flex-1 u-text-right">{{ list.list.total_fee }} 元</view>
+				<view class="item u-flex-1 u-text-right text-base">{{ list.total_fee }} 元</view>
 			</view>
 			<!-- <view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">订单评分</view>
-				<view class="item u-flex-1 u-text-right">{{ list.list.score }}</view>
+				<view class="item u-flex-1 u-text-right text-base">{{ list.score }}</view>
 			</view> -->
+			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
+				<view class="item text-nowrap u-p-r-20">创建时间</view>
+				<view class="item u-flex-1 u-text-right text-base">{{ list.ctime }}</view>
+			</view>
+			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
+				<view class="item text-nowrap u-p-r-20">更新时间</view>
+				<view class="item u-flex-1 u-text-right text-base">{{ list.uptime }}</view>
+			</view>
 		</view>
 		
 		
@@ -67,7 +75,7 @@
 	import useFilter from '@/composition/useFilter.js'
 	const zt = computed(() => { 
 		return {
-			order_zt: !list.value.list ? '' : list.value.list.status
+			order_zt: !list.value ? '' : list.value.status
 		}
 	})
 	const $api = inject('$api')   
@@ -82,13 +90,13 @@
 	// } = share()
 	
 	const buyBtnShow = computed(() => {  
-		return (list.value.list.status == 0 || list.value.list.status == 6) && list.value.buy_info.login == u.value.login
+		return list.value.status == 0 || list.value.status == 6
 	})
 	const receiveBtnShow = computed(() => { 
-		return list.value.list.status == 2 && list.value.buy_info.login == u.value.login
+		return list.value.status == 2 
 	})
 	const scoreBtnShow = computed(() => { 
-		return list.value.list.status == 3 && list.value.buy_info.login == u.value.login
+		return list.value.status == 3 
 	})
 	onLoad(async (options) => { 
 		if(options.hasOwnProperty('id')) { 
@@ -105,9 +113,9 @@
 			}
 		})
 		if(res.code == 1 ) {
-			res.list.company = res.sell_info.company
-			res.list.clogin = res.sell_info.login
-			list.value = res
+			// res.list.company = res.sell_info.company
+			// res.list.clogin = res.sell_info.login
+			list.value = res.list
 		}
 	}
 	function confirmReceiveBtn(type) { 
@@ -118,7 +126,7 @@
 				if (res.confirm) {
 					const r = await $api.change_order_status({
 						params: {
-							order_id: list.list.id
+							order_id: list.value.id
 						}
 					})
 					if(res.code == 1) {
@@ -139,7 +147,7 @@
 	} 
 	async function wxPay() {
 		let res = await $api.xcx_pay({
-			pay_price: list.value.list.total_fee * 100,
+			pay_price: list.value.total_fee * 100,
 			order_id: id.value, 
 		})
 		if(res.list.return_code == 'SUCCESS' && res.list.result_code == 'SUCCESS') {

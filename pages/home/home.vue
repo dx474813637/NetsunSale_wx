@@ -1,25 +1,6 @@
 <template>
 	<view class="header u-p-20"> 
-		<view class="search-w u-flex u-flex-items-center">
-			<u-search
-				placeholder="请输入商品关键词" 
-				v-model="keyword"
-				bgColor="#fff"
-				borderColor="#007aff"
-				:showAction="false"
-				@search="handleSearch"
-				></u-search>
-				<view class="u-m-l-10">
-					<u-button 
-						type="primary" 
-						shape="circle"
-						size="small"
-						color="linear-gradient(to right, rgb(66, 83, 216), rgb(213, 51, 186))"
-						customStyle="height: 34px"
-						@click="handleSearch"
-						>搜索</u-button>
-				</view>
-		</view>
+		<SearchBase></SearchBase>
 		<view class="swiper u-m-t-30 u-m-b-30" v-if="swiperList.length > 0">
 			<u-swiper
 				:list="swiperList" 

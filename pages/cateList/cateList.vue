@@ -1,5 +1,5 @@
 <template>
-	<view class="w u-flex-column">
+	<view class="w card-row">
 		<view class="header bg-white u-p-20">
 			<u-search 
 				placeholder="请输入关键字" 
@@ -7,8 +7,9 @@
 				:showAction="false"
 				@search="handleSearch"
 			></u-search>
-		</view>
-		<view class="list u-flex-1 u-flex "> 
+		</view> 
+		
+		<view class="list u-flex "> 
 			<scroll-view 
 				scroll-y
 				class="item item-nav-w"
@@ -112,7 +113,7 @@
 		base.handleGoto({
 			url: '/pages/product/productList',
 			params: {
-				kw: keyword.value
+				terms: keyword.value
 			}
 		})
 	}
@@ -135,7 +136,7 @@ page {
 	.w {
 		height: 100%;
 		.list {
-			height: 100%;
+			height: calc(100% - 50px);
 			>.item {
 				height: 100%;
 				&.item-nav-w {
