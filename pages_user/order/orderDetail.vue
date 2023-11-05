@@ -28,6 +28,7 @@
 				<view class="item text-nowrap u-p-r-20">总金额</view>
 				<view class="item u-flex-1 u-text-right text-base">{{ list.total_fee }} 元</view>
 			</view>
+			
 			<!-- <view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">订单评分</view>
 				<view class="item u-flex-1 u-text-right text-base">{{ list.score }}</view>
@@ -47,11 +48,13 @@
 			<view class="item u-p-20" v-if="buyBtnShow">
 				<up-button type="primary" @click="orderBuyBtn">订单支付</up-button>
 			</view>
-			<view class="item u-p-20" v-if="receiveBtnShow">
+			<!-- <view class="item u-p-20" v-if="receiveBtnShow"> -->
+			<view class="item u-p-20" >
 				<up-button type="primary" @click="confirmReceiveBtn">收货确认</up-button>
 			</view>
-			<view class="item u-p-20" v-if="scoreBtnShow">
-				<up-button type="primary" @click="showScoreBtn">我要评分</up-button>
+			<!-- <view class="item u-p-20" v-if="scoreBtnShow"> -->
+			<view class="item u-p-20" >
+				<up-button type="primary" @click="orderScorePopupShow = true">我要评分</up-button>
 			</view>
 			
 			
@@ -59,6 +62,14 @@
 		
 		
 	</view>
+	
+	<OrderScorePopup
+		:show="orderScorePopupShow" 
+		title="订单评分"  
+		:list="list"
+		:onUpdateShow="handleChangeShow"  
+		@submitScore="submitScore" 
+	></OrderScorePopup>
 </template>
 
 <script setup>
@@ -88,7 +99,7 @@
 	// 	setOnlineControl,
 	// 	onlineControl
 	// } = share()
-	
+	const orderScorePopupShow = ref(false)
 	const buyBtnShow = computed(() => {  
 		return list.value.status == 0 || list.value.status == 6
 	})
@@ -133,7 +144,9 @@
 						uni.showToast({
 							title: res.msg,
 							icon: 'none'
-						})
+						}) 
+						uni.showLoading()
+						await getData()
 					}
 				} else if (res.cancel) {
 					console.log('用户点击取消');
@@ -188,11 +201,36 @@
 				icon: 'none'
 			})
 		}
+	} 
+	function submitScore(data) {
+		uni.showModal({
+			title: '提示',
+			content: '是否提交评分',
+			success: async function (res) {
+				if (res.confirm) {
+					const r = await $api.order_score({
+						params: {
+							order_id: list.value.id,
+							score: data
+						}
+					})
+					if(res.code == 1) {
+						uni.showToast({
+							title: res.msg,
+							icon: 'none'
+						})
+						uni.showLoading()
+						await getData()
+					}
+				} else if (res.cancel) {
+					console.log('用户点击取消');
+				}
+			}
+		});
 	}
-	function showScoreBtn () {
-		
-	}
-	
+	function handleChangeShow(data) {
+		orderScorePopupShow.value = data
+	} 
 	
 </script>
 
