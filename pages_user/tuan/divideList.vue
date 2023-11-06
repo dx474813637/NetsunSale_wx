@@ -1,6 +1,6 @@
 <template>
 	<view class="w">
-		<u-sticky bgColor="#f8f8f8">
+		<!-- <u-sticky bgColor="#f8f8f8">
 			<view class="tabs-w">
 				<u-tabs
 					:list="tabs_list"  
@@ -12,15 +12,15 @@
 					@change="handleTabsChange"
 				></u-tabs>	
 			</view> 
-		</u-sticky>
+		</u-sticky> -->
 		
 		
 		
 		<view class="list u-p-10">  
 			<view class="list-item u-p-10" v-for="item in dataList" :key="item.id">
-				<OrderCard
+				<DivideCard
 					:origin="item"
-				></OrderCard>
+				></DivideCard>
 			</view>
 			<template v-if="dataList.length == 0">
 				<u-empty mode="data" :icon="base.empty" />
@@ -52,38 +52,38 @@
 	// 	onlineControl
 	// } = share()
 	const $api = inject('$api')   
-	const role = ref('1') 
-	const tabs_current = ref(0)
-	const tabs_list = ref([
-		{
-			name: '全部',
-			disabled: false,
-			value: '0'
-		},
-		{
-			name: '待付款',
-			disabled: false,
-			value: '1'
-		},
-		{
-			name: '待收货',
-			disabled: false,
-			value: '2'
-		},
-		{
-			name: '已完成',
-			disabled: false,
-			value: '3'
-		}
-	]) 
+	// const role = ref('1') 
+	// const tabs_current = ref(0)
+	// const tabs_list = ref([
+	// 	{
+	// 		name: '全部',
+	// 		disabled: false,
+	// 		value: '0'
+	// 	},
+	// 	{
+	// 		name: '待付款',
+	// 		disabled: false,
+	// 		value: '1'
+	// 	},
+	// 	{
+	// 		name: '待收货',
+	// 		disabled: false,
+	// 		value: '2'
+	// 	},
+	// 	{
+	// 		name: '已完成',
+	// 		disabled: false,
+	// 		value: '3'
+	// 	}
+	// ]) 
 	
 	const options = computed(() => {
 		return {
 			params: {
-				role: role.value,
-				type: tabs_list.value[tabs_current.value].value
+				// role: role.value,
+				// type: tabs_list.value[tabs_current.value].value
 			},
-			api: 'order_list'
+			api: 'divide'
 		}
 	})
 	

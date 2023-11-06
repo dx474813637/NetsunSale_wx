@@ -1,122 +1,174 @@
 <template>
-	<view class="w">
-		<u-sticky bgColor="#f8f8f8">
-			<view class="tabs-w">
-				<u-tabs
-					:list="tabs_list"  
-					lineWidth="0"
-					:current="tabs_current" 
-					:activeStyle="{
-						color: themeColor
-					}"
-					@change="handleTabsChange"
-				></u-tabs>	
-			</view> 
-		</u-sticky>
+	<view class="u-p-30 bg " style="padding-bottom: 60px!important;">
 		
-		
-		
-		<view class="list u-p-10">  
-			<view class="list-item u-p-10" v-for="item in dataList" :key="item.id">
-				<OrderCard
-					:origin="item"
-				></OrderCard>
+		<view  class="u-p-20 u-p-l-40 bg-white u-radius-5">
+			  
+			<u--form 
+				labelPosition="top" 
+				:model="model" 
+				:rules="rules" 
+				ref="uForm"
+				labelWidth="100%"
+				:borderBottom="false"
+				:labelStyle="{color: '#7c88a0', fontSize: '30rpx', lineHeight: '18px'}"
+				>
+				 
+				<u-form-item
+				 	:borderBottom="false"
+				 	label="团标题（团名）" 
+				 	prop="title"  
+				 	ref="title"
+				 	required 
+				 	> 
+				 	<up-input 
+				 		v-model="model.title"
+				 		placeholder="团标题（团名）"
+				 		></up-input> 
+				</u-form-item>   
+				<u-form-item
+				 	:borderBottom="false"
+				 	label="团说明" 
+				 	prop="info"  
+				 	ref="info"
+				 	required 
+				 	> 
+					<u--textarea 
+						v-model="model.info" 
+						placeholder="团说明" 
+					></u--textarea> 
+				</u-form-item>    
+				<u-form-item
+				 	:borderBottom="false"
+				 	label="分成比例(%)" 
+				 	prop="divide"  
+				 	ref="divide"
+				 	required 
+				 	> 
+					<slider :value="model.divide" activeColor="#007aff" @changing="lokk" showValue  /> 
+				</u-form-item>  
+			</u--form> 
+			
+		</view>
+		<view class="u-p-t-30 u-p-b-30">
+			<view class="u-flex u-flex-items-center u-flex-center">
+				<view class="item u-flex-1">
+					<u-button type="primary" @click="submit" :loading="loading" :disabled="loading">{{config.submitBtnText}}</u-button>
+				</view> 
 			</view>
-			<template v-if="dataList.length == 0">
-				<u-empty mode="data" :icon="base.empty" />
-			</template>
-			<template v-else>
-				<u-loadmore :status="loadstatus" />
-			</template>  
-				
-				
-			<u-safe-bottom></u-safe-bottom>
-		</view>	 
+			<view class="u-flex u-flex-items-center u-flex-center u-m-t-40">
+				<u-icon name="checkmark-circle" size="15" color="#aaa"></u-icon>
+				<view class="text-light u-font-28 u-m-l-20">信息安全保障中</view>
+			</view>
+		</view>   
 	</view>
-	<MenusBar></MenusBar>
+	
+	<u-safe-bottom></u-safe-bottom>
+	<MenusBar mode="2"></MenusBar>
 </template>
-
 <script setup>
-	import { onLoad, onReady, onReachBottom } from "@dcloudio/uni-app";
-	import { ref, reactive, computed, toRefs, inject, watch } from 'vue'
-	import useDataList from '@/composition/useDataList.js'
-	// import { share } from '@/composition/share.js'
+	import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
+	import { ref, reactive, computed, toRefs, inject, watch } from 'vue' 
 	import { baseStore } from '@/stores/base'
-	import {userStore} from '@/stores/user'
+	import {userStore} from '@/stores/user' 
 	const user = userStore()
-	const { tmp_id_list } = toRefs(user)
-	const base = baseStore();
-	const { home, roomList, themeColor } = toRefs(base)
-	// const {
-	// 	setOnlineControl,
-	// 	onlineControl
-	// } = share()
-	const $api = inject('$api')   
-	const role = ref('1') 
-	const tabs_current = ref(0)
-	const tabs_list = ref([
-		{
-			name: '全部',
-			disabled: false,
-			value: '0'
-		},
-		{
-			name: '待付款',
-			disabled: false,
-			value: '1'
-		},
-		{
-			name: '待收货',
-			disabled: false,
-			value: '2'
-		},
-		{
-			name: '已完成',
-			disabled: false,
-			value: '3'
-		}
-	]) 
+	const base = baseStore()  
 	
-	const options = computed(() => {
+	const $api = inject('$api')    
+	const config = computed(() => {
+		let func = 'tuan_add';
+		let submitBtnText = '提交';
+		let params = {...model.value };  
 		return {
-			params: {
-				role: role.value,
-				type: tabs_list.value[tabs_current.value].value
-			},
-			api: 'order_list'
+			func,
+			submitBtnText,
+			params
 		}
-	})
-	
-	const { 
-		dataList,
-		curP,
-		loadstatus,
-		params,
-		getDataList,
-		initDataList, 
-	} = useDataList(options)
-	
-	onLoad(async (options) => {
-		if(options.hasOwnProperty('role')) {
-			role.value = options.role
-		}
-		if(options.hasOwnProperty('zt')) {
-			tabs_current.value = +tabs_list.value.findIndex(ele => ele.value == options.zt) 
-		}
-		initDataList() 
 	}) 
-	function handleTabsChange(data) {
-		tabs_current.value = +data.index
-		initDataList()
-	} 
+	const uForm = ref() 
+	const model = ref({ 
+		title: '', 
+		info: '',
+		divide: 0, 
+	}) 
+	const rules = {
+		title: {
+			required: true,
+			message: '不能为空',
+			trigger: ['blur', 'change']
+		},  
+		info: {
+			required: true,
+			message: '公司不能为空',
+			trigger: ['blur', 'change']
+		},   
+	}
+  
+	onLoad(async(options) => {
+		
+	})
+	onReady(() => {
+		uForm.value.setRules(rules)
+	})     
+	function submit() {
+		uForm.value.validate().then(async () => {  
+			uni.showLoading()
+			const res = await $api[config.value.func]({...config.value.params});  
+			if(res.code == 1) { 
+				uni.showToast({
+					title: res.msg,
+					icon: 'success'
+				})  
+				setTimeout(() => {
+					uni.navigateBack()
+				}, 800)
+			}
+			
+		}).catch(errors => {
+			console.log(errors)
+			uni.$u.toast('请检查表单')
+		}) 
+	}   
+	function lokk(v) {  
+		model.value.divide = v.detail.value
+	}
 </script>
 
-<style scoped lang="scss">
-.w {
-	min-height: 100vh;
-	padding-bottom: 60px;
-} 
-.card {
-	
-}
+<style lang="scss">
+	page {
+		::v-deep {
+			.u-upload__deletable {
+				width: 30px!important;
+				height: 30px!important;
+				background-color: #f00!important;
+				.u-upload__deletable__icon { 
+					transform: scale(1)!important;
+					top: 6px!important; 
+					right: 4px!important;
+					.uicon-close {
+						font-size: 16px!important;
+					}
+				}
+			}
+		}
+	}
+</style>
+
+<style lang="scss" scoped>
+	.bg {
+		min-height: 100vh;
+		background-image: linear-gradient(to bottom, #e6f2fe, #f6f6f6);
+	}
+	.select-w {
+		position: relative;
+	}
+	.load-w {
+		position: absolute;
+		z-index: 10;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(255,255,255,.2);
+		
+	}
 </style>

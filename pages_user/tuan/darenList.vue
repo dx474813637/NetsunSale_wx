@@ -1,6 +1,6 @@
 <template>
 	<view class="w">
-		<u-sticky bgColor="#f8f8f8">
+		<!-- <u-sticky bgColor="#f8f8f8">
 			<view class="tabs-w">
 				<u-tabs
 					:list="tabs_list"  
@@ -12,15 +12,15 @@
 					@change="handleTabsChange"
 				></u-tabs>	
 			</view> 
-		</u-sticky>
+		</u-sticky> -->
 		
 		
 		
 		<view class="list u-p-10">  
 			<view class="list-item u-p-10" v-for="item in dataList" :key="item.id">
-				<OrderCard
+				<DarenCard
 					:origin="item"
-				></OrderCard>
+				></DarenCard>
 			</view>
 			<template v-if="dataList.length == 0">
 				<u-empty mode="data" :icon="base.empty" />
@@ -45,45 +45,20 @@
 	import {userStore} from '@/stores/user'
 	const user = userStore()
 	const { tmp_id_list } = toRefs(user)
-	const base = baseStore();
-	const { home, roomList, themeColor } = toRefs(base)
+	const base = baseStore(); 
 	// const {
 	// 	setOnlineControl,
 	// 	onlineControl
 	// } = share()
 	const $api = inject('$api')   
-	const role = ref('1') 
-	const tabs_current = ref(0)
-	const tabs_list = ref([
-		{
-			name: '全部',
-			disabled: false,
-			value: '0'
-		},
-		{
-			name: '待付款',
-			disabled: false,
-			value: '1'
-		},
-		{
-			name: '待收货',
-			disabled: false,
-			value: '2'
-		},
-		{
-			name: '已完成',
-			disabled: false,
-			value: '3'
-		}
-	]) 
 	
 	const options = computed(() => {
 		return {
 			params: {
-				role: role.value,
-				type: tabs_list.value[tabs_current.value].value
+				// role: role.value,
+				// type: tabs_list.value[tabs_current.value].value
 			},
-			api: 'order_list'
+			api: 'daren_list'
 		}
 	})
 	
@@ -96,19 +71,15 @@
 		initDataList, 
 	} = useDataList(options)
 	
-	onLoad(async (options) => {
-		if(options.hasOwnProperty('role')) {
-			role.value = options.role
-		}
-		if(options.hasOwnProperty('zt')) {
-			tabs_current.value = +tabs_list.value.findIndex(ele => ele.value == options.zt) 
-		}
+	onLoad(async (options) => { 
 		initDataList() 
-	}) 
-	function handleTabsChange(data) {
-		tabs_current.value = +data.index
-		initDataList()
-	} 
+	})  
+	
+	
+	
+	
+	
+	
 </script>
 
 <style scoped lang="scss">

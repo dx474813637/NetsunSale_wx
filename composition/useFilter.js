@@ -117,6 +117,16 @@ export default function useFilter(zt) {
 		else if(value == '2') text = '团长' 
 		return text
 	}) 
+	const divide_rz_status = computed(() => {
+		let value = zt?.value.divide_rz_status
+		let text = value 
+		if(value == '0') text = '待分成'
+		else if(value == '1') text = '预分成(支付成功)'
+		else if(value == '2') text = '分成(订单完成)'
+		else if(value == '3') text = '可提取(订单完成一段时间后)'
+		else if(value == '4') text = '已提取' 
+		return text
+	})    
 	return {
 		order_zt2str,
 		yuyue_zt2str,
@@ -128,6 +138,7 @@ export default function useFilter(zt) {
 		sign_file_status1,
 		sign_file_status2,
 		order_rz_status,
-		role2Str
+		role2Str,
+		divide_rz_status,
 	}
 }

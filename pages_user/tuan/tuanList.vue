@@ -2,10 +2,12 @@
 	<view class="w">
 		<view class="list u-p-10">  
 			<view class="list-item u-p-10" v-for="item in dataList" :key="item.id"> 
-				<view class="u-p-30 item bg-white u-radius-8" @click="tuanClick(item)">
+				<view class="u-p-30 item bg-white u-radius-8" @click="tuanClick(item)" :class="{
+					active: curtid == item.login
+				}">
 					<view class="u-m-b-20 u-flex u-flex-between u-flex-items-center">
 						<view class="u-flex-1 u-line-1">{{item.title}}</view>
-						<view class="text-error text-nowrap">分成：{{item.divide}}</view>
+						<view class="text-error text-nowrap">分成：{{item.divide}}%</view>
 					</view>
 					<view class="u-line-2 u-info u-m-b-20">{{item.info}}</view>
 					<view class="u-info u-font-28">{{item.ctime}}</view>
@@ -52,7 +54,8 @@
 	// 	setOnlineControl,
 	// 	onlineControl
 	// } = share()
-	const $api = inject('$api')   
+	const $api = inject('$api')  
+	const $http = inject('$http') 
 	const options = computed(() => {
 		return {
 			params: {
@@ -80,17 +83,20 @@
 			name:'切换至该团',
 			subname:"",  
 			disabled: false,
-			tid: ''
+			tid: '',
+			index: 1,
 		}, 
 		{
 			name: '删除', 
 			color:'#ff0000', 
 			disabled: true,
+			index: 2,
 		}
 	])
 	const ashow = ref(false)
 	const role = ref(0)
 	const curTuan = ref({})
+	const curtid = ref($http.config.header.tid)
 	const { 
 		dataList,
 		curP,
@@ -115,16 +121,22 @@
 		curTuan.value = data
 		alist.value[0].subname = data.title 
 		alist.value[0].tid = data.login 
-		alist.value[0].disabled = (uni.$u.http.config.header.tid == data.login)? true :false 
+		// alist.value[0].disabled = ($http.config.header.tid == data.login)? true :false 
 		ashow.value = true
 	} 
-	function aselectClick(index) {
-		if(index == 0) {
-			uni.$u.http.config.header.tid = curTuan.value.login
+	function aselectClick(obj) {
+		if(obj.index == 1) { 
+			$http.setToken({
+				tid: obj.tid
+			}) 
+			curtid.value = obj.tid
+			uni.redirectTo({
+				url: `/pages/product/productList?tid=${obj.tid}`
+			})
 		}
-		if(index == 1) {
+		if(obj.index == 2) {
 			delEvent()
-		}
+		}  
 	}
 	async function delEvent() {
 		
@@ -163,4 +175,7 @@
 .card {
 	
 } 
+.active {
+	background-color: #d3e5f5!important;
+}
 </style>
