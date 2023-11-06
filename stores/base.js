@@ -140,85 +140,32 @@ export const menusStore = defineStore('menus', {
 			// console.log('saveCurPage', data)
 			this.currPage = data;
 		},
-		async getMenusData() { 
-			this.menus = [
-				{
-					name: "首页",
-					type: 1,
-					url: "/pages/home/home",
-					white_icon_1: "https://wx.rawmex.cn/Public/xzlmenu/menu1a.png",
-					white_icon_2: "https://wx.rawmex.cn/Public/xzlmenu/menu1b.png",
-				},
-				{
-					name: "分类",
-					type: 1,
-					url: "/pages/cateList/cateList",
-					white_icon_1: "https://wx.rawmex.cn/Public/xzlmenu/menu1a.png",
-					white_icon_2: "https://wx.rawmex.cn/Public/xzlmenu/menu1b.png",
-				}, 
-				{
-					name: "商品",
-					type: 1,
-					url: "/pages/product/productList",
-					white_icon_1: "https://wx.rawmex.cn/Public/xzlmenu/menu1a.png",
-					white_icon_2: "https://wx.rawmex.cn/Public/xzlmenu/menu1b.png",
-				}, 
-				{
-					name: "采购车",
-					type: 1,
-					url: "/pages_user/cart/cart",
-					white_icon_1: "https://wx.rawmex.cn/Public/xzlmenu/menu1a.png",
-					white_icon_2: "https://wx.rawmex.cn/Public/xzlmenu/menu1b.png",
-				},
-				{
-					name: "我的",
-					type: 1,
-					url: "/pages_user/index/index",
-					white_icon_1: "https://wx.rawmex.cn/Public/xzlmenu/menu1a.png",
-					white_icon_2: "https://wx.rawmex.cn/Public/xzlmenu/menu1b.png",
-				},
-			].map((ele, index) => {
-				let paramsStr = ele.url.split('?')[1] || ''
-				let paramsObj = {}
-				paramsStr && paramsStr.split('&').forEach(item => {
-					paramsObj[item.split('=')[0]] = item.split('=')[1]
-				})
-				 
-				return {
-					...ele,
-					route: ele.url.split('?')[0],
-					options: paramsObj
-				}
-			})   
-			try {  
-				const res = await apis.memu()  
-				if(res.code == 1) {  
-					let user = userStore()
-					// user.saveUserInfo(res.info)
-					user.getUserInfo(res.info)
-					//获取底部导航菜单
-					// this.menus = res.list.map((ele, index) => {
-					// 	let paramsStr = ele.url.split('?')[1] || ''
-					// 	let paramsObj = {}
-					// 	paramsStr && paramsStr.split('&').forEach(item => {
-					// 		paramsObj[item.split('=')[0]] = item.split('=')[1]
-					// 	})
-						 
-					// 	return {
-					// 		...ele,
-					// 		route: ele.url.split('?')[0],
-					// 		options: paramsObj
-					// 	}
-					// })   
-					// this.menus_51xp = res.list.memu
-					
-					// 获取个人中心基础菜单
-					this.menus_wd = res.list
+		async getMenusData() {   
+			const res = await apis.memu()  
+			if(res.code == 1) {  
+				let user = userStore()
+				// user.saveUserInfo(res.info)
+				user.getUserInfo(res.info)
+				//获取底部导航菜单
+				this.menus = res.memu.map((ele, index) => {
+					let paramsStr = ele.url.split('?')[1] || ''
+					let paramsObj = {}
+					paramsStr && paramsStr.split('&').forEach(item => {
+						paramsObj[item.split('=')[0]] = item.split('=')[1]
+					})
 					 
-				}
-			} catch (error) { 
-				return error
-			}
+					return {
+						...ele,
+						route: ele.url.split('?')[0],
+						options: paramsObj
+					}
+				})   
+				// this.menus_51xp = res.list.memu
+				
+				// 获取个人中心基础菜单
+				this.menus_wd = res.list
+				 
+			} 
 		}
 	},
 });

@@ -7,6 +7,13 @@
 			></OrderCard>
 		</view>
 		
+		<view class="u-m-b-20">
+			<view class="u-p-10 u-m-b-10 u-info-dark u-font-32">订单详情</view>
+			<AddressCard
+				:origin="list.address"
+				:cardClickToEdit="false" 
+			></AddressCard>
+		</view> 
 		<view class="bg-white u-radius-12 u-p-30 u-info-dark u-m-b-30">
 			<!-- <view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">买家</view>
@@ -48,12 +55,12 @@
 			<view class="item u-p-20" v-if="buyBtnShow">
 				<up-button type="primary" @click="orderBuyBtn">订单支付</up-button>
 			</view>
-			<!-- <view class="item u-p-20" v-if="receiveBtnShow"> -->
-			<view class="item u-p-20" >
+			<view class="item u-p-20" v-if="receiveBtnShow">
+			<!-- <view class="item u-p-20" > -->
 				<up-button type="primary" @click="confirmReceiveBtn">收货确认</up-button>
 			</view>
-			<!-- <view class="item u-p-20" v-if="scoreBtnShow"> -->
-			<view class="item u-p-20" >
+			<view class="item u-p-20" v-if="scoreBtnShow">
+			<!-- <view class="item u-p-20" > -->
 				<up-button type="primary" @click="orderScorePopupShow = true">我要评分</up-button>
 			</view>
 			

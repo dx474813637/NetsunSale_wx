@@ -1,5 +1,5 @@
 <template>
-	<u-sticky>
+	<u-sticky v-if="cart_list.length > 0">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-r-30" :class="{
 			'bg-white': editSticky
 		}" style="background: #f8f8f8">

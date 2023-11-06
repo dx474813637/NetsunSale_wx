@@ -108,8 +108,15 @@ export default function useFilter(zt) {
 		else if(value == '6') text = '提款成功'
 		else if(value == '7') text = '提款失败'
 		return text
-	})   
-	
+	})    
+	const role2Str = computed(() => {
+		let value = zt?.value.role
+		let text = value 
+		if(value == '0') text = '买家'
+		else if(value == '1') text = '达人' 
+		else if(value == '2') text = '团长' 
+		return text
+	}) 
 	return {
 		order_zt2str,
 		yuyue_zt2str,
@@ -120,6 +127,7 @@ export default function useFilter(zt) {
 		order_pay_status,
 		sign_file_status1,
 		sign_file_status2,
-		order_rz_status
+		order_rz_status,
+		role2Str
 	}
 }

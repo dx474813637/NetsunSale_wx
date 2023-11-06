@@ -128,11 +128,21 @@ export const upimg = (data, config) => http.post('upimg', data, config)
 // save_info 保存信息 name昵称 img头像
 export const save_info = (data) => http.get('save_info', data)
 
-// tuan 团列表 参数p
+// tuan 团列表 参数p 团列表里有一个字段role=1 团长 =0达人
 export const tuan = (data) => http.get('tuan', data)
 // tuan_detail 团详情 参数id 
 export const tuan_detail = (data) => http.get('tuan_detail', data)
 // tuan_add 新开团 title团标题（团名） info团说明 divide给达人的分成比例1-100。
 export const tuan_add = (data) => http.get('tuan_add', data)
+// tuan_del 团活动下架 参数id
+export const tuan_del = (data) => http.get('tuan_del', data)
+
 // change_role 身份改变  role=0 买家 1达人 2团长  只能0->2 不能返回。 
 export const change_role = (data) => http.get('change_role', data)
+
+// save_invite  接受团长邀请成为达人 参数 id 团长的账号
+export const save_invite = (data) => http.get('save_invite', data)
+// divide 分成列表 参数p 0待分成 1预分成(支付成功) 2分成(订单完成) 3可提取(订单完成一段时间后) 4已提取
+export const divide = (data) => http.get('divide', data)
+// daren_list 邀请达人列表 参数p
+export const daren_list = (data) => http.get('daren_list', data)

@@ -144,17 +144,18 @@
 	onUnload(() => {
 		uni.$off('create_order_address_update')
 	})
+	
 	async function getInitData() {
-		// const res = await $api.orderConfirm()
-		// if(res.code == 1) {
-		// 	morenAddress.value = res.moren
-		// 	addressList.value = res.list
-		// }
-		const res = await $api.address()
+		const res = await $api.orderConfirm()
 		if(res.code == 1) {
-			morenAddress.value = res.list[0]
+			morenAddress.value = res.moren
 			addressList.value = res.list
 		}
+		// const res = await $api.address()
+		// if(res.code == 1) {
+		// 	morenAddress.value = res.list[0]
+		// 	addressList.value = res.list
+		// }
 	}
 	function handleChangeShow(data) {
 		addressPopupShow.value = data
@@ -172,6 +173,7 @@
 		btn.value = true
 		uni.showLoading();
 		await cart.getPidSku(sku_ids.value)
+		uni.showLoading();
 		await createOrder()
 		btn.value = false
 	}

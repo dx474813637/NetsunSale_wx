@@ -1,13 +1,13 @@
 <template>
 	<view class="u-p-20 w">
-		<view class="u-p-20 u-border-bottom u-m-b-30">
+		<!-- <view class="u-p-20 u-border-bottom u-m-b-30">
 			<view class="title u-font-40 u-m-b-15">
 				{{list.title}}
 			</view>
 			<view class="time u-font-28 u-info">
 				{{list.dtime}}
 			</view>
-		</view>
+		</view> -->
 		<view class="html u-p-10" v-if="list.info">
 			<u-parse :content="list.info"></u-parse>
 		</view>
@@ -22,7 +22,7 @@
 					</view>
 				</u-button>
 			</view>
-			<view class="item u-flex-column u-flex-items-center u-m-r-40" @click="base.handleGoto({type: 'reLaunch', url: '/pages/index/index'})">
+			<view class="item u-flex-column u-flex-items-center u-m-r-40" @click="base.handleGoto({type: 'reLaunch', url: '/pages/home/home'})">
 				<u-icon name="home" :color="themeColor" size="22"></u-icon>
 				<view class="u-info">首页</view>
 			</view> 

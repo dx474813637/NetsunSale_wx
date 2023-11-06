@@ -58,13 +58,13 @@
 		} 
 		if (options.query?.poster) {
 			$http.setToken({
-				poster: options.poster
+				poster: options.query.poster
 			})
 		}
 		if (options.query?.tid) {
 			$http.setToken({
-				tid: options.tid
-			})
+				tid: options.query.tid
+			}) 
 		}
 		// if(uni.getStorageSync('WebSocketInfo')) $ws.init()
 		 

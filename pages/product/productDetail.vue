@@ -177,10 +177,10 @@
 				<u-icon name="home" :color="themeColor" size="24"></u-icon>
 				<view class="u-info">首页</view>
 			</view>
-			<view class="item u-flex-column u-flex-items-center u-m-r-20" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/reservation_list/reservation_list'})">
+			<!-- <view class="item u-flex-column u-flex-items-center u-m-r-20" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/reservation_list/reservation_list'})">
 				<u-icon name="list-dot" :color="themeColor" size="24"></u-icon>
 				<view class="u-info">店铺</view>
-			</view>
+			</view> -->
 			<view class="item u-flex-column u-flex-items-center u-m-r-20" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/cart/cart'})" style="position: relative;">
 				<u-icon name="shopping-cart" :color="themeColor" size="24"></u-icon>
 				<view class="u-info">选品车</view>

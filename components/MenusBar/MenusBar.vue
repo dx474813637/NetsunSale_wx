@@ -13,13 +13,13 @@
 				<template v-if="menusActive == index">
 					<image
 						class="u-page__item__slot-icon" 
-						:src="item.white_icon_2  || item.img"
+						:src="item.white_icon_2  || item.icon"
 					></image>
 				</template>
 				<template v-else>
 					<image
 						class="u-page__item__slot-icon" 
-						:src="item.white_icon_1  || item.img"
+						:src="item.white_icon_1  || item.icon"
 					></image> 
 				</template>
 				<view class="u-font-28 u-m-t-10">

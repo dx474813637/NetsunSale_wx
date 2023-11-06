@@ -76,8 +76,9 @@ export function share() {
 			...customShareParams,
 			poster: uni.getStorageSync('poster'),
 			// project: current_project,
-			...apiParams,
+			...apiParams 
 		}
+		if(uni.$u.http.config.header.tid) options.tid = uni.$u.http.config.header.tid
 		let query = ''
 		query += Object.keys(options).map(ele => {
 			return `${ele}=${options[ele]}`
@@ -93,9 +94,10 @@ export function share() {
 			route: '/'+curPage.route,
 			...curPage.options,
 			...customShareParams,
-			poster: uni.getStorageSync('poster'),
+			poster: uni.getStorageSync('poster'), 
 			// project: current_project,
 		}
+		if(uni.$u.http.config.header.tid) options.tid = uni.$u.http.config.header.tid
 		let query = `/${basePath}?`
 		query += Object.keys(options).map(ele => {
 			return `${ele}=${options[ele]}`

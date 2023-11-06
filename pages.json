@@ -16,16 +16,15 @@
 			}
 
 		},
-        {
-            "path" : "pages/home/home2",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false,
+		{
+			"path": "pages/home/home2",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#b7d4fe"
-            }
-            
-        },{
+			}
+
+		}, {
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页"
@@ -70,7 +69,7 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, 
+		},
 		{
 			"path": "pages/reservation_list/reservation_list",
 			"style": {
@@ -93,44 +92,36 @@
 				"navigationBarBackgroundColor": "#f8f8f8"
 			}
 
+		}, {
+			"path": "pages/shop/shop",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/index/index_51xp",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/forms/51xp_gys",
+			"style": {
+				"navigationBarTitleText": "参展供应商",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/forms/51xp_mcn",
+			"style": {
+				"navigationBarTitleText": "独立主播/MCN机构",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/shop/shop",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/index/index_51xp",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/forms/51xp_gys",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "参展供应商",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/forms/51xp_mcn",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "独立主播/MCN机构",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"subPackages": [{
 		"root": "pages_user",
 		"pages": [{
@@ -222,77 +213,123 @@
 					"enablePullDownRefresh": false
 				}
 
+			}, {
+				"path": "tuan/darenList",
+				"style": {
+					"navigationBarTitleText": "邀请达人列表",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "sign_detail/sign_detail",
+				"style": {
+					"navigationBarTitleText": "报名详情",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "tuan/divideList",
+				"style": {
+					"navigationBarTitleText": "分成列表",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "tuan/roleApply",
+				"style": {
+					"navigationBarTitleText": "身份申请",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "tuan/saveInvite",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "tuan/tuanAdd",
+				"style": {
+					"navigationBarTitleText": "新增团",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "tuan/tuanDetail",
+				"style": {
+					"navigationBarTitleText": "团详情",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "tuan/tuanList",
+				"style": {
+					"navigationBarTitleText": "团列表",
+					"enablePullDownRefresh": false
+				}
+
 			}
-		    ,{
-                    "path" : "sign_detail/sign_detail",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "报名详情",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
-	},{
+		]
+	}, {
 		"root": "pages_finance",
-		"pages": [
-			{
+		"pages": [{
 				"path": "account/account",
 				"style": {
 					"navigationBarTitleText": "认证信息",
 					"navigationBarBackgroundColor": "#326dbd",
 					"navigationBarTextStyle": "white",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "user_apply/user_apply",
 				"style": {
 					"navigationBarTitleText": "融资个人认证表单",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "user_verify/user_verify",
 				"style": {
 					"navigationBarTitleText": "融资个人验证",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "company_apply/company_apply",
 				"style": {
 					"navigationBarTitleText": "融资企业认证表单",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "company_verify/company_verify",
 				"style": {
 					"navigationBarTitleText": "融资企业验证",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "no_order_buyer/no_order_buyer",
 				"style": {
 					"navigationBarTitleText": "无订单融资借款人信息",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "no_order_white_sell_list/no_order_white_sell_list",
 				"style": {
 					"navigationBarTitleText": "无订单卖家白名单列表",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "no_order_white_sell/no_order_white_sell",
 				"style": {
 					"navigationBarTitleText": "无订单卖家白名单编辑",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "query_product_list/query_product_list",
@@ -301,7 +338,7 @@
 					"navigationBarBackgroundColor": "#326dbd",
 					"navigationBarTextStyle": "white",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "query_product/query_product",
@@ -310,7 +347,7 @@
 					"navigationBarBackgroundColor": "#326dbd",
 					"navigationBarTextStyle": "white",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "pacc_type_detail/pacc_type_detail",
@@ -319,50 +356,50 @@
 					"navigationBarBackgroundColor": "#326dbd",
 					"navigationBarTextStyle": "white",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "pacc_query/pacc_query",
 				"style": {
 					"navigationBarTitleText": "预授信申请详情",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "pacc_query_edit/pacc_query_edit",
 				"style": {
 					"navigationBarTitleText": "预授信申请表单",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "pacc_query_list/pacc_query_list",
 				"style": {
 					"navigationBarTitleText": "预授信申请列表",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "order_rz_pay_list/order_rz_pay_list",
 				"style": {
 					"navigationBarTitleText": "融资记录",
 					"enablePullDownRefresh": false
-				} 
+				}
 			},
 			{
 				"path": "order_rz_pay/order_rz_pay",
 				"style": {
 					"navigationBarTitleText": "融资记录详情",
 					"enablePullDownRefresh": false
-				} 
-			} ,
+				}
+			},
 			{
 				"path": "order_rz_pay_edit/order_rz_pay_edit",
 				"style": {
 					"navigationBarTitleText": "发起无订单融资提款请求",
 					"enablePullDownRefresh": false
-				} 
-			} 
+				}
+			}
 		]
 	}],
 	"globalStyle": {
@@ -371,5 +408,5 @@
 		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#F8F8F8"
 	},
-	"uniIdRouter": {}  
+	"uniIdRouter": {}
 }
