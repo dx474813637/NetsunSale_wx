@@ -97,12 +97,12 @@
 	} = useDataList(options)
 	
 	onLoad(async (options) => {
-		if(options.hasOwnProperty('role')) {
-			role.value = options.role
-		}
-		if(options.hasOwnProperty('zt')) {
-			tabs_current.value = +tabs_list.value.findIndex(ele => ele.value == options.zt) 
-		}
+		// if(options.hasOwnProperty('role')) {
+		// 	role.value = options.role
+		// }
+		// if(options.hasOwnProperty('zt')) {
+		// 	tabs_current.value = +tabs_list.value.findIndex(ele => ele.value == options.zt) 
+		// }
 		initDataList() 
 	}) 
 	function handleTabsChange(data) {

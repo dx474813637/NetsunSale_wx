@@ -1,18 +1,18 @@
 <template>
 	<view class="card-header bg-white u-radius-8 uni-shadow-base u-p-30"> 
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
+		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.id">
 			<view class="item u-info">订单ID</view>
 			<view class="item">{{props.origin.id}}</view>
 		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
+		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.tuan_id">
 			<view class="item u-info">团ID</view>
 			<view class="item">{{props.origin.tuan_id}}</view>
 		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
+		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.fx_login">
 			<view class="item u-info">分销账号</view>
 			<view class="item">{{props.origin.fx_login}}</view>
 		</view>
-		<!-- <view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
+		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.order_total_fee">
 			<view class="item u-info">订单总价（元）</view> 
 			<view class="item">
 				<u-count-to 
@@ -25,7 +25,7 @@
 				></u-count-to>
 			</view>
 		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
+		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.divide_total_fee">
 			<view class="item u-info">总分成（元）</view> 
 			<view class="item">
 				<u-count-to 
@@ -38,7 +38,7 @@
 				></u-count-to>
 			</view>
 		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
+		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.tuan_total_fee">
 			<view class="item u-info">团长分成（元）</view> 
 			<view class="item">
 				<u-count-to 
@@ -51,7 +51,7 @@
 				></u-count-to>
 			</view>
 		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
+		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.daren_total_fee">
 			<view class="item u-info">达人分成（元）</view> 
 			<view class="item">
 				<u-count-to 
@@ -63,13 +63,13 @@
 					:endVal="props.origin.daren_total_fee"
 				></u-count-to>
 			</view>
-		</view> -->
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
+		</view>
+		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" >
 			<view class="item u-info">分成状态</view>
 			<view class="item text-primary">{{divide_rz_status}}</view>
 		</view> 
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
-			<view class="item u-info">创建时间</view>
+		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.ctime">
+			<view class="item u-info">时间</view>
 			<view class="item u-info">{{props.origin.ctime}}</view>
 		</view>
 	</view>

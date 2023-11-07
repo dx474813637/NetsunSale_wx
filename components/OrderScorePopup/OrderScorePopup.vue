@@ -62,7 +62,7 @@
 	}
 	function submit () {
 		if(score.value == 0) return
-		emits('submitScore', score)
+		emits('submitScore', score.value)
 	}
 </script>
 

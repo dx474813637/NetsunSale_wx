@@ -77,21 +77,21 @@ export const useCartStore = defineStore('cart', {
 			return arr
 		},
 		addProduct2Cart(data) {
-			if(!user.value.login) {
-				let page = uni.$u.pages()[0] || {}
-				base.setNoTokenNeedPermissionRoute({
-					url: page.route,
-					params: page.options,
-				})
-				base.handleGoto({
-					url: '/pages/login/login',
-					type: 'redirect'
-				})
-				// settings.setPrevPage(router.currentRoute.value)
-				// ElMessage.error('请先登录');
-				// settings.goLogin()
-				return
-			}
+			// if(!user.value.login) {
+			// 	let page = uni.$u.pages()[0] || {}
+			// 	base.setNoTokenNeedPermissionRoute({
+			// 		url: page.route,
+			// 		params: page.options,
+			// 	})
+			// 	base.handleGoto({
+			// 		url: '/pages/login/login',
+			// 		type: 'redirect'
+			// 	})
+			// 	// settings.setPrevPage(router.currentRoute.value)
+			// 	// ElMessage.error('请先登录');
+			// 	// settings.goLogin()
+			// 	return
+			// }
 			
 			let { id: shopId } = data.shop;
 			data = {

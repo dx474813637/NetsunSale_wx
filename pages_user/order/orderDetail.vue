@@ -36,10 +36,10 @@
 				<view class="item u-flex-1 u-text-right text-base">{{ list.total_fee }} 元</view>
 			</view>
 			
-			<!-- <view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
-				<view class="item text-nowrap u-p-r-20">订单评分</view>
-				<view class="item u-flex-1 u-text-right text-base">{{ list.score }}</view>
-			</view> -->
+			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28" v-if="list.status == 4">
+				<view class="item text-nowrap u-p-r-20">订单评分（5分制）</view>
+				<view class="item u-flex-1 u-text-right text-base">{{ list.score }} 分</view>
+			</view>
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">创建时间</view>
 				<view class="item u-flex-1 u-text-right text-base">{{ list.ctime }}</view>
@@ -63,12 +63,17 @@
 			<!-- <view class="item u-p-20" > -->
 				<up-button type="primary" @click="orderScorePopupShow = true">我要评分</up-button>
 			</view>
+			<view class="item u-p-20" v-if="refundBtnShow">
+			<!-- <view class="item u-p-20" > -->
+				<up-button type="primary" @click="refundBtn">发起退款</up-button>
+			</view>
 			
 			
 		</view>
 		
 		
 	</view>
+	<MenusBar></MenusBar>
 	
 	<OrderScorePopup
 		:show="orderScorePopupShow" 
@@ -116,6 +121,10 @@
 	const scoreBtnShow = computed(() => { 
 		return list.value.status == 3 
 	})
+	const refundBtnShow = computed(() => { 
+		return list.value.status == 1 ||list.value.status == 2 ||list.value.status == 3 ||list.value.status == 4 
+	})
+	
 	onLoad(async (options) => { 
 		if(options.hasOwnProperty('id')) { 
 			id.value = options.id
@@ -147,12 +156,36 @@
 							order_id: list.value.id
 						}
 					})
-					if(res.code == 1) {
+					if(r.code == 1) {
 						uni.showToast({
 							title: res.msg,
 							icon: 'none'
 						}) 
 						uni.showLoading()
+						await getData()
+					}
+				} else if (res.cancel) {
+					console.log('用户点击取消');
+				}
+			}
+		});
+	}
+	function refundBtn(type) { 
+		uni.showModal({
+			title: '提示',
+			content: '是否发起退款',
+			success: async function (res) {
+				if (res.confirm) {
+					const r = await $api.order_refund({
+						params: {
+							id: list.value.id
+						}
+					})
+					if(r.code == 1) {
+						uni.showToast({
+							title: res.msg,
+							icon: 'none'
+						})  
 						await getData()
 					}
 				} else if (res.cancel) {
@@ -221,7 +254,8 @@
 							score: data
 						}
 					})
-					if(res.code == 1) {
+					if(r.code == 1) {
+						handleChangeShow(false)
 						uni.showToast({
 							title: res.msg,
 							icon: 'none'

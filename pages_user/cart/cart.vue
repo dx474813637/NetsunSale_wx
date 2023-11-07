@@ -6,7 +6,7 @@
 			<view class="item"></view>
 			<view class="item u-flex u-flex-items-center">
 				<view @click="manageMode = !manageMode">
-					<view class="text-primary u-p-10" v-if="!manageMode">管理</view>
+					<view class="text-primary u-p-10 u-font-36" v-if="!manageMode">管理</view>
 					<view class="u-error-dark u-p-10" v-else>退出管理</view> 
 				</view>
 			</view>
@@ -52,6 +52,7 @@
 								shape="circle" 
 								:disabled="product.disabled && !manageMode"
 								:name="product.id"
+								size="22"
 								></u-checkbox>  
 							</view>
 							<view class="item" @click="base.handleGoto({url: '/pages/product/productDetail', params: {id: product.pid}})">
@@ -109,8 +110,8 @@
 	<u-safe-bottom></u-safe-bottom>
 	<TabBar :customStyle="customStyle">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28 cart-bar-w" > 
-			<view class="item ">
-				<u-checkbox-group v-model="allCheck" >
+			<view class="item u-m-l-20">
+				<u-checkbox-group v-model="allCheck" size="22" :labelSize="18">
 					<u-checkbox  
 						shape="circle" 
 						label="全选"

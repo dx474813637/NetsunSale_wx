@@ -1,12 +1,17 @@
 <template>
-	<view class="w u-p-20">  
-		<view class="u-p-20">
-			<view class="bg-white u-p-20 u-radius-8">
+	<view class="w u-p-10">  
+		<view class="u-p-10">
+			<view class="bg-white u-p-30 u-radius-8">
 				<text class="u-info">您的当前身份为</text>
 				<text class="u-m-l-10 text-bold">{{ role2Str }}</text> 
 			</view>
 		</view>
-		<view class="u-m-20 card" 
+		<view class="u-p-10" v-if="list.info">
+			<view class="bg-white u-p-30 u-radius-8">
+				<u-parse :content="list.info"></u-parse>
+			</view>
+		</view>
+		<view class="u-m-10 card" 
 			v-for="item in tabs_list_filter" 
 			:key="item.value"
 			@click="roleClick(item)"
@@ -47,7 +52,7 @@
 			cardData: {
 				bgColor: '#007aff',
 				title: '成为达人',
-				sub: '达人介绍富文本达人介绍富文本达人介绍富文本达人介绍富文本达人介绍富文本达人介绍富文本达人介绍富文本达人介绍富文本达人介绍富文本',
+				sub: '',
 			}
 			
 		},
@@ -58,7 +63,7 @@
 			cardData: {
 				bgColor: '#e1093c',
 				title: '成为团长',
-				sub: '团长介绍富文本团长介绍富文本团长介绍富文本团长介绍富文本团长介绍富文本团长介绍富文本团长介绍富文本团长介绍富文本团长介绍富文本',
+				sub: '',
 			}
 		},
 	])      
@@ -68,6 +73,8 @@
 			role: user_info.value.role
 		}
 	})
+	const id = ref('3')
+	const list = ref({})
 	const { 
 		role2Str
 	} = useFilter(role)
@@ -76,9 +83,30 @@
 	})
 	  
 	onLoad(async (options) => { 
-		
+		if(options.hasOwnProperty('id')) {
+			id.value = options.id
+		}
+		uni.showLoading()
+		await getData()
 	})  
 	
+	async function getData() {
+		const res = await $api.web_danye({
+			params: {
+				id: id.value
+			}
+		})
+		if(res.code == 1 ) { 
+			list.value = res.list
+			tabs_list.value[0].cardData.title = res.button[0].name
+			tabs_list.value[0].cardData.sub = res.button[0].info
+			tabs_list.value[1].cardData.title = res.button[1].name
+			tabs_list.value[1].cardData.sub = res.button[1].info
+			uni.setNavigationBarTitle({
+				title: res.list.title
+			})
+		}
+	} 
 	async function roleClick(data) {
 		if(data.disabled) {
 			uni.showToast({

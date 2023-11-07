@@ -195,7 +195,11 @@
 			cart.saveCartData2LocalStorage()
 			
 			base.handleGoto({
-				url: '/pages_user/order/orderList'
+				url: '/pages_user/order/orderDetail',
+				type: 'reLaunch',
+				params: {
+					id: res.order[0]
+				}
 			})
 		}
 	}

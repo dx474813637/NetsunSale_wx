@@ -2,8 +2,8 @@
 	<view class="w">
 		<view class="list u-p-10">  
 			<view class="list-item u-p-10" v-for="item in dataList" :key="item.id"> 
-				<view class="u-p-30 item bg-white u-radius-8" @click="tuanClick(item)" :class="{
-					active: curtid == item.login
+				<view class="u-p-30 item bg-white u-radius-8 card" @click="tuanClick(item)" :class="{
+					active: curtid == item.id
 				}">
 					<view class="u-m-b-20 u-flex u-flex-between u-flex-items-center">
 						<view class="u-flex-1 u-line-1">{{item.title}}</view>
@@ -120,7 +120,7 @@
 	function tuanClick(data) {
 		curTuan.value = data
 		alist.value[0].subname = data.title 
-		alist.value[0].tid = data.login 
+		alist.value[0].tid = data.id 
 		// alist.value[0].disabled = ($http.config.header.tid == data.login)? true :false 
 		ashow.value = true
 	} 
@@ -175,7 +175,14 @@
 .card {
 	
 } 
-.active {
-	background-color: #d3e5f5!important;
+.card.active {
+	background-color: #30a5ff!important;
+	color: #fff!important;
+	.text-error {
+		color: #fff!important;
+	}
+	.u-info {
+		color: #fff!important;
+	}
 }
 </style>

@@ -39,7 +39,7 @@
 				</u-form-item>    
 				<u-form-item
 				 	:borderBottom="false"
-				 	label="分成比例(%)" 
+				 	label="达人分成比例(%)" 
 				 	prop="divide"  
 				 	ref="divide"
 				 	required 

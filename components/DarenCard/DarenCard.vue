@@ -1,92 +1,26 @@
 <template>
-	<view class="card-header bg-white u-radius-8 uni-shadow-base u-p-30"> 
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
-			<view class="item u-info">订单ID</view>
-			<view class="item">{{props.origin.id}}</view>
+	<view class="card-header bg-white u-radius-12 uni-shadow-base u-p-30"> 
+		<view class=" u-flex u-flex-between u-flex-items-center">
+			<up-image
+				showLoading
+				:src="props.origin.img"
+				width="50px"
+				height="50px"
+				shape="circle" 
+			></up-image>
+			<view class="u-flex-1 u-p-l-20">
+				<view class="u-m-b-10">{{props.origin.name}}</view>
+				<view class="u-info u-font-28">{{props.origin.uptime}}</view>
+			</view> 
 		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
-			<view class="item u-info">团ID</view>
-			<view class="item">{{props.origin.tuan_id}}</view>
-		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
-			<view class="item u-info">分销账号</view>
-			<view class="item">{{props.origin.fx_login}}</view>
-		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
-			<view class="item u-info">订单总价（元）</view> 
-			<view class="item">
-				<u-count-to 
-					separator="," 
-					fontSize="16" 
-					decimals="2"
-					duration="500"
-					color="#000"
-					:endVal="props.origin.order_total_fee"
-				></u-count-to>
-			</view>
-		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
-			<view class="item u-info">总分成（元）</view> 
-			<view class="item">
-				<u-count-to 
-					separator="," 
-					fontSize="16" 
-					decimals="2"
-					duration="500"
-					color="#000"
-					:endVal="props.origin.divide_total_fee"
-				></u-count-to>
-			</view>
-		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
-			<view class="item u-info">团长分成（元）</view> 
-			<view class="item">
-				<u-count-to 
-					separator="," 
-					fontSize="16" 
-					decimals="2"
-					duration="500"
-					color="#000"
-					:endVal="props.origin.tuan_total_fee"
-				></u-count-to>
-			</view>
-		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
-			<view class="item u-info">达人分成（元）</view> 
-			<view class="item">
-				<u-count-to 
-					separator="," 
-					fontSize="16" 
-					decimals="2"
-					duration="500"
-					color="#000"
-					:endVal="props.origin.daren_total_fee"
-				></u-count-to>
-			</view>
-		</view>
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
-			<view class="item u-info">分成状态</view>
-			<view class="item text-primary">{{divide_rz_status}}</view>
-		</view> 
-		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10">
-			<view class="item u-info">创建时间</view>
-			<view class="item u-info">{{props.origin.ctime}}</view>
-		</view>
+		
 	</view>
 
 </template>
 
 <script setup>
 	import { onLoad, onReady, onReachBottom } from "@dcloudio/uni-app";
-	import { ref, reactive, computed, toRefs, inject, watch } from 'vue'
-	// import { share } from '@/composition/share.js'
-	import { baseStore } from '@/stores/base'
-	import {userStore} from '@/stores/user'
-	import useFilter from '@/composition/useFilter.js'
-	const user = userStore()
-	const { tmp_id_list } = toRefs(user)
-	const base = baseStore();
-	const { home, roomList, themeColor } = toRefs(base)
+	import { ref, reactive, computed, toRefs, inject, watch } from 'vue' 
 	const props = defineProps({
 		origin: {
 			type: Object,
@@ -94,15 +28,7 @@
 				return {}
 			}
 		}, 
-	})
-	const zt = computed(() => {
-		return {
-			divide_rz_status: props.origin.zt
-		}
-	})
-	const { 
-		divide_rz_status
-	} = useFilter(zt)
+	}) 
 	
 	const emits = defineEmits(['cardClick']) 
 	

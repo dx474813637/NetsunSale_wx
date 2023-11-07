@@ -42,6 +42,8 @@ export const get_tmp_id_time = (data) => http.get('get_tmp_id_time', data)
   // my_ewm 二维码
   export const myEwm = (data) => http.get('my_ewm', data)
   
+  // order_type 订单状态type 
+  export const order_type = (data) => http.get('order_type', data)
 // `create_order` 生成订单 参数pid_array  address_id
 // json格式，每一条记录包含： cid表示旺铺ID，pid商品ID，num表示购买的商品数量
 // export const create_order = (data = {}) => all_api(uni.$u.deepMerge(data, {params: {api: 'create_order'}}))
@@ -51,6 +53,8 @@ export const order_list = (data) => http.get('order_list', data)
 export const order_detail = (data) => http.get('order_detail', data)
 // orderConfirm 创建订单 地址参数 
 export const orderConfirm = (data) => http.get('orderConfirm', data)
+// order_refund 发起退款 参数id 订单id  订单状态为支付成功的时候
+export const order_refund = (data) => http.get('order_refund', data)
  
 // create_order 创建订单 tid团id 不是必填。 address_id  pid_array
 // pid_array = array(
@@ -133,7 +137,7 @@ export const tuan = (data) => http.get('tuan', data)
 // tuan_detail 团详情 参数id 
 export const tuan_detail = (data) => http.get('tuan_detail', data)
 // tuan_add 新开团 title团标题（团名） info团说明 divide给达人的分成比例1-100。
-export const tuan_add = (data) => http.get('tuan_add', data)
+export const tuan_add = (data, config={}) => http.post('tuan_add', data, config)
 // tuan_del 团活动下架 参数id
 export const tuan_del = (data) => http.get('tuan_del', data)
 

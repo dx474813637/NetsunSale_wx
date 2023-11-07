@@ -100,6 +100,7 @@
 		if(options.hasOwnProperty('role')) {
 			role.value = options.role
 		}
+		await initOrderTabsData()
 		if(options.hasOwnProperty('zt')) {
 			tabs_current.value = +tabs_list.value.findIndex(ele => ele.value == options.zt) 
 		}
@@ -109,6 +110,19 @@
 		tabs_current.value = +data.index
 		initDataList()
 	} 
+	async function initOrderTabsData() {
+		const res = await $api.order_type()
+		if(res.code == 1 ) { 
+			tabs_list.value = res.list.map(ele => {
+				return {
+					...ele,
+					disabled: false,
+					value: ele.type,
+					name: ele.name
+				}
+			})
+		}
+	}
 </script>
 
 <style scoped lang="scss">

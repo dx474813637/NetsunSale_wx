@@ -17,8 +17,10 @@
 					shape="circle"
 				></up-image> -->
 			</view>
+		</view> 
+		<view class="u-font-26 u-m-b-6" v-if="origin.sub">
+			<u-parse :content="origin.sub"></u-parse>
 		</view>
-		<view class="u-font-26 u-m-b-6">{{origin.sub}}</view>
 		<!-- <view class="u-font-26 u-m-b-6">19925844654</view>
 		<view class="u-font-26 u-m-b-6">400-8848-001</view>
 		<view class="u-font-26 u-m-b-6 u-line-2">北京市朝阳区望京SOHO塔1C座2705</view> -->
