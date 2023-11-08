@@ -1,17 +1,30 @@
 <template>
 	<view class="w"> 
-		<view class="u-p-30">
-			<view class="tuan-card u-radius-12 bg-white u-p-20">
-				<view class="tuan-header u-flex u-flex-between u-flex-items-center u-m-b-25">
-					<view class="item text-black">{{tuan.title}}</view>
-					<view class="item u-info u-font-28">{{tuan.ctime}}</view>
+		<view class="">
+			<view class="tuan-card  bg-white u-p-30">
+				<view class="tuan-header u-flex u-flex-between u-flex-items-center u-m-b-25" @click="cardClick">
+					<view class="item text-black u-flex u-flex-items-center">
+						<view class="u-m-r-20">{{tuan.title}}</view>
+						<u-icon name="setting-fill" color="#5aa2ff" size="18" v-if="role == 2"></u-icon>
+					</view>
+					<view class="item u-info u-font-28" v-if="tuan.ctime">{{tuan.ctime.split(' ')[0]}}</view>
 				</view>
 				<view class="tuan-main">
-					<u-parse :content="tuan.info"></u-parse>
+					<view class="u-m-b-20">
+						<up-alert 
+						:title="title" 
+						type="primary"  
+						></up-alert>
+					</view>
+					<view class="u-p-20 u-radius-6 u-info-light-bg text-base u-font-28">
+						<u-parse :content="tuan.info"></u-parse> 
+					</view>
 				</view>
 			</view> 
 		</view>
-		
+		<view class="u-p-20 u-p-l-40 text-bold u-info u-font-28">
+			达人列表
+		</view>
 		<view class="list u-p-10">  
 			<view class="list-item u-p-10" v-for="item in dataList" :key="item.id">
 				<DarenCard
@@ -33,7 +46,7 @@
 </template>
 
 <script setup>
-	import { onLoad, onReady, onReachBottom } from "@dcloudio/uni-app";
+	import { onLoad, onReady, onReachBottom, onUnload } from "@dcloudio/uni-app";
 	import { ref, reactive, computed, toRefs, inject, watch } from 'vue'
 	import useDataList from '@/composition/useDataList.js'
 	// import { share } from '@/composition/share.js'
@@ -78,21 +91,35 @@
 		getDataList,
 		initDataList, 
 	} = useDataList(options)
-	
+	const role = ref('1')
 	onLoad(async (options) => { 
+		if(options?.role) {
+			role.value = options.role
+		}
+		uni.$on('updateData', initDataList)
 		initDataList() 
 	})  
+	onUnload(() => {
+		uni.$off('updateData', initDataList)
+	})
+	const title = computed(() => `达人分成比例：${tuan.value.divide}%`)
 	
-	
-	
-	
+	function cardClick() {
+		if(role.value != '2') return
+		base.handleGoto({
+			url: '/pages_user/tuan/tuanAdd',
+			params: {
+				type: 'edit'
+			}
+		})
+	}
 	
 	
 </script>
 
 <style scoped lang="scss">
 .w {
-	min-height: 100vh;
+	// min-height: 100vh;
 	padding-bottom: 60px;
 } 
 .card {

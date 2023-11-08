@@ -86,6 +86,7 @@
 	}) 
 	const uForm = ref() 
 	const type = ref('add') 
+	const list = ref({})
 	const model = ref({ 
 		title: '', 
 		info: '',
@@ -125,6 +126,7 @@
 					title: res.msg,
 					icon: 'success'
 				})  
+				uni.$emit('updateData')
 				setTimeout(() => {
 					uni.navigateBack()
 				}, 800)
@@ -138,7 +140,8 @@
 	async function getData() {
 		const res = await $api.tuan_detail()
 		if(res.code == 1 ) { 
-			list.value = res.list
+			// list.value = res.list
+			model.value = res.list
 		}
 	} 
 	function lokk(v) {  
