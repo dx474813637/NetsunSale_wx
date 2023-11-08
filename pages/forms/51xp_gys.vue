@@ -379,7 +379,7 @@
 			})
 		}) 
 		for (let i = 0; i < lists.length; i++) {
-			const result = await uploadFilePromise(lists[i].url) //base.getImageBase64_readFile(lists[i].url)
+			const result = await base.uploadFilePromise(lists[i].url) //base.getImageBase64_readFile(lists[i].url)
 			let item = fileLists[event.name][i]
 			fileLists[event.name].splice(i, 1, Object.assign(item, {
 				status: 'success',
@@ -391,30 +391,30 @@
 		}
 		model.value[event.name]= fileLists[event.name][0].url 
 	}
-	function uploadFilePromise(url) {
-		return new Promise((resolve, reject) => {
+	// function uploadFilePromise(url) {
+	// 	return new Promise((resolve, reject) => {
 			
-				console.log(url)
-			uni.uploadFile({
-				url: `${configBaseURL.value}upimg`, 
-				filePath: url,
-				name: 'file',
-				header: {
-					...configHeader.value,
-					'content-type': 'multipart/form-data',
-					userid: uni.getStorageSync('userid'),
-				},
-				success: (res) => {
-					console.log(res)
-					resolve(JSON.parse(res.data))
-				},
-				fail(error) { 
-					console.log(error)
-					reject(error)
-				}
-			});
-		})
-	}
+	// 			console.log(url)
+	// 		uni.uploadFile({
+	// 			url: `${configBaseURL.value}upimg`, 
+	// 			filePath: url,
+	// 			name: 'file',
+	// 			header: {
+	// 				...configHeader.value,
+	// 				'content-type': 'multipart/form-data',
+	// 				userid: uni.getStorageSync('userid'),
+	// 			},
+	// 			success: (res) => {
+	// 				console.log(res)
+	// 				resolve(JSON.parse(res.data))
+	// 			},
+	// 			fail(error) { 
+	// 				console.log(error)
+	// 				reject(error)
+	// 			}
+	// 		});
+	// 	})
+	// }
 	function handleoversize() {
 		uni.showToast({
 			title: '建议上传2M以内的图片',

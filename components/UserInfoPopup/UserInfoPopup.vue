@@ -131,35 +131,35 @@
 		console.log(e)
 		const { avatarUrl: avatarUrl2 } = e.detail 
 		uni.showLoading()
-		const result = await uploadFilePromise(avatarUrl2)
+		const result = await base.uploadFilePromise(avatarUrl2)
 		
 		avatarUrl.value = result.list[0]
 	}
-	function uploadFilePromise(url) {
-		return new Promise((resolve, reject) => {
-			uni.uploadFile({
-				url: `${configBaseURL.value}upimg`, 
-				filePath: url,
-				name: 'file',
-				header: {
-					...configHeader.value,
-					'content-type': 'multipart/form-data',
-					userid: uni.getStorageSync('userid'),
-				},
-				success: (res) => {
-					console.log(res)
-					uni.hideLoading()
-					resolve(JSON.parse(res.data))
+	// function uploadFilePromise(url) {
+	// 	return new Promise((resolve, reject) => {
+	// 		uni.uploadFile({
+	// 			url: `${configBaseURL.value}upimg`, 
+	// 			filePath: url,
+	// 			name: 'file',
+	// 			header: {
+	// 				...configHeader.value,
+	// 				'content-type': 'multipart/form-data',
+	// 				userid: uni.getStorageSync('userid'),
+	// 			},
+	// 			success: (res) => {
+	// 				console.log(res)
+	// 				uni.hideLoading()
+	// 				resolve(JSON.parse(res.data))
 					
-				},
-				fail(error) { 
-					console.log(error)
-					uni.hideLoading()
-					reject(error)
-				}
-			});
-		})
-	}
+	// 			},
+	// 			fail(error) { 
+	// 				console.log(error)
+	// 				uni.hideLoading()
+	// 				reject(error)
+	// 			}
+	// 		});
+	// 	})
+	// }
 	async function submit() {
 		uni.showLoading({
 			title: '保存中'

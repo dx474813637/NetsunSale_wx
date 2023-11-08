@@ -6,10 +6,11 @@ import {
 	baseStore
 } from '@/stores/base'; 
 import pinia  from '@/stores/index.js'; 
+import {inject, nextTick} from 'vue'
 
 const user = userStore(pinia)
 const menus = menusStore(pinia)
-const base = baseStore(pinia)
+const base = baseStore(pinia) 
 /**
  * @description 自定义路由拦截
  */ 
@@ -17,7 +18,7 @@ const base = baseStore(pinia)
  	'/pages_user/index/index', 
 	'/pages_user/reservation_list/reservation_list',
  	{
- 		pattern: /^\/pages\//
+ 		pattern: /^\/pages/
  	},
  	// '/pages/user/index',
  	// {
@@ -45,7 +46,7 @@ const userStateList =  [
  // 	},
  ]
  
-export function permissionBase(e) {
+export function permissionBase(e, data) {
 	 
 	 	const url = e.url.split('?')[0]
 	 	console.log('url:addInterceptor ===> ', e.url) 
@@ -68,24 +69,15 @@ export function permissionBase(e) {
 		// console.log(user.user.login, user.user_info.login)
 		// console.log(!user.user.login, !user.user_info.login, pass)
 	 	// if (!pass && (!user.user.login || !user.user_info.user )) {
-	 	if (!pass && (!user.user.login || user.user.login == '0' )) {
+	 	// if (!pass && (!user.user.login || user.user.login == '0' )) {
 			
-	 		// uni.setStorageSync('prePage', e.url)
-			base.setNoTokenNeedPermissionRoute(e.url)
-			// user.clearLogout()
-			base.handleGoto({url: '/pages/login/login'})  
-	 		return false
-	 	}
+	 	// 	// uni.setStorageSync('prePage', e.url)
+			// base.setNoTokenNeedPermissionRoute(e.url)
+			// // user.clearLogout()
+			// base.handleGoto({url: '/pages/login/login'})  
+	 	// 	return false
+	 	// }
 	 	
-	 	if (!pass && userStateList) {
-	 		//用户信息是否完善校验
-	 		pass = !userStateList.some((item) => {
-	 			if (typeof(item) === 'object' && item.pattern) {
-	 				return item.pattern.test(url)
-	 			}
-	 			return url === item
-	 		})
-	 	} 
 	 	if (!pass) { 
 	 		// if (user.myCpy.hasOwnProperty('state') && user.myCpy
 	 		// 	.state == 0) { 
@@ -125,19 +117,23 @@ export function permissionBase(e) {
 	 		route: url,
 	 		options: paramsObj
 	 	}) 
-		
+		if(paramsObj.tid) {
+			data.$http.setToken({
+				tid: paramsObj.tid
+			}) 
+		}
 		return true
 }
  
-export default async function() {
+export default async function(data) {
 	// console.log($ws)   
 	const list = ['navigateTo', 'redirectTo', 'reLaunch', 'switchTab'] 
 	// 用遍历的方式分别为,uni.navigateTo,uni.redirectTo,uni.reLaunch,uni.switchTab这4个路由方法添加拦截器
 	list.forEach(item => {
 		uni.addInterceptor(item, {
 			invoke(e) {  
-				let res = permissionBase(e)
-				if(!res) return false
+				let res = permissionBase(e, data)
+				if(!res) return false 
 				return e
 			},
 			fail(err) { // 失败回调拦截

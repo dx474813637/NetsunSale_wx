@@ -110,6 +110,28 @@ export const baseStore = defineStore('base', {
 					  }
 					});
 			  });
+		},
+		async uploadFilePromise(url) { 
+			return new Promise((resolve, reject) => { 
+				uni.uploadFile({
+					url: `${this.configBaseURL}upimg`, 
+					filePath: url,
+					name: 'file',
+					header: {
+						...this.configHeader,
+						'content-type': 'multipart/form-data',
+						userid: uni.getStorageSync('userid'),
+					},
+					success: (res) => {
+						console.log(res)
+						resolve(JSON.parse(res.data))
+					},
+					fail(error) { 
+						console.log(error)
+						reject(error)
+					}
+				});
+			})
 		}
 	},
 });

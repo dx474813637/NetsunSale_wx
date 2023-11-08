@@ -47,7 +47,7 @@
 				}
 			});
 		}
-		// routingIntercept()  
+		routingIntercept({$http})  
 		 // await user.getMallUserInfo()
 		
 	});
@@ -95,5 +95,22 @@
 	@import '@/common/iconfont.css';
 	page {
 		background-color: #f8f8f8;
+	}
+	page {
+		::v-deep {
+			.u-upload__deletable {
+				width: 30px!important;
+				height: 30px!important;
+				background-color: #f00!important;
+				.u-upload__deletable__icon { 
+					transform: scale(1)!important;
+					top: 6px!important; 
+					right: 4px!important;
+					.uicon-close {
+						font-size: 16px!important;
+					}
+				}
+			}
+		}
 	}
 </style>

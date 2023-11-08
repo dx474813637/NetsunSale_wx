@@ -45,17 +45,17 @@
 	// } = share()
 	const $api = inject('$api')
 	const tabs_list = ref([
-		{
-			name: '达人',
-			disabled: false,
-			value: '1',
-			cardData: {
-				bgColor: '#007aff',
-				title: '成为达人',
-				sub: '',
-			}
+		// {
+		// 	name: '达人',
+		// 	disabled: false,
+		// 	value: '1',
+		// 	cardData: {
+		// 		bgColor: '#007aff',
+		// 		title: '成为达人',
+		// 		sub: '',
+		// 	}
 			
-		},
+		// },
 		{
 			name: '团长',
 			disabled: false,
@@ -100,8 +100,8 @@
 			list.value = res.list
 			tabs_list.value[0].cardData.title = res.button[0].name
 			tabs_list.value[0].cardData.sub = res.button[0].info
-			tabs_list.value[1].cardData.title = res.button[1].name
-			tabs_list.value[1].cardData.sub = res.button[1].info
+			// tabs_list.value[1].cardData.title = res.button[1].name
+			// tabs_list.value[1].cardData.sub = res.button[1].info
 			uni.setNavigationBarTitle({
 				title: res.list.title
 			})

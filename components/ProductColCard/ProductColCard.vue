@@ -53,7 +53,8 @@
 		base.handleGoto({
 			url: '/pages/product/productDetail',
 			params: {
-				id: props.origin.id
+				id: props.origin.id,
+				tid: '321'
 			}
 		})
 	}

@@ -1,20 +1,16 @@
 <template>
-	<view class="w">
-		<!-- <u-sticky bgColor="#f8f8f8">
-			<view class="tabs-w">
-				<u-tabs
-					:list="tabs_list"  
-					lineWidth="0"
-					:current="tabs_current" 
-					:activeStyle="{
-						color: themeColor
-					}"
-					@change="handleTabsChange"
-				></u-tabs>	
+	<view class="w"> 
+		<view class="u-p-30">
+			<view class="tuan-card u-radius-12 bg-white u-p-20">
+				<view class="tuan-header u-flex u-flex-between u-flex-items-center u-m-b-25">
+					<view class="item text-black">{{tuan.title}}</view>
+					<view class="item u-info u-font-28">{{tuan.ctime}}</view>
+				</view>
+				<view class="tuan-main">
+					<u-parse :content="tuan.info"></u-parse>
+				</view>
 			</view> 
-		</u-sticky> -->
-		
-		
+		</view>
 		
 		<view class="list u-p-10">  
 			<view class="list-item u-p-10" v-for="item in dataList" :key="item.id">
@@ -51,14 +47,26 @@
 	// 	onlineControl
 	// } = share()
 	const $api = inject('$api')   
-	
+	const tuan = ref({})
 	const options = computed(() => {
 		return {
 			params: {
 				// role: role.value,
 				// type: tabs_list.value[tabs_current.value].value
 			},
-			api: 'daren_list'
+			api: 'daren_list',
+			getDataCallBack: (res) => {
+				if (res.code == 1) {
+					dataList.value = [...dataList.value, ...res.list]
+					tuan.value = res.tuan
+					if(curP.value >= res.total) {
+						loadstatus.value = 'nomore'
+					}
+					else {
+						loadstatus.value = 'loadmore'
+					}
+				}
+			}
 		}
 	})
 	

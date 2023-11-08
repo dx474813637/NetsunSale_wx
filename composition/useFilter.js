@@ -11,9 +11,9 @@ export default function useFilter(zt) {
 		else if(value == '2') text = '待收货' 
 		else if(value == '3') text = '订单完成' 
 		else if(value == '4') text = '评分完成' 
-		else if(value == '5') text = '申请退款' 
+		else if(value == '5') text = '申请售后' 
 		else if(value == '6') text = '拒绝退款' 
-		else if(value == '7') text = '订单关闭已退款'  
+		else if(value == '7') text = '订单关闭'  
 		return text
 	}) 
 	const yuyue_zt2str = computed(() => {

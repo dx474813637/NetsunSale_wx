@@ -85,6 +85,7 @@
 		}
 	}) 
 	const uForm = ref() 
+	const type = ref('add') 
 	const model = ref({ 
 		title: '', 
 		info: '',
@@ -104,7 +105,13 @@
 	}
   
 	onLoad(async(options) => {
-		
+		if(options?.type) {
+			type.value = options.type
+		}
+		if(type.value == 'edit') {
+			uni.showLoading()
+			await getData()
+		}
 	})
 	onReady(() => {
 		uForm.value.setRules(rules)
@@ -128,6 +135,12 @@
 			uni.$u.toast('请检查表单')
 		}) 
 	}   
+	async function getData() {
+		const res = await $api.tuan_detail()
+		if(res.code == 1 ) { 
+			list.value = res.list
+		}
+	} 
 	function lokk(v) {  
 		model.value.divide = v.detail.value
 	}

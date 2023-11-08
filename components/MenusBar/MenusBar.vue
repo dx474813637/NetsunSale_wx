@@ -62,6 +62,7 @@
 	</view>
 </template>
 <script setup>
+	import { onLoad, onReady } from "@dcloudio/uni-app";
 	import { 
 		ref,
 		toRefs,
@@ -80,6 +81,7 @@
 	// const menusRef  = computed(() => menus.menus);
 	// const menusActiveRef = computed(() => menus.menusActive); 
 	const $api = inject('$api')  
+	const $http = inject('$http')
 	
 	const props = defineProps({
 		mode: {
@@ -89,17 +91,18 @@
 	})
 	const menusByMode = computed(() => {  
 		return menus.value
-	})
-	onMounted(() => {
+	}) 
+	onMounted(() => { 
 		menusstore.getMenusData() 
 		let routeObj = getCurrentPages()[getCurrentPages().length - 1]
 		// console.log(routeObj)
 		menusstore.saveCurPage({
 			route: uni.$u.page(),
 			options: routeObj.options
-		})
+		}) 
 		// console.log(menusActive)
 	})
+	
 	function tabsClick(index) {
 		const item = menusByMode.value[index]
 		// console.log(item)
