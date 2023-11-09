@@ -10,6 +10,7 @@ export const userStore = defineStore('user', {
 			user: uni.getStorageSync('user') || {},
 			// 预约信息
 			user_info: {},
+			balance: false,
 			user_loading: false,
 			// 选品用户信息
 			mall_user: uni.getStorageSync('mall_user') || {},
@@ -44,12 +45,17 @@ export const userStore = defineStore('user', {
 		// 	}
 		// },
 		async getUserInfo(data) { 
-			this.user_info = data
+			this.user_info = data;
+			
+			data.tid && uni.$u.http.setToken({
+				tid: data.tid
+			})  
 		},
 		async refreshUserData() {
 			const res = await apis.memu()
 			if(res.code == 1) {  
-				this.user_info = res.info 
+				this.getUserInfo(res.info)
+				this.balance = res.balance 
 			}
 		},
 		// async getCpyInfo() {

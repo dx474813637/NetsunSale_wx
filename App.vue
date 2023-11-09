@@ -48,7 +48,7 @@
 			});
 		}
 		routingIntercept({$http})  
-		 // await user.getMallUserInfo()
+		user.refreshUserData()
 		
 	});
 	onShow(async (options) => {
@@ -93,6 +93,7 @@
 	@import "uview-plus/index.scss";
 	@import '@/common/ext.scss';
 	@import '@/common/iconfont.css';
+	$u-error: #F12E24;
 	page {
 		background-color: #f8f8f8;
 	}

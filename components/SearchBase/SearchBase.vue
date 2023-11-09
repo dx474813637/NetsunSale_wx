@@ -3,18 +3,16 @@
 		<u-search
 			placeholder="请输入商品关键词" 
 			v-model="keyword"
-			bgColor="#fff"
-			borderColor="#007aff"
+			bgColor="#fff" 
 			:showAction="false"
+			shape="square"
 			@search="handleSearch"
 			></u-search>
-			<view class="u-m-l-10">
+			<view class="u-m-l-20">
 				<u-button 
-					type="primary" 
-					shape="circle"
-					size="small"
-					color="linear-gradient(to right, rgb(66, 83, 216), rgb(213, 51, 186))"
-					customStyle="height: 34px"
+					type="error"   
+					color="#E94A6A"
+					customStyle="height: 34px; border-radius: 6px"
 					@click="handleSearch"
 				>搜索</u-button>
 			</view>

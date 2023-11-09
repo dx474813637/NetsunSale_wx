@@ -5,6 +5,7 @@
 				placeholder="请输入关键字" 
 				v-model="keyword" 
 				:showAction="false"
+				shape="square"
 				@search="handleSearch"
 			></u-search>
 		</view> 
@@ -62,12 +63,20 @@
 				</view>
 				<view class="u-flex u-flex-wrap u-flex-items-center ">
 					<view 
-						class="item-card u-p-20 u-radius-5 bg-white u-border u-line-1 u-font-28"
+						class="item-card u-p-20 u-radius-5 bg-white u-font-28 u-flex-column u-flex-items-center u-flex-center"
 						v-for="item in cate_main"
 						:key="item.id"
 						@click="base.handleGoto({url: '/pages/product/productList', params: {cate: item.id}})"
 						>
-						{{item.name}}
+						<up-image
+							showLoading
+							:src="item.img"
+							width="60px"
+							height="60px" 
+						></up-image>
+						<view class="u-m-t-20 u-line-1 text-base">
+							{{item.name}}
+						</view>
 					</view>
 				</view>
 			</scroll-view>
@@ -102,7 +111,7 @@
 	})
 	const cate_main = computed(() => {
 		if(cate_list.value.length == 0) return []
-		return cate_list.value[nav_index.value].children
+		return cate_list.value[nav_index.value].children.slice(1)
 	})
 	onLoad(async () => {
 		cate.getCateData()
@@ -132,7 +141,7 @@ page {
 	box-sizing: border-box;
 }
 </style>
-<style lang="scss" scoped>
+<style lang="scss" scoped> 
 	.w {
 		height: 100%;
 		.list {
@@ -141,31 +150,34 @@ page {
 				height: 100%;
 				&.item-nav-w {
 					flex: 0 0 100px;
-					background-color: #fff;
+					background-color: #f8f8f8;
 					.nav {
 						.nav-item {
 							font-size: 14px;
-							padding: 15px 10px;
-							border-bottom: 1rpx solid #f8f8f8;
+							padding: 20px 10px;
+							// border-bottom: 1rpx solid #f8f8f8;
 							box-sizing: border-box;
 							color: #666;
 							&.active {
-								background-color: #f8f8f8;
-								color: #000;
+								background-color: #fff;
+								color: #FA392D;
+							}
+							&:has(+.active) {
+								color: #007aff!important;
 							}
 						}
 					}
 				}
 				&.item-content-w {
-					background-color: #f8f8f8;
+					background-color: #fff;
 					box-sizing: border-box;
 					.item-card {
-						flex: 0 0 48%;
-						margin-bottom: 4%;
-						margin-right: 4%;
+						flex: 0 0 32%;
 						box-sizing: border-box;
-						&:nth-of-type(2n) {
-							margin-right: 0;
+						margin-bottom: 2%;
+						&:nth-of-type(3n+2) {
+							margin-left: 2%;
+							margin-right: 2%;
 						}
 					}
 				}

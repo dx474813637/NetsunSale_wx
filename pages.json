@@ -12,7 +12,7 @@
 			"style": {
 				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#cee2ff"
+				"navigationBarBackgroundColor": "#EBEDFC"
 			}
 
 		},
@@ -29,13 +29,7 @@
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
-		},
-		{
-			"path": "pages/reservation/reservation",
-			"style": {
-				"navigationBarTitleText": "预约申请"
-			}
-		},
+		}, 
 		{
 			"path": "pages/web_danye/web_danye",
 			"style": {
@@ -69,13 +63,6 @@
 				"enablePullDownRefresh": false
 			}
 
-		},
-		{
-			"path": "pages/reservation_list/reservation_list",
-			"style": {
-				"navigationBarTitleText": "预约列表",
-				"onReachBottomDistance": 80
-			}
 		}, {
 			"path": "pages/login/login",
 			"style": {
@@ -106,21 +93,7 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, {
-			"path": "pages/forms/51xp_gys",
-			"style": {
-				"navigationBarTitleText": "参展供应商",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/forms/51xp_mcn",
-			"style": {
-				"navigationBarTitleText": "独立主播/MCN机构",
-				"enablePullDownRefresh": false
-			}
-
-		}
+		} 
 	],
 	"subPackages": [{
 		"root": "pages_user",
@@ -133,20 +106,7 @@
 						"softinputMode": "adjustPan"
 					}
 				}
-			},
-			{
-				"path": "info/info",
-				"style": {
-					"navigationBarTitleText": "我的信息"
-				}
-			},
-			{
-				"path": "reservation_list/reservation_list",
-				"style": {
-					"navigationBarTitleText": "我的预约",
-					"onReachBottomDistance": 80
-				}
-			}, {
+			},  {
 				"path": "address/addressList",
 				"style": {
 					"navigationBarTitleText": "地址管理",
@@ -164,26 +124,12 @@
 			}, {
 				"path": "cart/cart",
 				"style": {
-					"navigationBarTitleText": "选品车",
+					"navigationBarTitleText": "购物车",
 					"enablePullDownRefresh": false,
 					"navigationBarBackgroundColor": "#f8f8f8"
 				}
 
-			}, {
-				"path": "info/user_info",
-				"style": {
-					"navigationBarTitleText": "个人名片",
-					"enablePullDownRefresh": false
-				}
-
-			}, {
-				"path": "info/cpy_info",
-				"style": {
-					"navigationBarTitleText": "企业信息",
-					"enablePullDownRefresh": false
-				}
-
-			}, {
+			},  {
 				"path": "order/orderDetail",
 				"style": {
 					"navigationBarTitleText": "订单详情",
@@ -213,14 +159,7 @@
 					"enablePullDownRefresh": false
 				}
 
-			}, {
-				"path": "sign_detail/sign_detail",
-				"style": {
-					"navigationBarTitleText": "报名详情",
-					"enablePullDownRefresh": false
-				}
-
-			}, {
+			},  {
 				"path": "tuan/darenList",
 				"style": {
 					"navigationBarTitleText": "邀请达人列表",

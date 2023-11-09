@@ -1,18 +1,21 @@
 <template>
 	<view class="w u-p-20" >
-		<view class="u-m-b-20" v-if="list.id">
-			<OrderCard
-				:origin="list"
-				:gotoDetail="false"
-			></OrderCard>
-		</view>
-		
 		<view class="u-m-b-20">
-			<view class="u-p-10 u-m-b-10 u-info-dark u-font-32">订单详情</view>
 			<AddressCard
 				:origin="list.address"
 				:cardClickToEdit="false" 
 			></AddressCard>
+		</view>
+		
+		<view class="u-m-b-20">
+			<view class="u-p-10 u-m-b-10 u-info-dark u-font-32">订单详情</view>
+			<view v-if="list.id">
+				<OrderCard
+					:origin="list"
+					:gotoDetail="false"
+				></OrderCard>
+			</view>
+			
 		</view> 
 		<view class="bg-white u-radius-12 u-p-30 u-info-dark u-m-b-30">
 			<!-- <view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
@@ -72,6 +75,10 @@
 				<!-- 申请售后 -->
 				<up-button type="primary" @click="applyServiceBtn">{{btnList.button5_title}}</up-button>
 			</view>
+			<view class="item u-p-20" v-if="btnList.button6"> 
+				<!-- 查看物流 -->
+				<up-button type="primary" @click="orderExpressPopupShow = true">{{btnList.button6_title}}</up-button>
+			</view>
 			
 			
 		</view>
@@ -95,6 +102,12 @@
 		:onUpdateShow="handleChangeShow2"  
 		@submitService="submitService" 
 	></OrderServicePopup>
+	<OrderExpressPopup
+		:show="orderExpressPopupShow" 
+		title="物流信息"  
+		:list="list"
+		:onUpdateShow="handleChangeShow3" 
+	></OrderExpressPopup>
 </template>
 
 <script setup>
@@ -119,6 +132,7 @@
 	const list = ref({})
 	const btnList = ref([])
 	const orderServiceShow = ref(false)
+	const orderExpressPopupShow = ref(false)
 	const { 
 		order_zt2str
 	} = useFilter(zt)
@@ -307,6 +321,9 @@
 	}  
 	function handleChangeShow2(data) {
 		orderServiceShow.value = data
+	}  
+	function handleChangeShow3(data) {
+		orderExpressPopupShow.value = data
 	}  
 	
 </script>

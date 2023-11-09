@@ -7,6 +7,7 @@
 						placeholder="请输入关键字" 
 						v-model="terms" 
 						:showAction="false"
+						shape="square"
 						@search="handleSearch"
 					></u-search>
 				</view>
@@ -15,7 +16,7 @@
 			<view class="nav-w bg-white u-p-20 u-flex" v-if="!terms">
 				<view class="item item-cate u-flex u-flex-items-center u-font-28" @click="showCateList = true">
 					<view class="u-info">筛选类别：</view>
-					<view class="u-primary u-p-r-10">{{cate_label}}</view>
+					<view class="u-error u-p-r-10">{{cate_label}}</view>
 					<u-icon name="arrow-down-fill" color="#ccc" size="12"></u-icon>
 				</view> 
 			</view>
@@ -29,6 +30,7 @@
 				>
 			 	<ProductColCard
 					:origin="item"
+					:customStyle="{boxShadow: 'none!important', border: '1rpx solid #f9f9f9'}"
 				></ProductColCard>
 			 		 
 			 </view>	
@@ -60,7 +62,7 @@
 	import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
 	import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
 	import { share } from '@/composition/share.js'
-	const { setOnlineControl } = share()
+	const { setOnlineControl, customShareParams } = share()
 	const $api = inject('$api')
 	
 	import {useCateStore, baseStore} from '@/stores/base.js'
@@ -150,6 +152,7 @@
 	function handleChangeCate(obj) {
 		cateId.value = obj.data.id 
 		cate_label.value = obj.cate_label
+		customShareParams.cate = obj.data.id 
 		handleChangeShow(false)
 		initData()
 	}
@@ -179,7 +182,8 @@
 <style lang="scss" scoped>
 	.w {
 		height: 100%;
-		padding-bottom: 50px;
+		padding-bottom: 50px; 
+		background: linear-gradient(to bottom, #fff, $page-bg2 300px);
 		.list {
 			box-sizing: border-box;
 			>.list-item {

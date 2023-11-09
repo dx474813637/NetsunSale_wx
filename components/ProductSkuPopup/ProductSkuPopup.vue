@@ -18,7 +18,10 @@
 					</view>
 					<view class="u-m-l-20">
 						<view class="text-bold u-line-1 u-m-b-20">{{product_base_data.name}}</view>
-						<view class="text-error">￥{{active_sku_price}}</view>
+						<view class="text-error">
+							<text class="u-font-28 text-bold">￥</text>
+							<text class=" text-bold u-font-38" style="font-family: cursive; ">{{active_sku_price}}</text> 
+						</view>
 					</view>
 					
 				</view>

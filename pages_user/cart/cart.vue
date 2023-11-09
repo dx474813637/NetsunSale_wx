@@ -7,7 +7,7 @@
 			<view class="item u-flex u-flex-items-center">
 				<view @click="manageMode = !manageMode">
 					<view class="text-primary u-p-10 u-font-36" v-if="!manageMode">管理</view>
-					<view class="u-error-dark u-p-10" v-else>退出管理</view> 
+					<view class="text-primary u-p-10" v-else>退出管理</view> 
 				</view>
 			</view>
 		</view>
@@ -16,7 +16,7 @@
 	<view class="cart-w u-m-t-20 u-radius-20">
 		<template v-if="cart_list.length == 0">
 			<view class="u-flex u-flex-center u-p-40">
-				<u-empty mode="data" :icon="base.empty" text="选品车为空" />
+				<u-empty mode="data" :icon="base.empty" text="购物车为空" />
 			</view>
 		</template>
 		
@@ -50,6 +50,7 @@
 							<view class="item checkbox u-flex u-flex-items-center u-flex-center u-p-10"> 
 								<u-checkbox 
 								shape="circle" 
+								:activeColor="themeColor"
 								:disabled="product.disabled && !manageMode"
 								:name="product.id"
 								size="22"
@@ -111,7 +112,7 @@
 	<TabBar :customStyle="customStyle">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28 cart-bar-w" > 
 			<view class="item u-m-l-20">
-				<u-checkbox-group v-model="allCheck" size="22" :labelSize="18">
+				<u-checkbox-group v-model="allCheck" size="22" :labelSize="18" :activeColor="themeColor">
 					<u-checkbox  
 						shape="circle" 
 						label="全选"
@@ -145,7 +146,7 @@
 						</view>
 					</view>
 					<view style="width: 100px">
-						<u-button type="primary" shape="circle" @click="gotoOrderBtn" :disabled="cart_list_checked_num == 0"  >
+						<u-button type="error" shape="circle" @click="gotoOrderBtn" :disabled="cart_list_checked_num == 0"  >
 							<text class="u-font-32">结算</text> 
 						</u-button>
 					</view>

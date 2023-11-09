@@ -26,33 +26,43 @@
 			</view>
 			
 		</template>
-		<view class="u-p-20">
-			<view class="u-radius-8 u-primary-light-bg u-m-b-20">
-				<view class="u-p-20 u-flex u-flex-between u-flex-items-center">
-					<view class="item u-error-dark">
-						<text class="u-font-28">￥</text>
-						<text class="u-font-40">{{product_list.price}}</text>
-					</view>
+		<view class="u-p-10 u-p-t-30 u-p-b-30 bg-white u-m-b-20">  
+			<view class="u-flex u-flex-between u-flex-items-center u-p-10">
+				<view class="item  " style="color: #F12E24;">
+					<text class="u-font-28">销售价</text>
+					<text class="u-font-28 text-bold u-m-l-10">￥</text>
+					<text class=" text-bold" style="font-family: cursive; font-size: 24px;">{{product_list.price}}</text>
 				</view>
-				<view class="bg-white u-p-30 u-radius-8">
-					<view class="u-flex u-flex-between u-flex-items-start u-font-32 u-m-b-20">
-						<view class="item">
-							{{product_list.name}}
-						</view> 
-					</view>
-					<view class="u-flex u-flex-between u-flex-items-start u-font-28">
-						<view class="item u-info-dark">
-							{{product_list.recommend_remark}}
-						</view>
-						<view class="item u-info u-p-l-30" style="white-space: nowrap;">
-							{{$u.timeFrom(new Date(product_list.ctime).getTime(), false)}}
-						</view>
-					</view>
-				</view>
+				<view class="item u-font-28 u-info">已售{{product_list.sales_volume}}件</view>
 			</view>
-			<view class="u-radius-8 bg-white u-m-b-20 u-p-20 u-font-28">   
+			<view class="bg-white u-radius-8 u-p-10">
+				<view class="u-flex u-flex-between u-flex-items-start u-p-t-10 u-p-b-10 u-m-b-20">
+					<view class="item u-font-36">
+						{{product_list.name}}
+					</view> 
+					<view class="item u-p-l-20">
+						<button type="primary"  openType="share"  class="share-btn">
+							<view class="u-flex-column u-flex-items-center text-black"> 
+								<u-icon name="share-square" color="#333" size="26"></u-icon>
+								<text class="u-font-28 text-nowrap text-black text-thin">分享</text>
+							</view>
+						</button>
+					</view>
+				</view>
+				<view class="u-flex u-flex-between u-flex-items-start u-font-28">
+					<view class="item u-info-dark">
+						{{product_list.recommend_remark}}
+					</view>
+					<view class="item u-info u-p-l-30" style="white-space: nowrap;">
+						{{$u.timeFrom(new Date(product_list.ctime).getTime(), false)}}
+					</view>
+				</view>
+			</view> 
+		</view> 
+		<view class="u-p-10 bg-white u-m-b-20">  
+			<view class="u-radius-8 bg-white u-m-b-20 u-p-20 u-font-30">   
 				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14">
-					<view class="item u-info-dark u-m-r-20">
+					<view class="item text-base u-m-r-20">
 						发货
 					</view> 
 					<view class="item u-p-l-40">
@@ -60,7 +70,7 @@
 					</view>
 				</view> 
 				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14">
-					<view class="item u-info-dark u-m-r-20">
+					<view class="item text-base u-m-r-20">
 						分类
 					</view>  
 					<view class="item u-p-l-40">
@@ -69,7 +79,7 @@
 				</view>  
 				<u-line length="100%" margin="10px 0"></u-line>
 				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14" @click="showProductSku = true">
-					<view class="item u-info-dark u-m-r-30">
+					<view class="item text-base u-m-r-30">
 						选择
 					</view>
 					<u-line direction="col" length="15px"></u-line> 
@@ -83,7 +93,7 @@
 					<u-icon name="arrow-right" color="#ccc"></u-icon>
 				</view>  
 				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14" @click="showProductAttr = true">
-					<view class="item u-info-dark u-m-r-30">
+					<view class="item text-base u-m-r-30">
 						参数
 					</view>
 					<u-line direction="col" length="15px"></u-line>
@@ -170,26 +180,31 @@
 		</view>
 		<u-safe-bottom></u-safe-bottom>
 	</view>
-	<TabBar :customStyle="{boxShadow: '0px -3px 10px rgba(0,0,0,0.1)' }">
+	<TabBar :customStyle="{boxShadow: 'none', border: '1rpx solid #eee' }">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28" style="height: 100%;">
-			
-			<view class="item u-flex-column u-flex-items-center u-m-r-20" v-if="!hideHomeBtn" @click="base.handleGoto({type: 'reLaunch', url: '/pages/home/home'})">
-				<u-icon name="home" :color="themeColor" size="24"></u-icon>
-				<view class="u-info">首页</view>
+			<view class="u-flex u-flex-items-center" style="height: 100%;"> 
+				<view class="item u-flex-column u-flex-items-center u-m-r-20 u-p-l-10 u-p-r-10" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/index/index'})">
+					<u-icon name="account" color="#000" size="28"></u-icon>
+					<view class="u-info">我的</view>
+				</view>
+				<view class="item u-flex-column u-flex-items-center u-m-r-20 u-p-l-10 u-p-r-10" v-if="!hideHomeBtn" @click="base.handleGoto({type: 'reLaunch', url: '/pages/home/home'})">
+					<u-icon name="home" color="#000" size="28"></u-icon>
+					<view class="u-info">首页</view>
+				</view>
+				<!-- <view class="item u-flex-column u-flex-items-center u-m-r-20" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/reservation_list/reservation_list'})">
+					<u-icon name="list-dot" :color="#000" size="28"></u-icon>
+					<view class="u-info">店铺</view>
+				</view> -->
+				<view class="item u-flex-column u-flex-items-center u-m-r-20 u-p-l-10 u-p-r-10" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/cart/cart'})" style="position: relative;">
+					<u-icon name="shopping-cart" color="#000" size="28"></u-icon>
+					<view class="u-info">购物车</view>
+					<up-badge :offset="[-5,2]" numberType="overflow"  max="99" :value="cart_list_num" absolute></up-badge>
+				</view> 
 			</view>
-			<!-- <view class="item u-flex-column u-flex-items-center u-m-r-20" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/reservation_list/reservation_list'})">
-				<u-icon name="list-dot" :color="themeColor" size="24"></u-icon>
-				<view class="u-info">店铺</view>
-			</view> -->
-			<view class="item u-flex-column u-flex-items-center u-m-r-20" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/cart/cart'})" style="position: relative;">
-				<u-icon name="shopping-cart" :color="themeColor" size="24"></u-icon>
-				<view class="u-info">选品车</view>
-				<up-badge :offset="[-5,2]" numberType="overflow"  max="99" :value="cart_list_num" absolute></up-badge>
-			</view> 
-			<view class="item u-flex-1">
-				<u-button type="primary" shape="circle" @click="addCartBtn"  >
+			<view class="item " style="flex: 0 0 40vw">
+				<u-button type="error" @click="addCartBtn"  >
 					<view class="u-flex"> 
-						<text class="u-m-l-8 u-p-b-5 u-font-32">加入采购车</text>
+						<text class="u-m-l-8 u-p-b-5 u-font-32">加入购物车</text>
 					</view>
 				</u-button>
 			</view>
@@ -247,8 +262,7 @@
 	
 	const swiperlist = computed(() => { 
 		return product_list.value.pic.split('|')
-	})
-	
+	}) 
 	const product_desc_arr = computed(() => {
 		if(!product_list.value.description  ) return [] 
 		return product_list.value.description.split('|')
@@ -307,7 +321,7 @@
 	
 	function swiperClick() {
 		uni.previewImage({
-			urls: [product_img_preview.value],
+			urls: swiperlist.value,
 			current: 0,
 			longPressActions: {
 				itemList: ['发送给朋友', '保存图片', '收藏'],
@@ -325,6 +339,14 @@
 </script>
 
 <style lang="scss" scoped>
+	.share-btn {
+		background-color: transparent;
+		color: #000;
+		line-height: 20px;
+		&:after {
+			border: 0;
+		}
+	}
 	.w {
 		padding-bottom: 60px;
 	}

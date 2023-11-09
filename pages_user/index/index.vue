@@ -38,13 +38,13 @@
 				</view> 
 				
 			</view>
-			<view class="u-p-15 u-p-l-20 u-p-r-20 u-flex u-flex-between u-flex-items-center bg-white u-font-26">
+			<view class="u-p-15 u-p-l-20 u-p-r-20 u-flex u-flex-between u-flex-items-center bg-white u-font-26" v-if="balance">
 				<view class="num-label item u-p-r-15" >
 					<view class="bg u-flex u-flex-items-center u-flex-between u-p-20 u-radius-5">
 						<view class="u-flex u-flex-items-center">
 							<view class="u-m-r-10 u-info">可提现</view>
 							<u-count-to 
-								endVal="800"
+								:endVal="balance.extract"
 								decimals="2"
 								separator=","
 								duration="500"
@@ -63,7 +63,7 @@
 						<view class="u-flex u-flex-items-center">
 							<view class="u-m-r-10 u-info">可分账</view>
 							<u-count-to 
-								endVal="1800"
+								:endVal="balance.divide"
 								decimals="2"
 								separator=","
 								duration="500"
@@ -78,11 +78,12 @@
 					</view>
 				</view>
 			</view> 
-			<view class="u-p-15 u-p-l-20 u-p-r-20 u-flex u-flex-between u-flex-items-center bg-white u-font-26 ">
+			<view class="u-p-15 u-p-l-20 u-p-r-20 u-flex u-flex-between u-flex-items-center bg-white u-font-26 " v-if="menus_ad.img">
 				<image 
+					@click="handleMenusClick({url: menus_ad.url, type: 3})"
 					style="width: 100%;"
 					class="u-radius-5"
-					src="https://cdn.uviewui.com/uview/swiper/swiper1.png" 
+					:src="menus_ad.img" 
 					mode="widthFix"
 				></image>
 			</view>
@@ -91,7 +92,7 @@
 		<!-- 我的菜单列表 远程控制 -->
 		<template v-if="menus_wd && menus_wd.length > 0">
 			<view class="user-item-box u-p-t-30 u-p-b-20 bg-white u-m-b-26" v-for="(ele, i) in menus_wd" :key="i">
-				<view class="box-header u-border-bottom u-flex u-flex-between u-p-b-14 u-p-l-30 u-p-r-30">
+				<view class="box-header u-flex u-flex-between u-p-b-20 u-p-l-30 u-p-r-30">
 					<view class=" u-flex u-flex-items-end u-flex-items-center">
 						<view class="u-font-34 u-flex u-flex-items-center">
 							<image v-if="ele.icon" class="u-m-r-5" style="width: 15px;height:15px;" :src="ele.icon" mode=""></image>
@@ -103,35 +104,33 @@
 						<image style="width: 20px;height:20px;" :src="ele.right_icon" mode="" @click="base.handleGoto(ele.right_url)"></image>
 					</view>
 				</view>
-				<view class="box-row other-menus u-flex u-flex-wrap u-flex-items-center u-p-t-20 ">
+				<view class="box-row other-menus u-flex u-flex-wrap u-flex-items-center u-p-b-20 ">
 					<view 
 						class="item u-text-center u-m-t-15" 
 						v-for="(item, index) in ele.list" 
 						:key="index"
 						@click="handleMenusClick(item)"
 						>
-						<image class="icon-img" :src="item.icon" mode=""></image>
-						<text class="u-font-26 u-p-b-10 u-line-1 menus-name">{{item.name}}</text>
+						<image class="icon-img u-m-b-10" :src="item.icon" mode=""></image>
+						<text class="u-font-28 u-p-b-10 u-line-1 text-black">{{item.name}}</text>
 					</view>
 				</view>
 			</view>
 		</template>
 		
 		<!-- 其他公告列表 远程控制 -->
-		<template v-if="menus.new_memu && menus.new_memu.length > 0 && menus.news">
-			<view class="user-item-box u-p-t-30 u-p-b-20 bg-white u-m-b-26" v-for="(ele, i) in menus.new_memu" :key="i">
-				<view class="box-header u-border-bottom u-flex u-flex-items-end u-p-b-14 u-p-l-30 u-p-r-30">
-					<view class="u-font-34">{{ele.name}}</view>
-				</view>
-				<view class="box-row other-menus u-flex u-flex-wrap u-flex-items-center u-p-t-20 ">
-					<view 
-						class="item u-text-center u-m-t-15" 
-						v-for="(item, index) in ele.list" 
-						:key="index"
-						@click="handleMenusClick(item)"
-						>
+		<template v-if="menus_wd1 && menus_wd1.length > 0">
+			<view class="u-p-t-30 u-p-15 bg-white u-m-b-26 rows-menus">
+				<view class="item u-text-center u-p-20 u-p-t-30 u-p-b-30 u-flex u-flex-items-center u-flex-between" 
+					v-for="(item, index) in menus_wd1" :key="index"
+					@click="handleMenusClick(item)"
+					>
+					<view class="u-flex u-flex-items-center">
 						<image class="icon-img" :src="item.icon" mode=""></image>
-						<text class="u-font-26 u-p-b-10 u-line-1 menus-name">{{item.name}}</text>
+						<text class="text-black u-line-1 u-m-l-30">{{item.name}}</text>
+					</view>
+					<view class="">
+						<u-icon name="arrow-right" color="#ccc"></u-icon>
 					</view>
 				</view>
 			</view>
@@ -174,9 +173,9 @@
 	// baseNotify(notify) 
 	const base = baseStore()
 	const menus = menusStore()
-	const { menus_wd } = toRefs(menus)
+	const { menus_wd, menus_wd1, menus_ad } = toRefs(menus)
 	const user = userStore()
-	const {user_info} = toRefs(user)
+	const {user_info, balance} = toRefs(user)
 	const showUserInfo = ref(false)
 	onLoad(async () => {
 		// await user.getMallUserInfo()
@@ -189,6 +188,7 @@
 	}) 
 	function handleMenusClick(item) {
 		console.log(item)
+		if(!item.url) return
 		if(item.type == 1 ){
 			uni.reLaunch({
 				url: item.url
@@ -251,13 +251,23 @@
 	}
 	.other-menus {
 		.item {
-			flex: 0 0 25%;
+			flex: 0 0 20%; 
+			.icon-img {
+				width: 28px;
+				height: 28px;
+			}
+		}
+	}
+	.rows-menus {
+		.item {
+			border-bottom: 1rpx solid #f8f8f8;
 			.icon-img {
 				width: 22px;
 				height: 22px;
 			}
 		}
 	}
+	
 	.wrapper {
 		padding-bottom: 50px;
 		// padding-top: 44px;
@@ -269,10 +279,10 @@
 		color: #666;
 	}
 	.ts-bg {
-		background-image: linear-gradient(to bottom, #fef9f3, #fef7e3);
+		// background-image: linear-gradient(to bottom, #fef9f3, #fef7e3);
 	}
 	.user-item-box {
-		border-radius: 18rpx;
+		// border-radius: 18rpx;
 		// box-shadow: 0 5rpx 10rpx rgba(90,90,90,.1);
 		.set-sub {
 			background-color: #eaf7ff;
@@ -315,7 +325,7 @@
 			}
 			.sub {
 				background-color: #7da5e2;
-				background-image: linear-gradient(to right, #a1c3f7, #86b0f8);
+				// background-image: linear-gradient(to right, #a1c3f7, #86b0f8);
 				border-radius: 6rpx;
 				white-space: nowrap;
 			}

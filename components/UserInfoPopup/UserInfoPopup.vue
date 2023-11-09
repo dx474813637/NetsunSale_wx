@@ -65,7 +65,7 @@
 								{{user_info.info}}
 							</view> 
 						</view>
-						<u-button type="primary" @click="submit" >立 即 保 存</u-button>
+						<u-button type="error" @click="submit" >立 即 保 存</u-button>
 					</view>
 					
 				</view>
@@ -220,7 +220,7 @@
 			width: 100%;
 			height: 100px;
 			border-radius: 0 0 100% 100%;
-			background-color: #539ef1;
+			background-color: #fb5349;
 		}
 		.main {
 			position: relative;
@@ -245,7 +245,7 @@
 				width: 20px;
 				height: 20px;
 				border-radius: 20px;
-				background-color: #007aff; 
+				background-color: #FA392D; 
 			}
 		}
 		

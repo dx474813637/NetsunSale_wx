@@ -24,7 +24,7 @@ export const baseStore = defineStore('base', {
 				// 'xcxappid': extConfig.attr.wxappid,
 			},
 			share_other: '',
-			themeColor: '#007aff',
+			themeColor: '#F12E24',
 			empty: 'https://wx.rawmex.cn/Public/memu/data1.png',
 			online: {
 				count: 0, 
@@ -143,7 +143,8 @@ export const menusStore = defineStore('menus', {
 			menus: [], 
 			menus_51xp: [], 
 			menus_wd: [],
-			menus_wd_broker: {},
+			menus_wd1: [], 
+			menus_ad: {},
 			new_memu: [],
 			news: 0,
 			currPage: {
@@ -162,7 +163,7 @@ export const menusStore = defineStore('menus', {
 			// console.log('saveCurPage', data)
 			this.currPage = data;
 		},
-		async getMenusData() {   
+		async getMenusData($http) {   
 			const res = await apis.memu()  
 			if(res.code == 1) {  
 				let user = userStore()
@@ -183,9 +184,10 @@ export const menusStore = defineStore('menus', {
 					}
 				})   
 				// this.menus_51xp = res.list.memu
-				
 				// 获取个人中心基础菜单
 				this.menus_wd = res.list
+				this.menus_wd1 = res.list1
+				this.menus_ad = res.ad
 				 
 			} 
 		}

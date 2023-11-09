@@ -1,3 +1,5 @@
+
+$u-error: #F12E24;
 .dx-transition {
 	transition: all .3s;
 }
@@ -38,7 +40,7 @@
 	text-align: right!important;
 }
 .text-error {
-	color: $uni-color-error!important;
+	color: $u-error!important;
 }
 .text-success {
 	color: $uni-color-success!important;

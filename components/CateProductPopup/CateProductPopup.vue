@@ -24,19 +24,31 @@
 					</u-list>
 				</view>
 				<view class="list-item item-right u-flex-1"> 
-					<scroll-view class="main-list" scroll-y >
-						<view class="u-p-20">
-							<view 
-								class="item-card"
+					<scroll-view class="main-list u-p-20" scroll-y >
+						<view class=" u-flex u-flex-wrap u-flex-items-start">
+							<view  
+								class="item-card u-p-20 u-radius-5 bg-white u-font-28 u-flex-column u-flex-items-center u-flex-center"
 								:class="{
 									active: nav_current == props.current[0] && index == props.current[1]
 								}"
 								v-for="(item, index) in mainList"
 								:key="item.id"
 								@click="onConfirm(item, index)"
-							>
-								<view class="u-line-1">{{item.name}}</view> 
-							</view>
+							>	
+								<up-image
+									showLoading
+									:src="item.img"
+									width="60px"
+									height="60px" 
+									v-if="item.img"
+								></up-image>
+								<view class="u-flex u-flex-items-center u-flex-center" style="width: 60px; height: 60px;" v-else>
+									<u-icon name="grid-fill" size="40" color="#bbb"></u-icon>
+								</view> 
+								<view class="u-m-t-20 u-line-1 text-base">
+									{{item.name}}
+								</view>
+							</view> 
 						</view>
 					</scroll-view>
 				</view>
@@ -113,7 +125,7 @@
 <style lang="scss" scoped>
 	.list-w {
 		height: 60vh;
-		background-color: #e8e8e8;
+		background-color: #fff;
 		.list-item {
 			height: 100%;
 			&.item-left {
@@ -126,16 +138,15 @@
 		color: #666; 
 		filter: grayscale(100%);
 		&.active-nav {
-			background-color: #e8e8e8;
-			color: $u-primary; 
+			background-color: #fff;
+			color: $u-error; 
 			filter: none;
 		}
 	}
 	.main-list {
 		height: 100%;
 	}
-	.item-card { 
-		background-color: #f8f8f8;
+	.item-card {  
 		box-sizing: border-box;  
 		margin-bottom: 10px; 
 		padding: 10px;

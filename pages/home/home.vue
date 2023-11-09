@@ -1,93 +1,86 @@
 <template>
 	<view class="header u-p-20"> 
-		<SearchBase></SearchBase>
-		<view class="swiper u-m-t-30 u-m-b-30" v-if="swiperList.length > 0">
-			<u-swiper
-				:list="swiperList" 
-				keyName="img"
-				radius="10"
-				@click="swiperclick"
-				bgColor="transparent"
-			></u-swiper>
+		<view class="u-p-l-10 u-p-r-10">
+			<SearchBase></SearchBase>
 		</view>
-		<view class="nav u-flex u-flex-wrap u-flex-items-start">
-			<view class="nav-item u-flex-column u-flex-items-center u-m-b-20"
-				v-for="(item, index) in navList"
-				:key="index"
-				@click="click"
-			>
-				<up-image 
-					:show-loading="true" 
-					:src="item.img" 
-					width="50px" 
-					height="50px" 
-				></up-image>
-				<view class="u-line-1 u-m-t-10 u-font-24">
-					{{item.name}}
+		<view class="u-flex u-flex-items-center u-p-20  ">
+			<view class="text-nowrap u-m-r-20 u-p-10">热点商品</view>
+			<view class="u-flex-1">
+				<u-tabs
+					:list="catelist"  
+					lineWidth="0"  
+					@click="handleTabsClick"
+					:itemStyle="{height: '35px'}"
+				></u-tabs>	
+			</view>
+			
+			 
+			
+		</view>
+		<view class="u-p-l-10 u-p-r-10 u-m-b-20">
+			<view class="nav u-flex u-flex-wrap u-flex-items-start u-p-20 bg-white u-radius-8">
+				<view class="nav-item u-flex-column u-flex-items-center u-m-b-20"
+					v-for="(item, index) in catelist2"
+					:key="index"
+					@click="click"
+				>
+					<up-image 
+						:show-loading="true" 
+						:src="item.img" 
+						width="50px" 
+						height="50px"
+						@click="goto(item)" 
+					></up-image>
+					<view class="u-line-1 u-m-t-10 u-font-28 ">
+						{{item.name}}
+					</view>
 				</view>
 			</view>
 		</view>
+		
+		<view class="u-flex u-flex-between swiper-w u-p-t-10">
+			<view class="item u-p-10">
+				<view class="swiper " v-if="swiperList.length > 0">
+					<u-swiper
+						:list="swiperList" 
+						keyName="img"
+						radius="10"
+						height="100%"
+						@click="swiperclick"
+						indicator
+						bgColor="transparent"
+					></u-swiper>
+				</view>
+			</view>
+			<view class="item u-flex-column u-flex-between ">
+				<view class="u-flex-1 u-p-10" v-for="(item,index) in list" :key="index">
+					<img 
+						@click="goto(item)"
+						class="u-radius-8"
+						:src="item.img"
+						style="width: 100%;height: 100%;display: block;"
+						alt="" />
+				</view>
+			</view>
+		</view>
+		<view class="ad-w u-flex u-flex-between u-p-t-10 u-p-b-10" v-if="list2 && list2.length == 2">
+			<view class="item u-p-10" v-for="(item,index) in list2" :key="index">
+				<img
+					@click="goto(item)"
+					class="u-radius-8"
+					:src="item.img"
+					style="width: 100%;height: 100%;display: block;"
+					alt="" 
+					mode="widthFix"
+					/>
+				
+			</view>
+		</view>
+		
 	</view>
-	<!-- <view class="u-flex u-flex-items-center u-flex-between u-p-20">
-		<view class="text-bold u-font-38  text-black">
-			优选店铺
-		</view> 
-	</view>
-	<view class="shop-w u-p-20">
-		<view class=" bg-white u-radius-8">
-			<view class="shop-tabs u-border-bottom">
-				<u-tabs 
-					lineWidth="0"
-					:list="shopTabs" 
-					:current="shopCurrent"
-					@click="shopTabsClick"
-				></u-tabs>
-			</view>
-			<view class="shop-main u-p-30" @click="base.handleGoto({
-					url: '/pages/shop/shop',
-					params: {
-						login: 'netsun_lzy'
-					}
-				})">
-				<view class="shop-header u-flex u-m-b-20">
-					<view class="item u-m-r-10">
-						<up-avatar 
-							src="https://cdn.uviewui.com/uview/swiper/swiper1.png"  
-						></up-avatar> 
-					</view>
-					<view class="item u-flex-1">
-						<view class="u-m-b-5">{{shopCurrentData.company.company}}</view>
-						<view class="u-font-28 text-thin">{{shopCurrentData.company.address}}</view>
-					</view>
-				</view>
-				<scroll-view 
-					scroll-x="true"
-					class="shop-center u-m-b-20 u-radius-8" 
-					>
-					<view class="p"
-						v-for="item in dataList.slice(0, 6)"
-						:key="item.id"
-					>
-						<ProductColCard
-							:origin="item"
-						></ProductColCard>
-					</view>
-				</scroll-view>
-				<view class="shop-footer">
-					<view class="u-p-20 u-info u-font-24 u-info-bg u-radius-8" >
-						<view class="u-line-2">
-							本店主营精品图书、少儿图书、工具书、历史、社科类图书。经营的产品，品种齐全、价格合理。欢迎各界客户来电咨询，洽谈合作。
-						</view> 
-					</view>
-				</view>
-			</view>
-		</view>
-	</view> -->
-	<view class="u-flex u-flex-items-center u-flex-between u-p-20">
-		<view class="text-bold u-font-38  text-black">
-			推荐商品
-		</view>
-		<view class="item u-flex u-flex-items-center u-font-28 u-info">
+	<view class="u-flex u-flex-items-end u-flex-between u-p-20">
+		<up-image :src="originData.ad" height="30px" width="200px" mode="heightFix" ></up-image>
+		<view class="item u-flex u-flex-items-center u-font-28 u-info text-nowrap">
 			<view class="u-m-r-10">全部商品</view>
 			<u-icon name="arrow-right" color="#999" size="14"></u-icon>
 		</view>
@@ -132,61 +125,15 @@
 	const { setOnlineControl } = share()
 	const $api = inject('$api')
 	const keyword = ref('')
+	const originData = ref({})
 	const shopCurrent = ref(0)
 	const swiperList = ref([])
 	const shopTabs = ref([])
-	const navList = ref([
-		{
-			name: '当季新品',
-			url: '/pages/cateList/cateList',
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-		},
-		{
-			name: '当季新品',
-			url: '/pages/cateList/cateList',
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-		},
-		{
-			name: '当季新品',
-			url: '/pages/cateList/cateList',
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-		},
-		{
-			name: '当季新品',
-			url: '/pages/cateList/cateList',
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-		},
-		{
-			name: '当季新品',
-			url: '/pages/cateList/cateList',
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-		},
-		{
-			name: '当季新品',
-			url: '/pages/cateList/cateList',
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-		},
-		{
-			name: '当季新品',
-			url: '/pages/cateList/cateList',
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-		},
-		{
-			name: '当季新品',
-			url: '/pages/cateList/cateList',
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-		},
-		{
-			name: '当季新品',
-			url: '/pages/cateList/cateList',
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-		},
-		{
-			name: '当季新品',
-			url: '/pages/cateList/cateList',
-			img: 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-		},
-	])
+	const navList = ref([])
+	const catelist = computed(() => originData.value.catelist)
+	const catelist2 = computed(() => originData.value.catelist2)
+	const list = computed(() => originData.value.list)
+	const list2 = computed(() => originData.value.list2)
 	const shopCurrentLogin = computed(() => {
 		return shopTabs.value[shopCurrent.value]?.login || ''
 	})
@@ -228,6 +175,7 @@
 	async function getHomeData() {
 		const res = await $api.web_home();
 		if(res.code == 1) {
+			originData.value = res
 			swiperList.value = res.swiper
 		}
 	}
@@ -250,7 +198,7 @@
 	}
 	function swiperclick(e) {
 		if(swiperList.value[e].url) {
-			uni.navigateTo({
+			uni.reLaunch({
 				url: swiperList.value[e].url
 			})
 		}
@@ -258,12 +206,54 @@
 	function shopTabsClick(e) {
 		shopCurrent.value = +e.index
 	}
+	function goto(data) {
+		if(!data.url) return;
+		uni.reLaunch({
+			url: data.url
+		})
+	}
+	function handleTabsClick(e) { 
+		base.handleGoto({
+			url: '/pages/product/productList',
+			type: 'reLaunch',
+			params: {
+				cate: e.id
+			}
+		})
+	}
 </script>
 
 <style lang="scss" scoped>
+.ad-w { 
+	box-sizing: border-box;
+	.item {
+		flex: 0 0 50%;
+		padding-top: 100%;
+		position: relative;
+		box-sizing: border-box;
+		.img-w {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+	}
+}
+.swiper-w {
+	height: 300px;
+	box-sizing: border-box;
+	.item {
+		height: 100%;
+		flex: 0 0 50%;
+		box-sizing: border-box;
+		.swiper {
+			width: 100%;
+			height: 100%;
+		}
+	}
+}
 .header {
 	background-color: #fff;
-	background-image: linear-gradient(to bottom, #cee2ff, #fff);
+	background-image: linear-gradient(to bottom, #EBEDFC , #f9f9f9 150px);
 }
 .nav {
 	.nav-item {
