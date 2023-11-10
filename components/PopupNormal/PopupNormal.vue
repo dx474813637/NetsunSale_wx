@@ -9,7 +9,7 @@
 							<view class="u-text-center">
 								{{attrs.title}}
 							</view> 
-							<view class="item u-font-28 u-info" @click="close">取消</view>
+							<view class="item u-font-28 u-info" @click="close">关闭</view>
 							
 						</view>
 					</slot> 
@@ -58,7 +58,15 @@
 	}
 		 	 
 </script>
-
+<style lang="scss">
+	page {
+		::v-deep {
+			.u-popup__content {
+				border-radius: 15px 15px 0 0!important;
+			}
+		}
+	}
+</style>
 <style lang="scss" scoped>
 	.wrapper-main { 
 		background-color: #f8f8f8;

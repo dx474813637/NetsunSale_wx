@@ -5,11 +5,11 @@
 				<scroll-view class="main-list  u-p-30" scroll-y >
 					<view class="u-m-b-20" v-if="list.express">
 						<view class="service-card u-border u-radius-10 " style="overflow: hidden;">
-							<view class="u-flex u-flex-between u-flex-items-center u-p-20">
-								<view class="item text-bold u-font-32">
+							<view class=" u-p-20">
+								<view class="item text-bold u-font-32 u-m-b-10">
 									单号：{{list.express.express}}
 								</view>
-								<view class="item text-base">
+								<view class="item text-base u-font-28">
 									{{list.express.uptime}}
 								</view>
 							</view> 
@@ -35,7 +35,7 @@
 									</template>
 									
 									<template #desc>
-										<view class="express-card" >
+										<view class="express-card u-font-28" >
 											<text>
 												{{item.title}}
 											</text>
@@ -85,7 +85,15 @@
 	})  
 	 
 </script>
-
+<style lang="scss">
+	page {
+		::v-deep {
+			.u-steps-item__content {
+				flex: 0 0 300px!important;
+			}
+		}
+	}
+</style>
 <style lang="scss" scoped>
 	.list-w {
 		height: 60vh;
@@ -136,17 +144,23 @@
 		}
 	}
 	.service-card {
+		box-sizing: border-box;
 		width: 100%;
 	}
 	.slot-icon {
 		width: 23px;
 		height: 23px;
-		background-color: $u-info;
+		background-color: #b6b7b9;
 		border-radius: 100px;  
 		flex: 0 0 23px;
 		&.active {
 			background-color: $u-error;
 			
 		}
+	}
+	.express-card {
+		word-break: break-all;
+		width: 300px;
+		flex: 1;
 	}
 </style>

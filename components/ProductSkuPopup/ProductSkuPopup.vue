@@ -87,7 +87,7 @@
 					shape="circle" 
 					@click="addCartBtn" 
 					:disabled="add_cart_disabled"
-					:type="add_cart_disabled? 'error' : 'primary'"
+					type="error"
 					>
 						<template v-if="product_num_disabled">请选择规格</template>
 						<template v-else-if="add_cart_disabled">请选择数量</template>
@@ -357,9 +357,9 @@
 					box-sizing: border-box;
 					border: 1rpx solid #f2f2f2;
 					&.active {
-						background-color: $u-primary-light;
-						color: $u-primary; 
-						border-color: $u-primary; 
+						background-color: $u-error-light;
+						color: $u-error; 
+						border-color: $u-error; 
 					}
 					&.disabled {
 						background-color: #f8f8f8;

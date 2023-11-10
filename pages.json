@@ -190,7 +190,7 @@
 			}, {
 				"path": "tuan/tuanAdd",
 				"style": {
-					"navigationBarTitleText": "新增团",
+					"navigationBarTitleText": "团配置",
 					"enablePullDownRefresh": false
 				}
 

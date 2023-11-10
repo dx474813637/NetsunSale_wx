@@ -1,5 +1,8 @@
 <template>
 	<view class="w u-p-20" >
+		<view class="status-w u-text-center u-p-t-20 u-p-b-40 u-font-40 text-bold text-white" >
+			{{ order_zt2str }}
+		</view>
 		<view class="u-m-b-20">
 			<AddressCard
 				:origin="list.address"
@@ -57,27 +60,31 @@
 		<view class="bg-white u-radius-12 u-flex u-flex-wrap btns-w">
 			<view class="item u-p-20" v-if="btnList.button1">
 				<!-- 订单支付 -->
-				<up-button type="primary" @click="orderBuyBtn">{{btnList.button1_title}}</up-button>
+				<up-button type="error" @click="orderBuyBtn">{{btnList.button1_title}}</up-button>
 			</view>
 			<view class="item u-p-20" v-if="btnList.button2"> 
 				<!-- 收货确认 -->
-				<up-button type="primary" @click="confirmReceiveBtn">{{btnList.button2_title}}</up-button>
+				<up-button type="error" @click="confirmReceiveBtn">{{btnList.button2_title}}</up-button>
 			</view>
 			<view class="item u-p-20" v-if="btnList.button3"> 
 				<!-- 我要评分 -->
-				<up-button type="primary" @click="orderScorePopupShow = true">{{btnList.button3_title}}</up-button>
+				<up-button type="error" @click="orderScorePopupShow = true">{{btnList.button3_title}}</up-button>
 			</view>
 			<view class="item u-p-20" v-if="btnList.button4"> 
 				<!-- 我要退款 -->
-				<up-button type="primary" @click="refundBtn">{{btnList.button4_title}}</up-button>
+				<up-button type="error" @click="refundBtn">{{btnList.button4_title}}</up-button>
 			</view>
 			<view class="item u-p-20" v-if="btnList.button5"> 
 				<!-- 申请售后 -->
-				<up-button type="primary" @click="applyServiceBtn">{{btnList.button5_title}}</up-button>
+				<up-button type="error" @click="applyServiceBtn">{{btnList.button5_title}}</up-button>
 			</view>
 			<view class="item u-p-20" v-if="btnList.button6"> 
 				<!-- 查看物流 -->
-				<up-button type="primary" @click="orderExpressPopupShow = true">{{btnList.button6_title}}</up-button>
+				<up-button type="error" @click="orderExpressPopupShow = true">{{btnList.button6_title}}</up-button>
+			</view>
+			<view class="item u-p-20" v-if="btnList.button7">
+				<!-- 取消订单 -->
+				<up-button type="default" @click="cancalBtn">{{btnList.button7_title}}</up-button>
 			</view>
 			
 			
@@ -175,7 +182,32 @@
 			list.value = res.list
 		}
 	}
-	function confirmReceiveBtn(type) { 
+	
+	function cancalBtn() { 
+		uni.showModal({
+			title: '提示',
+			content: '取消订单',
+			success: async function (res) {
+				if (res.confirm) {
+					const r = await $api.change_order_status({
+						params: {
+							order_id: list.value.id
+						}
+					})
+					if(r.code == 1) {
+						uni.showToast({
+							title: r.msg,
+							icon: 'none'
+						})  
+						await getData()
+					}
+				} else if (res.cancel) {
+					console.log('用户点击取消');
+				}
+			}
+		});
+	}
+	function confirmReceiveBtn() { 
 		uni.showModal({
 			title: '提示',
 			content: '是否确认收货',
@@ -337,5 +369,6 @@
 	}
 	.w {
 		padding-bottom: 60px!important;
+		background: linear-gradient(to bottom, #F12E24,  #F12E24 100px, #f8f8f8 180px);
 	}
 </style>

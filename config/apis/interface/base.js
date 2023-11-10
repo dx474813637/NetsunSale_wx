@@ -43,7 +43,7 @@ export const get_tmp_id_time = (data) => http.get('get_tmp_id_time', data)
 export const myEwm = (data) => http.get('my_ewm', data)
 
 // order_type 订单状态type 
-export const order_type = (data) => http.get('order_type', data)
+export const order_type = (data) => http.get('order_type', data) 
 // `create_order` 生成订单 参数pid_array  address_id
 // json格式，每一条记录包含： cid表示旺铺ID，pid商品ID，num表示购买的商品数量
 // export const create_order = (data = {}) => all_api(uni.$u.deepMerge(data, {params: {api: 'create_order'}}))
@@ -146,7 +146,9 @@ export const change_role = (data) => http.get('change_role', data)
 
 // save_invite  接受团长邀请成为达人 参数 id 团长的账号
 export const save_invite = (data) => http.get('save_invite', data)
-// divide 分成列表 参数p 0待分成 1预分成(支付成功) 2分成(订单完成) 3可提取(订单完成一段时间后) 4已提取
+// divide_type 分成状态栏type 
+export const divide_type = (data) => http.get('divide_type', data)
+// divide 分成列表 参数p 0待付款 1已付款 2订单完成 3可提取 4已提取 5订单关闭
 export const divide = (data) => http.get('divide', data)
 // daren_list 邀请达人列表 参数p
 export const daren_list = (data) => http.get('daren_list', data)

@@ -44,7 +44,7 @@
 				 	ref="divide"
 				 	required 
 				 	> 
-					<slider :value="model.divide" activeColor="#007aff" @changing="lokk" showValue  /> 
+					<slider :value="model.divide" activeColor="#F12E24" @changing="lokk" showValue  /> 
 				</u-form-item>  
 			</u--form> 
 			
@@ -52,7 +52,7 @@
 		<view class="u-p-t-30 u-p-b-30">
 			<view class="u-flex u-flex-items-center u-flex-center">
 				<view class="item u-flex-1">
-					<u-button type="primary" @click="submit" :loading="loading" :disabled="loading">{{config.submitBtnText}}</u-button>
+					<u-button type="error" @click="submit" :loading="loading" :disabled="loading">{{config.submitBtnText}}</u-button>
 				</view> 
 			</view>
 			<view class="u-flex u-flex-items-center u-flex-center u-m-t-40">

@@ -1,8 +1,21 @@
 <template>
-	<view class="w"> 
-		<view class="">
-			<view class="tuan-card  bg-white u-p-30">
-				<view class="tuan-header u-flex u-flex-between u-flex-items-center u-m-b-25" @click="cardClick">
+	<view class="w u-p-20" >
+		<view class="status-w u-text-center u-p-t-20 u-p-b-40 u-font-40 text-bold text-white u-line-2" >
+			{{ tuan.title }}
+		</view> 
+		<view class="u-m-b-20">
+			<view class="tuan-card u-radius-8 bg-white u-p-30">
+				<view class="card-row u-flex u-flex-items-center u-flex-between u-m-b-20"> 
+					<view class="item u-flex-1 ">
+						<view class="text-error u-m-b-20">
+							{{title}}
+						</view> 
+						<view class="u-p-20 u-radius-6 u-info-light-bg text-base u-font-28">
+							<u-parse :content="tuan.info"></u-parse> 
+						</view> 
+					</view> 
+				</view>
+				<!-- <view class="tuan-header u-flex u-flex-between u-flex-items-center u-m-b-25" @click="cardClick">
 					<view class="item text-black u-flex u-flex-items-center">
 						<view class="u-m-r-20">{{tuan.title}}</view>
 						<u-icon name="setting-fill" color="#5aa2ff" size="18" v-if="role == 2"></u-icon>
@@ -13,20 +26,20 @@
 					<view class="u-m-b-20">
 						<up-alert 
 						:title="title" 
-						type="primary"  
+						type="error"  
 						></up-alert>
 					</view>
 					<view class="u-p-20 u-radius-6 u-info-light-bg text-base u-font-28">
 						<u-parse :content="tuan.info"></u-parse> 
 					</view>
-				</view>
+				</view> -->
 			</view> 
 		</view>
-		<view class="u-p-20 u-p-l-40 text-bold u-info u-font-28">
+		<view class="u-p-20  text-bold u-info u-font-28">
 			达人列表
 		</view>
-		<view class="list u-p-10">  
-			<view class="list-item u-p-10" v-for="item in dataList" :key="item.id">
+		<view class="list">  
+			<view class="list-item" v-for="item in dataList" :key="item.id">
 				<DarenCard
 					:origin="item"
 				></DarenCard>
@@ -121,6 +134,7 @@
 .w {
 	// min-height: 100vh;
 	padding-bottom: 60px;
+	background: linear-gradient(to bottom, #F12E24,  #F12E24 100px, #f8f8f8 180px);
 } 
 .card {
 	

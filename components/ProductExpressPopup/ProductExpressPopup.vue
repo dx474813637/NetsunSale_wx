@@ -2,19 +2,10 @@
 	<view>
 		<PopupNormal v-bind="$attrs" > 
 			<view class="list-w bg-white">   
-				<view class="main-list  u-p-50 u-flex u-flex-center u-flex-items-center" >
-					<uni-rate 
-						:touchable="false" 
-						v-model="score" 
-						@change="onChange" 
-					/>
-				</view>  
+				<scroll-view class="main-list  u-p-30" scroll-y >
+					<u-parse :content="props.list" v-if="props.list"></u-parse>
+				</scroll-view> 
 			</view>  
-			<template #footer>
-				<view class="u-p-20">
-					<u-button type="error" :disabled="score == 0" shape="circle" @click="submit">提交评分</u-button>
-				</view>
-			</template>
 		</PopupNormal>
 	</view>
 </template>
@@ -41,33 +32,18 @@
 	 
 	const props = defineProps({  
 		list: {
-			type: Array,
-			default: () => {
-				return []
-			},
-		} 
-	})   
-	watch(
-		() => props.list.score,
-		(n) => {
-			score.value = +n
+			type: String,
+			default: '',
 		}
-	)
-	const score = ref(0)
-	const emits = defineEmits(['submitScore'])
+	})   
 	onMounted(async () => { 
 	})  
-	function onChange () {
-		
-	}
-	function submit () {
-		if(score.value == 0) return
-		emits('submitScore', score.value)
-	}
+	 
 </script>
 
 <style lang="scss" scoped>
-	.list-w { 
+	.list-w {
+		height: 60vh;
 		// background-color: #f2f2f2;
 		position: relative;
 		.load-bg {

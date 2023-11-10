@@ -1,6 +1,6 @@
 <template>
 	<view class="w">
-		<!-- <u-sticky bgColor="#f8f8f8">
+		<u-sticky bgColor="#f8f8f8">
 			<view class="tabs-w">
 				<u-tabs
 					:list="tabs_list"  
@@ -12,7 +12,7 @@
 					@change="handleTabsChange"
 				></u-tabs>	
 			</view> 
-		</u-sticky> -->
+		</u-sticky>
 		
 		
 		
@@ -53,35 +53,14 @@
 	// } = share()
 	const $api = inject('$api')   
 	// const role = ref('1') 
-	// const tabs_current = ref(0)
-	// const tabs_list = ref([
-	// 	{
-	// 		name: '全部',
-	// 		disabled: false,
-	// 		value: '0'
-	// 	},
-	// 	{
-	// 		name: '待付款',
-	// 		disabled: false,
-	// 		value: '1'
-	// 	},
-	// 	{
-	// 		name: '待收货',
-	// 		disabled: false,
-	// 		value: '2'
-	// 	},
-	// 	{
-	// 		name: '已完成',
-	// 		disabled: false,
-	// 		value: '3'
-	// 	}
-	// ]) 
+	const tabs_current = ref(0)
+	const tabs_list = ref([]) 
 	
 	const options = computed(() => {
 		return {
 			params: {
 				// role: role.value,
-				// type: tabs_list.value[tabs_current.value].value
+				type: tabs_list.value[tabs_current.value].value
 			},
 			api: 'divide'
 		}
@@ -100,15 +79,30 @@
 		// if(options.hasOwnProperty('role')) {
 		// 	role.value = options.role
 		// }
-		// if(options.hasOwnProperty('zt')) {
-		// 	tabs_current.value = +tabs_list.value.findIndex(ele => ele.value == options.zt) 
-		// }
+		
+		await initDivideTabsData()
+		if(options.hasOwnProperty('zt')) {
+			tabs_current.value = +tabs_list.value.findIndex(ele => ele.value == options.zt) 
+		}
 		initDataList() 
 	}) 
 	function handleTabsChange(data) {
 		tabs_current.value = +data.index
 		initDataList()
-	} 
+	}  
+	async function initDivideTabsData() {
+		const res = await $api.divide_type()
+		if(res.code == 1 ) { 
+			tabs_list.value = res.list.map(ele => {
+				return {
+					...ele,
+					disabled: false,
+					value: ele.type,
+					name: ele.name
+				}
+			})
+		}
+	}
 </script>
 
 <style scoped lang="scss">

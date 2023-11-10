@@ -133,6 +133,20 @@
 						<u-icon name="arrow-right" color="#ccc"></u-icon>
 					</view>
 				</view>
+				<view class="item u-text-center u-p-20 u-p-t-30 u-p-b-30">
+					<button open-type="contact" type="error" plain class="service-btn " >
+						<view class="u-flex u-flex-items-center service-btn-main u-flex-between">
+							<view class="u-flex u-flex-items-center">
+								<image class="icon-img" src="https://wstm.y.netsun.com/Public/tb/wd099.png" mode=""></image>
+								<text class="text-black u-line-1 u-m-l-30 u-font-32">在线客服</text>
+							</view>
+							<view class="">
+								<u-icon name="arrow-right" color="#ccc"></u-icon>
+							</view>
+						</view>
+					</button>
+				</view>
+				 
 			</view>
 		</template>
 		 
@@ -335,5 +349,14 @@
 		}
 	}
 	.user-data {
+	}
+	.service-btn {
+		border: 0;
+		padding: 0;
+		width: 100%;
+		.service-btn-main {
+			width: 100%;
+			line-height: 20px;
+		}
 	}
 </style>

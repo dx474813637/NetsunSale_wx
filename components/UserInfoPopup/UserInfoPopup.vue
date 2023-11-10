@@ -132,7 +132,7 @@
 		const { avatarUrl: avatarUrl2 } = e.detail 
 		uni.showLoading()
 		const result = await base.uploadFilePromise(avatarUrl2)
-		
+		uni.hideLoading()
 		avatarUrl.value = result.list[0]
 	}
 	// function uploadFilePromise(url) {
@@ -176,7 +176,7 @@
 				title: '获取最新信息'
 			})
 			await user.refreshUserData()
-			uni.showToast()
+			// uni.showToast()
 		}
 	} 
 	function clearInput (event) {

@@ -67,6 +67,7 @@
 				label="设为默认" 
 			>
 				<u-switch 
+				activeColor="#F12E24"
 				v-model="addressData.default" 
 				:activeValue="1"
 				:inactiveValue="0"
@@ -86,7 +87,7 @@
 		</u--form>
 		
 		<view class="u-p-t-20">
-			<u-button type="primary" @click="submit">提交</u-button>
+			<u-button type="error" @click="submit">提交</u-button>
 		</view>
 		<!-- <view class="u-p-t-20 u-m-b-40" v-if="addressData.id">
 			<u-button type="error" @click="delAddrClick">删除地址</u-button>

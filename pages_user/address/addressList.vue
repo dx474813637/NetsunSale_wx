@@ -25,7 +25,7 @@
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28" style="height: 100%;">
 			 
 			<view class="item u-flex-1">
-				<u-button type="primary" shape="circle" @click="addAddrBtn"  >
+				<u-button type="error" shape="circle" @click="addAddrBtn"  >
 					<view class="u-flex"> 
 						<text class="u-m-l-8 u-p-b-5 u-font-32">新增地址</text>
 					</view>

@@ -80,7 +80,7 @@
 	</view>
 	<view class="u-flex u-flex-items-end u-flex-between u-p-20">
 		<up-image :src="originData.ad" height="30px" width="200px" mode="heightFix" ></up-image>
-		<view class="item u-flex u-flex-items-center u-font-28 u-info text-nowrap">
+		<view class="item u-flex u-flex-items-center u-font-28 u-info text-nowrap u-p-20" @click="base.handleGoto('/pages/product/productList')" style="position: relative;z-index: 20;">
 			<view class="u-m-r-10">全部商品</view>
 			<u-icon name="arrow-right" color="#999" size="14"></u-icon>
 		</view>
@@ -213,13 +213,14 @@
 		})
 	}
 	function handleTabsClick(e) { 
-		base.handleGoto({
-			url: '/pages/product/productList',
-			type: 'reLaunch',
-			params: {
-				cate: e.id
-			}
-		})
+		goto(e)
+		// base.handleGoto({
+		// 	url: '/pages/product/productList',
+		// 	type: 'reLaunch',
+		// 	params: {
+		// 		cate: e.id
+		// 	}
+		// })
 	}
 </script>
 

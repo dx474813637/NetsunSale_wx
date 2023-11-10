@@ -114,7 +114,7 @@
 			</view>  
 			<template #footer>
 				<view class="u-p-20">
-					<u-button type="primary" shape="circle" @click="serviceBtn">我要售后</u-button>
+					<u-button type="error" shape="circle" @click="serviceBtn">我要售后</u-button>
 				</view>
 			</template>
 		</PopupNormal>
@@ -322,6 +322,7 @@
 		}
 	}
 	.service-card {
+		box-sizing: border-box;
 		width: 100%;
 	}
 </style>

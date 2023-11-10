@@ -3,14 +3,14 @@
 		<view class="shop-card-header u-flex u-flex-items-center u-flex-between u-p-15">
 			<view class="u-flex u-flex-items-center"> 
 				<view class="u-m-r-10">
-					<u-icon name="order" color="#999" size="20"></u-icon>
+					<u-icon name="home" color="#999" size="20"></u-icon> 
 				</view>
-				<view class="u-font-30 u-line-1">{{ dataList.id }}</view>
+				<view class="u-font-30 u-line-1">网盛特卖<!-- {{ dataList.id }} --></view>
 				<!-- <view class="u-m-l-20">
 					<u-icon name="arrow-right" color="#999" size="14"></u-icon>
 				</view> -->
 			</view>
-			<view class="u-m-l-20 u-primary text-nowrap u-font-30">
+			<view class="u-m-l-20 u-error text-nowrap u-font-30">
 				{{ order_zt2str }}
 			</view>
 		</view>

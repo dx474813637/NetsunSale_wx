@@ -5,8 +5,8 @@
 		}" style="background: #f8f8f8">
 			<view class="item"></view>
 			<view class="item u-flex u-flex-items-center">
-				<view @click="manageMode = !manageMode">
-					<view class="text-primary u-p-10 u-font-36" v-if="!manageMode">管理</view>
+				<view class="u-font-36" @click="manageMode = !manageMode">
+					<view class="text-primary u-p-10" v-if="!manageMode">管理</view>
 					<view class="text-primary u-p-10" v-else>退出管理</view> 
 				</view>
 			</view>
@@ -392,7 +392,7 @@
 	.cart-w { 
 		padding-bottom: 110px;
 		box-sizing: border-box;
-		background: linear-gradient(to bottom, #fff, 150px, transparent);
+		// background: linear-gradient(to bottom, #fff, 150px, transparent);
 	}
 	.cart-bar-w {
 		height: 100%; 

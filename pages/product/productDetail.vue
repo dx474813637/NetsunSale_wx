@@ -116,6 +116,18 @@
 					</template>
 					
 				</view>  
+				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14" @click="showExpressPrice= true">
+					<view class="item text-base u-m-r-30">
+						运费
+					</view>
+					<u-line direction="col" length="15px"></u-line> 
+					<view class="item u-p-l-30 u-flex-1 u-line-1 ">
+						<text class="u-info">查看详情</text>
+						
+					</view>
+					<u-icon name="arrow-right" color="#ccc"></u-icon> 
+					
+				</view>  
 			</view>
 			
 			
@@ -226,6 +238,12 @@
 		:onUpdateShow="handleChangeShow2" 
 		@onConfirm="sku2Cart"
 	></ProductSkuPopup>
+	<ProductExpressPopup
+		:show="showExpressPrice" 
+		title="运费说明" 
+		:list="express_info"
+		:onUpdateShow="handleChangeShow3" 
+	></ProductExpressPopup>
 </template>
 
 <script setup>
@@ -249,10 +267,12 @@
 	const { cate_list, cate_loading } = toRefs(cate)
 	const product_id = ref('')
 	const product_list = ref({})
+	const express_info = ref({})
 	const company_list = ref({})
 	const spec_prices = ref([])
 	const swiper_index = ref(0)
 	const showProductAttr = ref(false)
+	const showExpressPrice = ref(false)
 	const showProductSku = ref(false)
 	
 	const cate_active_name = computed(() => {
@@ -298,6 +318,9 @@
 	function handleChangeShow2(data) {
 		showProductSku.value = data
 	}
+	function handleChangeShow3(data) {
+		showExpressPrice.value = data
+	}
 	function sku2Cart(data) {
 		console.log(data)
 	}
@@ -305,6 +328,7 @@
 		const res = await $api.web_product_detail({params: {id: product_id.value}})
 		if(res.code == 1) {
 			product_list.value = res.list
+			express_info.value = res.info
 			company_list.value = res.company
 			spec_prices.value = res.spec_prices
 		}
