@@ -28,22 +28,29 @@
 		</view> -->
 		<view class="card-row u-flex u-flex-items-center u-flex-between u-m-b-20"> 
 			<u-icon name="map-fill" size="26" color="#E66449"></u-icon>
-			<view class="item u-flex-1 u-m-l-20">
-				<view class="text-base u-m-b-10">
-					{{origin.area_name}}
-				</view> 
-				<view class="text-bold u-font-36 u-m-b-10">
-					{{origin.address}}
-				</view> 
-				<view class="u-flex u-flex-items-center u-font-28">
-					<view>
-						{{origin.name}}
+			<view class="item u-flex-1 u-m-l-20" >
+				<template v-if="origin.id">
+					<view class="text-base u-m-b-10">
+						{{origin.area_name}}
 					</view> 
-					<view class="u-m-l-20">
-						{{origin.tel}}
+					<view class="text-bold u-font-36 u-m-b-10">
+						{{origin.address}}
 					</view> 
-				</view> 
-			</view>
+					<view class="u-flex u-flex-items-center u-font-28">
+						<view>
+							{{origin.name}}
+						</view> 
+						<view class="u-m-l-20">
+							{{origin.tel}}
+						</view> 
+					</view> 
+				</template>
+				<template v-else>
+					<view class="text-base">
+						请先选择地址
+					</view> 
+				</template>
+			</view> 
 			<view class="item u-p-l-20 u-p-10 u-p-r-20" >
 				<u-icon name="arrow-right" size="16" color="#999"></u-icon>
 			</view>

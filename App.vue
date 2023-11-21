@@ -49,6 +49,7 @@
 		}
 		routingIntercept({$http})  
 		user.refreshUserData()
+		user.sendDingyue()
 		
 	});
 	onShow(async (options) => {

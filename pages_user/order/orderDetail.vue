@@ -41,6 +41,10 @@
 				<view class="item text-nowrap u-p-r-20">总金额</view>
 				<view class="item u-flex-1 u-text-right text-base">{{ list.total_fee }} 元</view>
 			</view>
+			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28" v-if="list.info">
+				<view class="item text-nowrap u-p-r-20">订单备注</view>
+				<view class="item u-flex-1 u-text-right text-base">{{ list.info }}</view>
+			</view>
 			
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28" v-if="list.status == 4">
 				<view class="item text-nowrap u-p-r-20">订单评分（5分制）</view>

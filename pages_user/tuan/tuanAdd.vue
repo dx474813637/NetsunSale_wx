@@ -44,8 +44,15 @@
 				 	ref="divide"
 				 	required 
 				 	> 
-					<slider :value="model.divide" activeColor="#F12E24" @changing="lokk" showValue  /> 
+				 	<up-input 
+				 		v-model="model.divide"
+				 		placeholder="达人分成比例(%)"
+				 		></up-input> 
+					<!-- <slider :value="model.divide" activeColor="#F12E24" @changing="lokk" showValue  /> -->
 				</u-form-item>  
+				<view v-if="list.divide_info">
+					<u-parse :content="list.divide_info"></u-parse>
+				</view>
 			</u--form> 
 			
 		</view>
@@ -86,7 +93,7 @@
 	}) 
 	const uForm = ref() 
 	const type = ref('add') 
-	const list = ref({})
+	const list = ref({}) 
 	const model = ref({ 
 		title: '', 
 		info: '',
@@ -140,7 +147,8 @@
 	async function getData() {
 		const res = await $api.tuan_detail()
 		if(res.code == 1 ) { 
-			// list.value = res.list
+			list.value = uni.$u.deepClone(res.list)
+			res.list.divide_info = ''
 			model.value = res.list
 		}
 	} 

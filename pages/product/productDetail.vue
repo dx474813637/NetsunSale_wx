@@ -2,7 +2,7 @@
 	<view class="w">
 		<template v-if="product_list.pic">
 			<view class="swiper-w">
-				<view class="swiper-box" @click="swiperClick">
+				<view class="swiper-box" >
 					<view class="swiper-bg" :style="{
 						backgroundImage: `url(${swiperlist[swiper_index]})`
 					}"></view>
@@ -18,6 +18,7 @@
 						interval="4000"
 						duration="600"
 						@change="swiperChange"
+						@click="swiperClick"
 						circular
 						bgColor="rgba(0,0,0,.2)"
 					></u-swiper>
@@ -28,10 +29,21 @@
 		</template>
 		<view class="u-p-10 u-p-t-30 u-p-b-30 bg-white u-m-b-20">  
 			<view class="u-flex u-flex-between u-flex-items-center u-p-10">
-				<view class="item  " style="color: #F12E24;">
-					<text class="u-font-28">销售价</text>
-					<text class="u-font-28 text-bold u-m-l-10">￥</text>
-					<text class=" text-bold" style="font-family: cursive; font-size: 24px;">{{product_list.price}}</text>
+				<view class="item u-flex u-flex-items-center" style="color: #F12E24;">
+					<view>
+						<text class="u-font-28">到手价</text>
+						<text class="u-font-28 text-bold u-m-l-10">￥</text>
+						<text class="text-bold" style="font-family: cursive; font-size: 24px;">{{product_list.price1}}</text>
+						<text class="u-font-28 u-p-l-10">起</text>
+					</view>
+					<view 
+						class="u-font-28 u-p-l-10 u-p-r-10 u-m-l-20" 
+						style="background-color: #f9dada; text-decoration: line-through;"
+						v-if="product_list.price"
+					> 
+						<text>￥</text>
+						<text style="font-family: cursive;">{{product_list.price}}</text>
+					</view>
 				</view>
 				<view class="item u-font-28 u-info">已售{{product_list.sales_volume}}件</view>
 			</view>
@@ -78,7 +90,7 @@
 					</view>
 				</view>  
 				<u-line length="100%" margin="10px 0"></u-line>
-				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14" @click="showProductSku = true">
+				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14" @click="addCartBtn">
 					<view class="item text-base u-m-r-30">
 						选择
 					</view>
@@ -195,31 +207,36 @@
 	<TabBar :customStyle="{boxShadow: 'none', border: '1rpx solid #eee' }">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28" style="height: 100%;">
 			<view class="u-flex u-flex-items-center" style="height: 100%;"> 
-				<view class="item u-flex-column u-flex-items-center u-m-r-20 u-p-l-10 u-p-r-10" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/index/index'})">
+				<view class="item u-flex-column u-flex-items-center u-p-l-10 u-p-r-10" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/index/index'})">
 					<u-icon name="account" color="#000" size="28"></u-icon>
 					<view class="u-info">我的</view>
 				</view>
-				<view class="item u-flex-column u-flex-items-center u-m-r-20 u-p-l-10 u-p-r-10" v-if="!hideHomeBtn" @click="base.handleGoto({type: 'reLaunch', url: '/pages/home/home'})">
+				<view class="item u-flex-column u-flex-items-center u-p-l-10 u-p-r-10" v-if="!hideHomeBtn" @click="base.handleGoto({type: 'reLaunch', url: '/pages/home/home'})">
 					<u-icon name="home" color="#000" size="28"></u-icon>
 					<view class="u-info">首页</view>
 				</view>
-				<!-- <view class="item u-flex-column u-flex-items-center u-m-r-20" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/reservation_list/reservation_list'})">
+				<!-- <view class="item u-flex-column u-flex-items-center" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/reservation_list/reservation_list'})">
 					<u-icon name="list-dot" :color="#000" size="28"></u-icon>
 					<view class="u-info">店铺</view>
 				</view> -->
-				<view class="item u-flex-column u-flex-items-center u-m-r-20 u-p-l-10 u-p-r-10" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/cart/cart'})" style="position: relative;">
+				<view class="item u-flex-column u-flex-items-center u-p-l-10 u-p-r-10" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/cart/cart'})" style="position: relative;">
 					<u-icon name="shopping-cart" color="#000" size="28"></u-icon>
 					<view class="u-info">购物车</view>
-					<up-badge :offset="[-5,2]" numberType="overflow"  max="99" :value="cart_list_num" absolute></up-badge>
+					<up-badge :offset="[-5,2]" numberType="overflow"  max="99" :value="cart_list_abled_num" absolute></up-badge>
 				</view> 
 			</view>
-			<view class="item " style="flex: 0 0 40vw">
-				<u-button type="error" @click="addCartBtn"  >
+			<view class="item u-flex u-flex-items-center" >
+				<u-button type="warning" @click="addCartBtn" :customStyle="{borderRadius: '20px 0 0 20px', padding: '0 18px'}" >
 					<view class="u-flex"> 
-						<text class="u-m-l-8 u-p-b-5 u-font-32">加入购物车</text>
+						<text class="u-m-l-8 u-p-b-5   text-nowrap">加入购物车</text>
 					</view>
 				</u-button>
-			</view>
+				<u-button type="error" @click="addCartBtn(true)" :customStyle="{borderRadius: '0 20px 20px 0', padding: '0 18px'}"  >
+					<view class="u-flex"> 
+						<text class="u-m-l-8 u-p-b-5  ">立即购买</text>
+					</view>
+				</u-button>
+			</view> 
 		</view>
 	</TabBar> 
 	<ProductAttrPopup
@@ -236,6 +253,7 @@
 		:sku="product_sku"
 		:spec_prices="spec_prices"
 		:onUpdateShow="handleChangeShow2" 
+		:isOrder="isOrder"
 		@onConfirm="sku2Cart"
 	></ProductSkuPopup>
 	<ProductExpressPopup
@@ -247,8 +265,8 @@
 </template>
 
 <script setup>
-	import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
-	import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
+	// import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
+	// import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
 	import { share } from '@/composition/share.js'
 	import useProductSku from '@/composition/useProductSku'
 	const {
@@ -259,7 +277,7 @@
 	
 	import {useCartStore} from '@/stores/cart.js'
 	const cart = useCartStore()
-	const { cart_list_num } = toRefs(cart)
+	const { cart_list_num, cart_list_abled_num } = toRefs(cart)
 	import {useCateStore, baseStore} from '@/stores/base.js'
 	const base = baseStore() 
 	const { home, roomList, themeColor } = toRefs(base)
@@ -274,6 +292,7 @@
 	const showProductAttr = ref(false)
 	const showExpressPrice = ref(false)
 	const showProductSku = ref(false)
+	const isOrder = ref(false)
 	
 	const cate_active_name = computed(() => {
 		if(!product_list.value.id || cate_list.value.length == 0) return '' 
@@ -323,6 +342,11 @@
 	}
 	function sku2Cart(data) {
 		console.log(data)
+		handleChangeShow2(false)
+		base.handleGoto({
+			url: '/pages_user/order/orderCreate',
+			type: 'reLaunch'
+		})
 	}
 	async function getData() {
 		const res = await $api.web_product_detail({params: {id: product_id.value}})
@@ -331,6 +355,7 @@
 			express_info.value = res.info
 			company_list.value = res.company
 			spec_prices.value = res.spec_prices
+			setOnlineControl(res)
 		}
 	}
 	function swiperChange({current, currentItemId, source}) { 
@@ -339,14 +364,15 @@
 	// function findIndexby () {
 	// 	return spec_prices_data.value.map(ele => ele.specs).findIndex(ele => isObjectEqual(ele, product_sku.form) );
 	// }
-	function addCartBtn() {
-		 showProductSku.value = true
+	function addCartBtn(type = false) {
+		isOrder.value = type
+		showProductSku.value = true
 	}
 	
-	function swiperClick() {
+	function swiperClick(index) { 
 		uni.previewImage({
 			urls: swiperlist.value,
-			current: 0,
+			current: index,
 			longPressActions: {
 				itemList: ['发送给朋友', '保存图片', '收藏'],
 				success: function(data) {

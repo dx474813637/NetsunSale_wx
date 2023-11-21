@@ -45,8 +45,11 @@
 						<view 
 							class="product-item u-flex u-flex-items-start u-p-15"
 							v-for="product in item.products"
-							:key="product.id"
+							:key="product.id" 
 							>
+							<view class="disabled-bg" :class="{
+								disabled: product.disabled && !manageMode
+							}"></view>
 							<view class="item checkbox u-flex u-flex-items-center u-flex-center u-p-10"> 
 								<u-checkbox 
 								shape="circle" 
@@ -400,6 +403,21 @@
 	}
 	.shop-card-main {
 		.product-item {
+			position: relative;
+			z-index: 10;
+			.disabled-bg { 
+				position: absolute;
+				z-index: 20;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(255,255,255,.5);
+				display: none;
+				&.disabled {
+					display: block;
+				}
+			}
 			.item {
 				&.checkbox {
 					height: 80px;

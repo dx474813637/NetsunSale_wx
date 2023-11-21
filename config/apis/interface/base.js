@@ -49,6 +49,10 @@ export const order_type = (data) => http.get('order_type', data)
 // export const create_order = (data = {}) => all_api(uni.$u.deepMerge(data, {params: {api: 'create_order'}}))
 // `order_list` 订单列表  参数type 1待付款 2待收货 3已完成 role=1 买家的订单列表 不传或传其他值 卖家的订单列表 p页数
 export const order_list = (data) => http.get('order_list', data)
+// service_list 售后列表 参数p
+export const service_list = (data) => http.get('service_list', data)
+// change_service_status 提交快递单号 参数id售后id，express 快递单号 只有zt=1的时候显示
+export const change_service_status = (data) => http.get('change_service_status', data)
 // `order_detail` 订单详情 参数order_id 售后记录在list.service里
 export const order_detail = (data) => http.get('order_detail', data)
 // orderConfirm 创建订单 地址参数 

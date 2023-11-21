@@ -59,8 +59,8 @@
 </template>
 
 <script setup>
-	import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
-	import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
+	// import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
+	// import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
 	import { share } from '@/composition/share.js'
 	const { setOnlineControl, customShareParams } = share()
 	const $api = inject('$api')
@@ -125,6 +125,7 @@
 		const res = await $api[func.value]({params: params.value})
 		if (res.code == 1) { 
 			dataList.value = [...dataList.value, ...res.list]
+			setOnlineControl(res)
 			if(dataList.value.length >= +res.total) {
 				loadstatus.value = 'nomore'
 			}

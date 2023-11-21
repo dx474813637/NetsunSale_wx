@@ -23,9 +23,17 @@
 							@cardClick="addressSelect(item)"
 						></AddressCard>
 					</view>
-					<view class="u-p-b-20">
-						<u-loadmore status="nomore" />
+					<view class="u-p-b-20"> 
+						<template v-if="list.length == 0">
+							<view class="u-flex u-flex-center u-p-40">
+								<u-empty mode="data" :icon="base.empty" />
+							</view> 
+						</template>
+						<template v-else>
+							<u-loadmore status="nomore" />
+						</template>  
 					</view>
+					
 					
 				</scroll-view> 
 			</view>  

@@ -116,12 +116,12 @@
 </template>
 
 <script setup>
-	import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
-	import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
+	// import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
+	// import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
 	import { share } from '@/composition/share.js'
 	import useDataList from '@/composition/useDataList.js'
 	import {useCateStore, baseStore} from '@/stores/base.js'
-	const base = baseStore()
+	const base = baseStore() 
 	const { setOnlineControl } = share()
 	const $api = inject('$api')
 	const keyword = ref('')
@@ -177,6 +177,7 @@
 		if(res.code == 1) {
 			originData.value = res
 			swiperList.value = res.swiper
+			setOnlineControl(res)
 		}
 	}
 	async function getTuijianData() {

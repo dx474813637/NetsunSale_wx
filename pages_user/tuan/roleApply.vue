@@ -1,48 +1,64 @@
 <template>
-	<view class="w u-p-10">  
-		<view class="u-p-10">
+	<view class="w">
+		<!-- <view class="u-p-10">
 			<view class="bg-white u-p-30 u-radius-8">
 				<text class="u-info">您的当前身份为</text>
 				<text class="u-m-l-10 text-bold">{{ role2Str }}</text> 
 			</view>
-		</view>
-		<view class="u-p-10" v-if="list.info">
+		</view> -->
+		<view class="" v-if="list.info">
 			<view class="bg-white u-p-30 u-radius-8">
 				<u-parse :content="list.info"></u-parse>
 			</view>
 		</view>
-		<view class="u-m-10 card" 
-			v-for="item in tabs_list_filter" 
-			:key="item.value"
-			@click="roleClick(item)"
-			:class="{
-				disabled: item.disabled
-			}"
-		>
-			<UserRoleCard
-				:origin="item.cardData" 
-			></UserRoleCard>
-		</view> 
-		
-	</view> 
-	<MenusBar></MenusBar>
+	</view>
+	<u-safe-bottom></u-safe-bottom>
+	<TabBar :customStyle="{boxShadow: '0px -3px 10px rgba(0,0,0,0.1)' }">
+		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28" style="height: 100%;">
+			<view class="item u-flex-1 ">
+				<u-button type="error" shape="circle" @click="roleClick">{{tabs_list[0].cardData.title}}</u-button>
+			</view>
+			<!-- <view class="item u-flex-1" v-else>
+				<u-button type="primary" shape="circle" openType="share"  >
+					<view class="u-flex"> 
+						<text class="u-m-l-8 u-p-b-5 u-font-32">分享邀请页面</text>
+					</view>
+				</u-button>
+			</view> -->
+		</view>
+
+	</TabBar>
 </template>
 
 <script setup>
-	import { onLoad, onReady, onReachBottom } from "@dcloudio/uni-app";
-	import { ref, reactive, computed, toRefs, inject, watch } from 'vue' 
-	// import { share } from '@/composition/share.js'
-	import { baseStore } from '@/stores/base'
-	import {userStore} from '@/stores/user'
+	import {
+		onLoad,
+		onShareAppMessage,
+		onShareTimeline
+	} from '@dcloudio/uni-app'
+	// import { ref, reactive, computed, toRefs, inject, watch } from 'vue' 
+	import { share } from '@/composition/share.js'
+	import {
+		baseStore
+	} from '@/stores/base'
+	import {
+		userStore
+	} from '@/stores/user'
 	import useFilter from '@/composition/useFilter.js'
-	const user = userStore() 
-	const {user_info} = toRefs(user)
+	const user = userStore()
+	const {
+		user_info
+	} = toRefs(user)
 	const base = baseStore();
-	const { home, roomList, themeColor } = toRefs(base)
-	// const {
-	// 	setOnlineControl,
-	// 	onlineControl
-	// } = share()
+	const {
+		home,
+		roomList,
+		themeColor
+	} = toRefs(base)
+	const {
+		setOnlineControl,
+		onlineControl
+	} = share()
 	const $api = inject('$api')
 	const tabs_list = ref([
 		// {
@@ -54,7 +70,7 @@
 		// 		title: '成为达人',
 		// 		sub: '',
 		// 	}
-			
+
 		// },
 		{
 			name: '团长',
@@ -66,59 +82,51 @@
 				sub: '',
 			}
 		},
-	])      
-	
-	const role = computed(() => { 
+	])
+
+	const role = computed(() => {
 		return {
 			role: user_info.value.role
 		}
 	})
-	const id = ref('3')
+	const id = ref('6')
 	const list = ref({})
-	const { 
+	const {
 		role2Str
 	} = useFilter(role)
 	const tabs_list_filter = computed(() => {
 		return tabs_list.value.filter(ele => +ele.value > +user_info.value.role)
 	})
-	  
-	onLoad(async (options) => { 
-		if(options.hasOwnProperty('id')) {
+
+	onLoad(async (options) => {
+		if (options.hasOwnProperty('id')) {
 			id.value = options.id
 		}
 		uni.showLoading()
 		await getData()
-	})  
-	
+	})
+
 	async function getData() {
 		const res = await $api.web_danye({
 			params: {
 				id: id.value
 			}
 		})
-		if(res.code == 1 ) { 
+		if (res.code == 1) {
 			list.value = res.list
-			tabs_list.value[0].cardData.title = res.button[0].name
-			tabs_list.value[0].cardData.sub = res.button[0].info
+			tabs_list.value[0].cardData.title = res.button.name
+			tabs_list.value[0].cardData.sub = res.button.info
 			// tabs_list.value[1].cardData.title = res.button[1].name
 			// tabs_list.value[1].cardData.sub = res.button[1].info
-			uni.setNavigationBarTitle({
-				title: res.list.title
-			})
+			setOnlineControl(res)
 		}
-	} 
-	async function roleClick(data) {
-		if(data.disabled) {
-			uni.showToast({
-				title: `当前身份已为${data.name}`,
-				icon: 'none'
-			})
-			return
-		}
+	}
+	async function roleClick() {
+		let data = tabs_list.value[0] 
 		uni.showModal({
 			title: '提示',
-			content: `是否成为${data.name}`,
-			success: async function (res) {
+			content: `${data.cardData.title}`,
+			success: async function(res) {
 				if (res.confirm) {
 					uni.showLoading()
 					const res = await $api.change_role({
@@ -126,11 +134,11 @@
 							role: data.value
 						}
 					})
-					if(res.code == 1) {
+					if (res.code == 1) {
 						uni.showToast({
 							title: res.msg,
 							icon: 'none'
-						}) 
+						})
 						await user.refreshUserData()
 					}
 				} else if (res.cancel) {
@@ -138,32 +146,35 @@
 				}
 			}
 		});
-		
+
 	}
 </script>
 
 <style scoped lang="scss">
-.w {
-	min-height: 100vh; 
-	padding-bottom: 60px;
-	box-sizing: border-box;
-} 
-.card {
-	position: relative;
-	z-index: 20;
-	&.disabled::after {
-		display: block;
+	.w {
+		min-height: 100vh;
+		padding-bottom: 60px;
+		box-sizing: border-box;
 	}
-	&::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(243, 243, 243, 0.5);
-		display: none;
+
+	.card {
+		position: relative;
 		z-index: 20;
+
+		&.disabled::after {
+			display: block;
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(243, 243, 243, 0.5);
+			display: none;
+			z-index: 20;
+		}
 	}
-}
 </style>

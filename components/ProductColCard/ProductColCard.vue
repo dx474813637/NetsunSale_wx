@@ -18,12 +18,20 @@
 			<view class="u-flex u-flex-between u-flex-items-center u-m-b-10"> 
 				<view class="u-font-32" style=" color: #fa3534;">
 					<text class="u-font-28">￥</text>
-					<text class="text-bold u-font-38" style="font-family: cursive;">{{origin.price}}</text> 
+					<text class="text-bold u-font-38" style="font-family: cursive;">{{origin.price1}}</text> 
 				</view>
-				<view class="u-info u-font-28">已售{{origin.sales_volume}}件</view>
+				<view class="u-info u-font-26">已售{{origin.sales_volume}}件</view>
 			</view>
-			<view class="u-flex u-flex-items-center u-info u-m-b-10" v-if="origin.company"> 
-				<view class="u-line-1">{{origin.company.company}}</view>
+			<view class="u-flex u-flex-items-center u-flex-between  u-m-b-10"  
+				v-if="origin.price"
+			>  
+				<view class="item u-font-28 u-info " style=" text-decoration: line-through;">
+					<text>￥</text>
+					<text>{{origin.price}}</text>
+				</view>
+				<view class="item " >
+					<view class="u-info u-font-26">{{$u.timeFrom(new Date(origin.uptime).getTime(), false)}}</view>
+				</view>
 			</view>
 		</view>
 		

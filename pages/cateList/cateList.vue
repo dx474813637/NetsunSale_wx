@@ -20,7 +20,7 @@
 						class="nav-item" 
 						@click="base.handleGoto('/pages/product/productList')"
 						>
-							<view class="u-line-2">全部</view> 
+							<view class="u-line-2 label">全部</view> 
 						</view>
 					<view 
 						class="nav-item"
@@ -31,7 +31,7 @@
 						}"
 						@click="navClick(index)"
 						>
-							<view class="u-line-2">
+							<view class="u-line-2 label">
 								{{ item.name }}
 							</view> 
 						</view>
@@ -89,8 +89,8 @@
 </template>
 
 <script setup>
-	import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
-	import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
+	// import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
+	// import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
 	import { share } from '@/composition/share.js'
 	const { setOnlineControl } = share()
 	const $api = inject('$api')
@@ -154,16 +154,45 @@ page {
 					.nav {
 						.nav-item {
 							font-size: 14px;
-							padding: 20px 10px;
 							// border-bottom: 1rpx solid #f8f8f8;
 							box-sizing: border-box;
 							color: #666;
-							&.active {
+							background-color: #f8f8f8;
+							position: relative;
+							z-index: 10;
+							.label { 
+								position: relative;
+								z-index: 10;
+								background-color: #f8f8f8;
+								padding: 20px 10px;
+							}
+							&:after {
+								content: '';
+								position: absolute;
+								left: 0;
+								top: 0;
+								width: 100%;
+								height: 100%;
 								background-color: #fff;
-								color: #FA392D;
+								z-index: 5;
+							}
+							&.active {
+								
+								.label { 
+									background-color: #fff;
+									color: #FA392D; 
+								}
+								&+.nav-item { 
+									.label {
+										border-radius: 0 10px 0 0 ;
+									}
+									
+								}
 							}
 							&:has(+.active) {
-								color: #007aff!important;
+								.label {
+									border-radius: 0 0 10px 0 ;
+								} 
 							}
 						}
 					}

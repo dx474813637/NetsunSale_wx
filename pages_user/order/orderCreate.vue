@@ -1,16 +1,36 @@
 <template>
-	<view class="u-p-20">
-		<view class="u-p-10 u-m-b-10 u-info-dark u-font-32">收货地址</view>
+	<view class="u-m-b-30 bg-white">
+		<!-- <view class="u-p-10 u-m-b-10 u-info-dark u-font-32">收货地址</view> -->
 		<AddressSelectCard
 			:origin="addressData"
 			@cardClick="handleChangeShow(true)"
 		></AddressSelectCard>
 	</view>
-	<view class="cart-w ">
-		<view class="u-p-10 u-m-b-10 u-info-dark u-font-32 u-p-l-30">订单选品</view>
+	<view class="bg-white u-m-b-30 u-p-20 u-p-t-30 u-p-t-30 u-flex u-flex-between u-flex-items-center">
+		<view class="text-base">如遇缺货无法发出直接退款？</view>
+		<view class="u-flex-1 u-p-l-30 u-flex u-flex-end  ">
+			<view class="u-flex u-info u-flex-items-center">
+				<view class="u-p-10" :class="{
+					'text-error': tuikuan == true
+				}" 
+				>是</view>
+				<u-switch
+					v-model="tuikuan"
+					:activeColor="themeColor" 
+				></u-switch>
+				<view class="u-p-10" :class="{
+					'text-error': tuikuan == false
+				}" 
+				>否</view>
+			</view>
+			
+		</view>
+	</view>
+	<view class="cart-w bg-white u-m-b-30">
+		<!-- <view class="u-p-10 u-m-b-10 u-info-dark u-font-32 u-p-l-30">订单选品</view> -->
 		<view
 			class="items u-p-l-20 u-p-r-20 u-m-b-20 "
-			v-for="(item, index) in cart_list_checked"
+			v-for="(item, index) in dataList"
 			:key="item.shop.id"
 			>
 			
@@ -63,6 +83,13 @@
 			</view>
 		</view>
 	</view>
+	<view class="bg-white u-m-b-30 u-p-40 u-flex u-flex-between u-flex-items-center">
+		<view class="">备注</view>
+		<view class="u-flex-1 u-p-l-30">
+			<u-input v-model="remark" border="none" clearable placeholder="请输入您需要备注的内容" fontSize="16px"></u-input>
+		</view>
+	</view>
+	<u-safe-bottom></u-safe-bottom>
 	<TabBar :customStyle="customStyle">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28 cart-bar-w" > 
 			<view></view>
@@ -73,7 +100,7 @@
 						<view class="u-flex u-flex-items-center">
 							<text class="u-p-t-8 u-error-dark">￥</text>
 							<u-count-to  
-								:endVal="cart_list_checked_price" 
+								:endVal="totalPrice" 
 								separator=","
 								:duration="400"  
 								:decimals="2"
@@ -84,12 +111,12 @@
 						</view>
 					</view>
 					<view class="u-info">
-						共计 {{cart_list_checked_num}} 件选品
+						共计 {{prodSum}} 件选品
 					</view>
 				</view>
-				<view style="width: 100px">
-					<u-button type="error" shape="circle" @click="createOrderBtn" :disabled="btn" >
-						<text class="u-font-32">创建订单</text> 
+				<view style="min-width: 100px">
+					<u-button type="error" shape="circle" @click="createOrderBtn" :disabled="createBtnDisabled" throttleTime="800" >
+						<text class="u-font-32 text-nowrap">{{btnText}}</text> 
 					</u-button>
 				</view>
 				
@@ -108,8 +135,8 @@
 </template>
 
 <script setup>
-	import { onLoad, onUnload, onPageScroll } from "@dcloudio/uni-app";
-	import { ref, reactive, computed, toRefs, inject, watch, onMounted, nextTick } from 'vue'
+	// import { onLoad, onUnload, onPageScroll } from "@dcloudio/uni-app";
+	// import { ref, reactive, computed, toRefs, inject, watch, onMounted, nextTick } from 'vue'
 	// import { share } from '@/composition/share.js'
 	import useProductSku from '@/composition/useProductSku'
 	const {
@@ -120,7 +147,16 @@
 	
 	import {useCartStore} from '@/stores/cart.js'
 	const cart = useCartStore()
-	const { cart_list, cart_list_num, cart_list_checked, cart_list_checked_num, cart_list_checked_price } = toRefs(cart)
+	const { 
+		cart_list, 
+		cart_list_num, 
+		cart_list_checked, 
+		cart_list_checked_num, 
+		cart_list_checked_price, 
+		is_order_data, 
+		is_order_data_price,
+		is_order_data_num
+	} = toRefs(cart)
 	import {useCateStore, baseStore} from '@/stores/base.js'
 	const base = baseStore() 
 	const { home, roomList, themeColor } = toRefs(base)
@@ -131,8 +167,30 @@
 	const addressPopupShow = ref(false)
 	const morenAddress = ref({})
 	const addressList = ref([])
-	const btn = ref(false)
 	const customStyle = ref({}) 
+	const remark = ref('')
+	const tuikuan = ref(true) 
+	const createBtnDisabled = computed(() => {
+		return !tuikuan.value || !addressData.value.id
+	})
+	const dataList = computed(() => {
+		if(is_order_data.value.length > 0) return is_order_data.value
+		return cart_list_checked.value
+	})
+	const totalPrice = computed(() => {
+		if(is_order_data.value.length > 0) return is_order_data_price.value
+		return cart_list_checked_price.value
+	})
+	const prodSum = computed(() => {
+		if(is_order_data.value.length > 0) return is_order_data_num.value
+		return cart_list_checked_num.value
+	})
+	const btnText = computed(() => {
+		let text = '创建订单'
+		if(!addressData.value.id) text = '请选择收货地址'
+		else if(createBtnDisabled.value) text = '请同意注意事项'
+		return text
+	})
 	onLoad(async () => {
 		uni.showLoading()
 		await getInitData()
@@ -143,6 +201,7 @@
 	})
 	onUnload(() => {
 		uni.$off('create_order_address_update')
+		is_order_data.value = []
 	})
 	
 	async function getInitData() {
@@ -170,29 +229,32 @@
 	} 
 	
 	async function createOrderBtn() {
-		btn.value = true
+		// btn.value = true
 		uni.showLoading();
 		await cart.getPidSku(sku_ids.value)
 		uni.showLoading();
 		await createOrder()
-		btn.value = false
+		// btn.value = false
 	}
 	
 	async function createOrder() {
-		let arr = cart_list_checked.value.map(ele => ele.products.map(item => ({id: item.id, num: item.num}))).reduce((a, b) => a.concat(b))
+		let arr = dataList.value.map(ele => ele.products.map(item => ({id: item.id, num: item.num}))).reduce((a, b) => a.concat(b))
 		console.log(arr)
 		const res = await $api.create_order({
 			params: {
 				address_id: addressData.value.id,
-				pid_array: JSON.stringify(arr)
+				pid_array: JSON.stringify(arr),
+				info: remark.value, 
 			}
 		})
 		if(res.code == 1) {
 			uni.showToast({
 				title: res.msg
 			})
-			cart.removeProductsById(arr.map(ele => ele.id))
-			cart.saveCartData2LocalStorage()
+			if(is_order_data.value.length == 0) {
+				cart.removeProductsById(arr.map(ele => ele.id))
+				cart.saveCartData2LocalStorage()
+			} 
 			
 			base.handleGoto({
 				url: '/pages_user/order/orderDetail',
@@ -202,9 +264,14 @@
 				}
 			})
 		}
-	}
+	} 
 </script>
-
+<style>
+	page {
+		background-color: #F0F0F0;
+		padding-bottom: 60px;
+	}
+</style>
 <style lang="scss" scoped>
 
 	.cart-bar-w {

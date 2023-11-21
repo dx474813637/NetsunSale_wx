@@ -25,25 +25,25 @@ export const userStore = defineStore('user', {
 	getters: { 
 	}, 
 	actions: { 
-		// async sendDingyue() {
-		// 	wx.getSetting({
-		// 		withSubscriptions: true,
-		// 		success: async res => {
-		// 			console.log(res)
-		// 			const r = await apis.get_tmp_id_time({
-		// 				params: {
-		// 					str: JSON.stringify(res)
-		// 				}
-		// 			});
-		// 		}
-		// 	})
-		// },
-		// async gettmp_id_list() {
-		// 	const res = await apis.tmp_id_list();
-		// 	if(res.code == 1) {
-		// 		this.tmp_id_list = res.list
-		// 	}
-		// },
+		async sendDingyue() {
+			wx.getSetting({
+				withSubscriptions: true,
+				success: async res => {
+					console.log(res)
+					const r = await apis.get_tmp_id_time({
+						params: {
+							str: JSON.stringify(res)
+						}
+					});
+				}
+			})
+		},
+		async gettmp_id_list() {
+			const res = await apis.tmp_id_list();
+			if(res.code == 1) {
+				this.tmp_id_list = res.list
+			}
+		},
 		async getUserInfo(data) { 
 			this.user_info = data;
 			

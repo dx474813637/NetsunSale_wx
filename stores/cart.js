@@ -21,6 +21,7 @@ export const useCartStore = defineStore('cart', {
 	state: () => {
 		return { 
 			cart_list: cart_list,
+			is_order_data: []
 		};
 	},
 	getters: { 
@@ -46,9 +47,21 @@ export const useCartStore = defineStore('cart', {
 			if(!this.cart_list || this.cart_list.length == 0) return 0
 			return this.cart_list.map(ele => ele.products.filter(item => item.checked).reduce((sum, item) => sum += Number(item.num), 0)).reduce((sum, item) => sum += item, 0) 
 		},
+		cart_list_abled_num() {
+			if(!this.cart_list || this.cart_list.length == 0) return 0
+			return this.cart_list.map(ele => ele.products.filter(item => !item.disabled).reduce((sum, item) => sum += Number(item.num), 0)).reduce((sum, item) => sum += item, 0)
+		},
 		cart_list_checked_price() {
 			if(!this.cart_list || this.cart_list.length == 0) return 0
 			return this.cart_list.map(ele => ele.products.filter(item => item.checked).reduce((sum, item) => sum += (item.num*item.price), 0)).reduce((sum, item) => sum += item, 0) 
+		},
+		is_order_data_price() {
+			if(!this.is_order_data || this.is_order_data.length == 0) return 0
+			return this.is_order_data.map(ele => ele.products.reduce((sum, item) => sum += (item.num*item.price), 0)).reduce((sum, item) => sum += item, 0) 
+		},
+		is_order_data_num() {
+			if(!this.is_order_data || this.is_order_data.length == 0) return 0
+			return this.is_order_data.map(ele => ele.products.reduce((sum, item) => sum += Number(item.num), 0)).reduce((sum, item) => sum += item, 0) 
 		},
 	}, 
 	actions: { 
@@ -141,6 +154,29 @@ export const useCartStore = defineStore('cart', {
  
 			this.saveCartData2LocalStorage()
 
+			return true
+		},
+		addOrderProduct(data) { 
+			//直接购买下单的商品
+			let { id: shopId } = data.shop;
+			data = {
+				...data, 
+				stock: +data.stock,
+				loading: false, 
+				checked: false
+			} 
+			let shopObj = uni.$u.deepClone(data.shop)
+			delete data.shop
+			data.specs_arr = this.specs2Obj(data.specs)
+			let datas = {  
+				shop: {
+					...shopObj, 
+					checked: false,
+					indeterminate: false
+				},
+				products: [data]
+			}
+			this.is_order_data.unshift(datas)  
 			return true
 		},
 		setPidSku(arr, idStr) { 

@@ -29,7 +29,7 @@
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
-		}, 
+		},
 		{
 			"path": "pages/web_danye/web_danye",
 			"style": {
@@ -93,7 +93,7 @@
 				"enablePullDownRefresh": false
 			}
 
-		} 
+		}
 	],
 	"subPackages": [{
 		"root": "pages_user",
@@ -106,7 +106,7 @@
 						"softinputMode": "adjustPan"
 					}
 				}
-			},  {
+			}, {
 				"path": "address/addressList",
 				"style": {
 					"navigationBarTitleText": "地址管理",
@@ -129,7 +129,7 @@
 					"navigationBarBackgroundColor": "#f8f8f8"
 				}
 
-			},  {
+			}, {
 				"path": "order/orderDetail",
 				"style": {
 					"navigationBarTitleText": "订单详情",
@@ -159,7 +159,7 @@
 					"enablePullDownRefresh": false
 				}
 
-			},  {
+			}, {
 				"path": "tuan/darenList",
 				"style": {
 					"navigationBarTitleText": "邀请达人列表",
@@ -208,6 +208,15 @@
 					"enablePullDownRefresh": false
 				}
 
+			},
+			{
+				"path": "serviceList/serviceList",
+				"style": {
+					"navigationBarTitleText": "售后列表",
+					"enablePullDownRefresh": false,
+					"onReachBottomDistance": 80,
+					"navigationBarBackgroundColor": "#f8f8f8"
+				}
 			}
 		]
 	}],

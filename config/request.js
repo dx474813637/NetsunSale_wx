@@ -149,7 +149,11 @@ export default function($ws) {
 	// 响应拦截
 	http.interceptors.response.use((response) => {
 		uni.hideNavigationBarLoading();
-		uni.hideLoading()
+		uni.hideLoading({
+			fail:()=>{},
+			success:()=>{},
+			complete: (complete) => {}
+		})
 		if (response.hasOwnProperty('data')) {
 			if (response.data.code != 1) {
 				if (response.data.msg) {

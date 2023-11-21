@@ -5,37 +5,43 @@
 		<!-- <u-notify ref="notify"></u-notify> -->
 		<view class="bg-white u-m-b-25 u-p-b-20">
 			<view class="step3 user  u-p-l-30 u-p-r-30 u-p-b-20 u-p-t-50 bg-white">
-				<view class="u-flex u-flex-items-start" @click="showUserInfo = true">
-					<template v-if="user_info.img">
-						<view class="u-m-r-20">
-							<up-image 
-								show-loading
-								:src="user_info.img" 
-								width="50px" 
-								height="50px"  
-								shape="circle"
-								></up-image>
-						</view>
-					</template>
-					<template v-else>
-						<view class="user-img u-flex u-flex-items-center u-flex-center" >
-							<i class="custom-icon-myfill custom-icon"></i>
-						</view>
-					</template>
-						 
-					<view class="user-info u-flex-1" > 
-						<view class="item u-flex u-flex-items-center"> 
-							<view class="name u-line-1 u-font-38 step7">{{user_info.name || '暂无昵称'}}</view> 
-						</view>
-						<view class="item" >
-							<view class="sub2 u-font-28 step9 text-light u-flex u-flex-items-center">
-								<text >点击编辑信息</text> 
-								<i class="custom-icon-edit custom-icon u-font-28 text-light u-m-l-10"></i>
+				<view class="u-flex u-flex-items-start">
+					<view class="u-flex u-flex-items-start u-flex-1" @click="showUserInfo = true">
+						<template v-if="user_info.img">
+							<view class="u-m-r-20">
+								<up-image 
+									show-loading
+									:src="user_info.img" 
+									width="50px" 
+									height="50px"  
+									shape="circle"
+									></up-image>
 							</view>
+						</template>
+						<template v-else>
+							<view class="user-img u-flex u-flex-items-center u-flex-center" >
+								<i class="custom-icon-myfill custom-icon"></i>
+							</view>
+						</template>
+							 
+						<view class="user-info u-flex-1" > 
+							<view class="item u-flex u-flex-items-center u-m-b-6"> 
+								<view class="u-m-r-14 text-nowrap" v-if="user_info.role_name">
+									<u-tag :text="user_info.role_name" size="mini" type="error" borderColor="transparent"></u-tag>
+								</view> 
+								<view class="name u-line-1 u-font-38 step7">{{user_info.name || '暂无昵称'}}</view> 
+							</view>
+							<view class="item" >
+								<view class="sub2 u-font-28 step9 text-light u-flex u-flex-items-center">
+									<text >点击编辑信息</text> 
+									<i class="custom-icon-edit custom-icon u-font-28 text-light u-m-l-10"></i>
+								</view>
+							</view> 
+							
 						</view> 
-						
 					</view> 
-				</view> 
+					<DingYue></DingYue>
+				</view>
 				
 			</view>
 			<view class="u-p-15 u-p-l-20 u-p-r-20 u-flex u-flex-between u-flex-items-center bg-white u-font-26" v-if="balance">
@@ -171,9 +177,9 @@
 		reactive,
 		computed,
 		toRefs,
-		watch
-	} from 'vue' 
-	import { inject } from 'vue' 
+		watch,
+		inject
+	} from 'vue'  
 	// import menusBar from '@/components/menusBar/menusBa	r.vue'
 	import {
 		baseStore,

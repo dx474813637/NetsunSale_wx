@@ -91,6 +91,7 @@
 					>
 						<template v-if="product_num_disabled">请选择规格</template>
 						<template v-else-if="add_cart_disabled">请选择数量</template>
+						<template v-else-if="isOrder" >立即购买</template>
 						<template v-else >加入购物车</template>
 					</u-button>
 				</view>
@@ -151,7 +152,12 @@
 				return []
 			},
 		},
+		isOrder: {
+			type: Boolean,
+			default: false
+		}
 	})   
+	const emits = defineEmits(['onConfirm'])
 	const countRef = ref()
 	const sku_form = ref({})
 	const sku_arr = ref([]) 
@@ -299,16 +305,25 @@
 			name: props.product_base_data.name,
 			freight_id: props.product_base_data.freight_id,
 			num: +product_num.value,
-			checked: false,
-		} 
-		let flag = cart.addProduct2Cart( skuItem ) 
-		if(flag) {
-			uni.showToast({
-				title: '成功加入购物车！',
-				icon: 'success'
-			})
-			attrs.onUpdateShow(false)
+			checked: props.isOrder? true :false,
+		}  
+		if(props.isOrder) {
+			let flag = cart.addOrderProduct( skuItem )
+			if(flag) {
+				emits('onConfirm')
+			}
 		}
+		else {
+			let flag = cart.addProduct2Cart( skuItem )
+			if(flag) {
+				uni.showToast({
+					title: '成功加入购物车！',
+					icon: 'success'
+				})
+				attrs.onUpdateShow(false)
+			}
+		}
+		
 	}
 	 
 </script>
