@@ -5,8 +5,18 @@
 				{{origin.cate}} - {{origin.zt_title}}
 			</view>
 			<view class="item text-base u-font-26">
-				{{origin.ctime}}
+				{{origin.uptime}}
 			</view>
+		</view>
+		<view class="shop-card-main">
+			<view class="item" v-for="item in origin.pid" :key="item.id">
+				<OrderProductRowCard
+					:product="item"
+				></OrderProductRowCard>
+			</view>
+			
+			 
+			 
 		</view>
 		<view class="u-flex u-flex-between u-flex-items-center u-p-20"> 
 			<view class="item text-base ">

@@ -2,7 +2,10 @@
 	<view class="card-header bg-white u-radius-8 uni-shadow-base u-p-30"> 
 		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.id">
 			<view class="item u-info">订单ID</view>
-			<view class="item">{{props.origin.id}}</view>
+			<view class="item">
+				<text class="text-primary u-p-r-20" @click="emits('orderProductsBtn', props.origin.pid)">查看订单商品</text>
+				<text>{{props.origin.order_id}}</text>
+			</view>
 		</view>
 		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.tuan_id">
 			<view class="item u-info">团ID</view>
@@ -14,54 +17,32 @@
 		</view>
 		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.order_total_fee">
 			<view class="item u-info">订单总价（元）</view> 
+			<view class="item"> 
+				<up-text mode="price" :text="props.origin.order_total_fee"></up-text>
+			</view>
+		</view>
+		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.refund_fee">
+			<view class="item u-info">退款（元）</view> 
 			<view class="item">
-				<u-count-to 
-					separator="," 
-					fontSize="16" 
-					decimals="2"
-					duration="500"
-					color="#000"
-					:endVal="props.origin.order_total_fee"
-				></u-count-to>
+				<up-text mode="price" :text="props.origin.refund_fee"></up-text> 
 			</view>
 		</view>
 		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.divide_total_fee">
 			<view class="item u-info">总分成（元）</view> 
 			<view class="item">
-				<u-count-to 
-					separator="," 
-					fontSize="16" 
-					decimals="2"
-					duration="500"
-					color="#000"
-					:endVal="props.origin.divide_total_fee"
-				></u-count-to>
+				<up-text mode="price" :text="props.origin.divide_total_fee"></up-text> 
 			</view>
 		</view>
 		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.tuan_total_fee">
 			<view class="item u-info">团长分成（元）</view> 
 			<view class="item">
-				<u-count-to 
-					separator="," 
-					fontSize="16" 
-					decimals="2"
-					duration="500"
-					color="#000"
-					:endVal="props.origin.tuan_total_fee"
-				></u-count-to>
+				<up-text mode="price" :text="props.origin.tuan_total_fee"></up-text> 
 			</view>
 		</view>
 		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.daren_total_fee">
 			<view class="item u-info">达人分成（元）</view> 
 			<view class="item">
-				<u-count-to 
-					separator="," 
-					fontSize="16" 
-					decimals="2"
-					duration="500"
-					color="#000"
-					:endVal="props.origin.daren_total_fee"
-				></u-count-to>
+				<up-text mode="price" :text="props.origin.daren_total_fee"></up-text> 
 			</view>
 		</view>
 		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" >
@@ -71,7 +52,7 @@
 		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.ctime">
 			<view class="item u-info">时间</view>
 			<view class="item u-info">{{props.origin.ctime}}</view>
-		</view>
+		</view> 
 	</view>
 
 </template>
@@ -104,7 +85,7 @@
 		divide_rz_status
 	} = useFilter(zt)
 	
-	const emits = defineEmits(['cardClick']) 
+	const emits = defineEmits(['cardClick', 'orderProductsBtn']) 
 	
 	function gotoDetail() {
 		// if(props.gotoDetail) {

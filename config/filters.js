@@ -25,6 +25,17 @@ export default {
 				else if(value == '8') text = '审核拒绝' 
 				return text
 			}, 
+			service_zt2str(value) {
+				let text = value
+				if(value == '0') text = '待审核'
+				else if(value == '1') text = '审核通过' 
+				else if(value == '2') text = '审核拒绝' 
+				else if(value == '3') text = '快递退回中'  
+				else if(value == '4') text = '新快递配送中' 
+				else if(value == '5') text = '售后结束' 
+				else if(value == '99') text = '待审核'  
+				return text
+			}, 
 		}
 	},
 }

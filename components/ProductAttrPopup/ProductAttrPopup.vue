@@ -16,17 +16,7 @@
 	</view>
 </template>
 
-<script setup>
-	import {
-		ref,
-		toRefs,
-		inject,
-		computed,
-		onMounted,
-		reactive, 
-		watch,
-		useAttrs
-	} from 'vue' 
+<script setup> 
 	const attrs = useAttrs()
 	const $api = inject('$api')
 	import { baseStore } from '@/stores/base'

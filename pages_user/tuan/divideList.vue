@@ -20,6 +20,7 @@
 			<view class="list-item u-p-10" v-for="item in dataList" :key="item.id">
 				<DivideCard
 					:origin="item"
+					@orderProductsBtn="orderProductsBtn"
 				></DivideCard>
 			</view>
 			<template v-if="dataList.length == 0">
@@ -33,6 +34,12 @@
 			<u-safe-bottom></u-safe-bottom>
 		</view>	 
 	</view>
+	<OrderProductPopup
+		:show="showOrderProducts" 
+		title="订单商品信息"
+		:list="orderProducts"
+		:onUpdateShow="handleChangeShow"  
+	></OrderProductPopup>
 	<MenusBar></MenusBar>
 </template>
 
@@ -55,7 +62,8 @@
 	// const role = ref('1') 
 	const tabs_current = ref(0)
 	const tabs_list = ref([]) 
-	
+	const showOrderProducts = ref(false)
+	const orderProducts = ref({})
 	const options = computed(() => {
 		return {
 			params: {
@@ -102,6 +110,15 @@
 				}
 			})
 		}
+	}
+	function orderProductsBtn(data) {
+		console.log(data)
+		orderProducts.value = {};
+		orderProducts.value = data;
+		showOrderProducts.value = true
+	}
+	function handleChangeShow(v) {
+		showOrderProducts.value = v
 	}
 </script>
 

@@ -14,8 +14,13 @@
 				{{ order_zt2str }}
 			</view>
 		</view>
-		<view class="shop-card-main">
-			<view 
+		<view class="shop-card-main"> 
+			<view class="item" v-for="item in dataList.pid" :key="item.id">
+				<OrderProductRowCard
+					:product="item"
+				></OrderProductRowCard>
+			</view>
+			<!-- <view 
 				class="product-item u-flex u-flex-items-start u-p-15"
 				v-for="product in dataList.pid"
 				:key="product.id"
@@ -55,7 +60,7 @@
 					
 					<view class="u-info">x {{product.num}}</view> 
 				</view>
-			</view>
+			</view> -->
 			
 			<view class="u-flex u-flex-between u-flex-items-center u-p-10">
 				<view class="item u-info u-font-26 u-flex u-flex-items-center">
@@ -66,13 +71,13 @@
 					<view class="u-m-r-10">合计</view>
 					<view class="u-flex u-flex-items-center">
 						<view style="color: #fd2e2e;">￥</view>
-						<u-count-to 
-						:autoplay="false" 
-						:startVal="dataList.total_fee" 
+						<u-count-to  
+						:endVal="dataList.total_fee" 
 						separator="," 
 						:decimals="2"
 						fontSize="16"
 						bold
+						duration="100"
 						color="#fd2e2e"
 						></u-count-to>
 					</view>

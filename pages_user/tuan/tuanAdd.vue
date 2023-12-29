@@ -47,6 +47,7 @@
 				 	<up-input 
 				 		v-model="model.divide"
 				 		placeholder="达人分成比例(%)"
+						readonly 
 				 		></up-input> 
 					<!-- <slider :value="model.divide" activeColor="#F12E24" @changing="lokk" showValue  /> -->
 				</u-form-item>  
@@ -59,7 +60,7 @@
 		<view class="u-p-t-30 u-p-b-30">
 			<view class="u-flex u-flex-items-center u-flex-center">
 				<view class="item u-flex-1">
-					<u-button type="error" @click="submit" :loading="loading" :disabled="loading">{{config.submitBtnText}}</u-button>
+					<u-button type="error" @click="submit" throttleTime="500" >{{config.submitBtnText}}</u-button>
 				</view> 
 			</view>
 			<view class="u-flex u-flex-items-center u-flex-center u-m-t-40">
@@ -97,7 +98,7 @@
 	const model = ref({ 
 		title: '', 
 		info: '',
-		divide: 0, 
+		divide: 80, 
 	}) 
 	const rules = {
 		title: {

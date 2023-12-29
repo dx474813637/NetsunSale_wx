@@ -24,11 +24,11 @@ export function share() {
 	// console.log(curPage)
 	onLoad((options) => {
 		
-		if (options && options.poster) {
-			$http.setToken({
-				poster: options.poster
-			})
-		}
+		// if (options && options.poster) {
+		// 	$http.setToken({
+		// 		poster: options.poster
+		// 	})
+		// }
 	})  
 	onShareTimeline(() => { 
 		return {
@@ -79,6 +79,7 @@ export function share() {
 			// project: current_project,
 			...apiParams 
 		}
+		if(uni.$u.http.config.header.tid2) options.tid = uni.$u.http.config.header.tid2
 		if(uni.$u.http.config.header.tid) options.tid = uni.$u.http.config.header.tid
 		let query = ''
 		query += Object.keys(options).map(ele => {
@@ -98,6 +99,7 @@ export function share() {
 			poster: uni.getStorageSync('poster'), 
 			// project: current_project,
 		}
+		if(uni.$u.http.config.header.tid2) options.tid = uni.$u.http.config.header.tid2
 		if(uni.$u.http.config.header.tid) options.tid = uni.$u.http.config.header.tid
 		let query = `/${basePath}?`
 		query += Object.keys(options).map(ele => {

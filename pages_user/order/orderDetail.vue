@@ -1,5 +1,8 @@
 <template>
 	<view class="w u-p-20" >
+		<view class="time-count-w u-flex u-flex-center u-flex-items-center u-p-t-20    text-white" v-if="time">
+			<u-count-down :time="time" format="HH:mm:ss" @finish="finishTime"></u-count-down>
+		</view>
 		<view class="status-w u-text-center u-p-t-20 u-p-b-40 u-font-40 text-bold text-white" >
 			{{ order_zt2str }}
 		</view>
@@ -59,46 +62,50 @@
 				<view class="item u-flex-1 u-text-right text-base">{{ list.uptime }}</view>
 			</view>
 		</view>
-		
-		
-		<view class="bg-white u-radius-12 u-flex u-flex-wrap btns-w">
-			<view class="item u-p-20" v-if="btnList.button1">
-				<!-- 订单支付 -->
-				<up-button type="error" @click="orderBuyBtn">{{btnList.button1_title}}</up-button>
+		 
+		<view class="bg-white u-radius-12 u-flex u-flex-end u-flex-wrap btns-w " style="padding-left: 90px;">
+			<view class="item u-p-15" v-if="btnList.button1">
+				<!-- 订单支付  -->
+				<up-button type="error" shape="circle" @click="orderBuyBtn">{{btnList.button1_title}}</up-button>
 			</view>
-			<view class="item u-p-20" v-if="btnList.button2"> 
+			<view class="item u-p-15" v-if="btnList.button2"> 
 				<!-- 收货确认 -->
-				<up-button type="error" @click="confirmReceiveBtn">{{btnList.button2_title}}</up-button>
+				<up-button type="error" shape="circle" @click="confirmReceiveBtn">{{btnList.button2_title}}</up-button>
 			</view>
-			<view class="item u-p-20" v-if="btnList.button3"> 
+			<view class="item u-p-15" v-if="btnList.button3"> 
 				<!-- 我要评分 -->
-				<up-button type="error" @click="orderScorePopupShow = true">{{btnList.button3_title}}</up-button>
+				<up-button type="error" shape="circle" @click="orderScorePopupShow = true">{{btnList.button3_title}}</up-button>
+			</view>
+			<view class="item u-p-15" v-if="btnList.button5"> 
+				<!-- 申请售后 -->
+				<up-button type="error" shape="circle" @click="applyServiceBtn">{{btnList.button5_title}}</up-button>
+			</view>
+			<view class="item u-p-15" v-if="btnList.button6"> 
+				<!-- 查看物流 -->
+				<up-button type="error" shape="circle" @click="orderExpressPopupShow = true">{{btnList.button6_title}}</up-button>
+			</view> 
+		</view>
+		<view class="bg-white u-radius-12 u-flex u-flex-end u-flex-wrap btns-w u-m-t-40 u-m-b-20" style="padding-left: 90px;">
+			<view class="item u-p-20" v-if="btnList.button7">
+				<!-- 取消订单 -->
+				<up-button type="info" shape="circle" @click="cancalBtn">{{btnList.button7_title}}</up-button>
 			</view>
 			<view class="item u-p-20" v-if="btnList.button4"> 
 				<!-- 我要退款 -->
-				<up-button type="error" @click="refundBtn">{{btnList.button4_title}}</up-button>
+				<up-button type="error" shape="circle" plain @click="refundBtn">{{btnList.button4_title}}</up-button>
 			</view>
-			<view class="item u-p-20" v-if="btnList.button5"> 
-				<!-- 申请售后 -->
-				<up-button type="error" @click="applyServiceBtn">{{btnList.button5_title}}</up-button>
-			</view>
-			<view class="item u-p-20" v-if="btnList.button6"> 
-				<!-- 查看物流 -->
-				<up-button type="error" @click="orderExpressPopupShow = true">{{btnList.button6_title}}</up-button>
-			</view>
-			<view class="item u-p-20" v-if="btnList.button7">
-				<!-- 取消订单 -->
-				<up-button type="default" @click="cancalBtn">{{btnList.button7_title}}</up-button>
-			</view>
-			
-			
-		</view>
+		</view>  
 		
 		
 	</view>
 	<u-safe-bottom></u-safe-bottom>
-	<MenusBar></MenusBar>
-	
+	<!-- <MenusBar></MenusBar> -->
+	<view class="left-menus bg-white uni-shadow-base">
+		<view class="item-mine u-flex-column u-flex-center u-flex-items-center" @click="base.handleGoto({url: '/pages_user/index/index', type: 'reLaunch'})">
+			<u-icon name="account-fill" color="#f00" size="25"></u-icon>
+			<view class="text-error u-font-24 text-bold">我的</view>
+		</view>
+	</view>
 	<OrderScorePopup
 		:show="orderScorePopupShow" 
 		title="订单评分"  
@@ -144,6 +151,7 @@
 	const btnList = ref([])
 	const orderServiceShow = ref(false)
 	const orderExpressPopupShow = ref(false)
+	const time = ref(0)
 	const { 
 		order_zt2str
 	} = useFilter(zt)
@@ -181,6 +189,7 @@
 		})
 		if(res.code == 1 ) {
 			btnList.value = res.button
+			time.value = res.time
 			// res.list.company = res.sell_info.company
 			// res.list.clogin = res.sell_info.login
 			list.value = res.list
@@ -361,10 +370,40 @@
 	function handleChangeShow3(data) {
 		orderExpressPopupShow.value = data
 	}  
-	
+	async function finishTime() {
+		uni.showLoading()
+		await getData()
+	}
 </script>
-
+<style lang="scss">
+	.time-count-w {
+		::v-deep {
+			.u-count-down {
+				.u-count-down__text {
+					color: #fff!important;
+					font-size: 28px!important;
+					font-family: cursive!important;
+				}
+			}
+		}
+	}
+</style>
 <style lang="scss" scoped>
+	.left-menus {
+		position: fixed;
+		left: 0;
+		bottom: 60px;
+		padding: 5px;
+		border-radius: 0 30px 30px 0;
+		padding-left: 10px;
+		.item-mine {
+			width: 45px;
+			height: 45px;
+			border-radius: 30px;
+			border: 2px solid $u-error;
+			background-color: $u-error-light;
+		}
+	}
 	.btns-w {
 		.item {
 			flex: 0 0 50%;

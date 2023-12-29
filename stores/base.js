@@ -22,6 +22,8 @@ export const baseStore = defineStore('base', {
 				'appsecret': '8643T/XqQU0lFMPS50jF6ZwdpZCRVoAQywrdxm7E5VdG/z60fByQLQg',
 				// 'xcxlogin': extConfig.attr.login,
 				// 'xcxappid': extConfig.attr.wxappid,
+				'tid2': uni.getStorageSync('tid2') || '',
+				'poster2': uni.getStorageSync('poster2') || '',
 			},
 			share_other: '',
 			themeColor: '#F12E24',

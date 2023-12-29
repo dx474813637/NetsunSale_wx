@@ -135,6 +135,10 @@ export const upimg = (data, config) => http.post('upimg', data, config)
 
 // save_info 保存信息 name昵称 img头像
 export const save_info = (data) => http.get('save_info', data)
+// phone_only 保存手机
+export const phone_only = (data, config={}) => http.post('phone_only', data, config)
+
+export const phone_only1 = (data, config={}) => http.post('phone_only1', data, config)
 
 // tuan 团列表 参数p 团列表里有一个字段role=1 团长 =0达人
 // export const tuan = (data) => http.get('tuan', data)
@@ -156,3 +160,22 @@ export const divide_type = (data) => http.get('divide_type', data)
 export const divide = (data) => http.get('divide', data)
 // daren_list 邀请达人列表 参数p
 export const daren_list = (data) => http.get('daren_list', data)
+// selection 参数name tel company person
+export const selection = (data) => http.get('selection', data)
+
+// shop_product 参数id 商品id，cate=1增加 2删除
+export const shop_product = (data) => http.get('shop_product', data)
+// shop_product_list 选品列表
+export const shop_product_list = (data) => http.get('shop_product_list', data)
+// save_bg 设置背景 参数bg
+export const save_bg = (data) => http.get('save_bg', data)
+// save_shop 配置特卖店 参数name img info bg
+export const save_shop = (data, config={}) => http.post('save_shop', data, config)
+
+// follow 关注特卖店 参数follow=页面带的参数userid
+export const follow = (data) => http.get('follow', data)
+// follow_list 关注列表 参数p login
+export const follow_list = (data) => http.get('follow_list', data)
+
+//get_url 参数url
+export const get_url = (data) => http.get('get_url', data)

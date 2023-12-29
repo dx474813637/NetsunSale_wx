@@ -41,6 +41,12 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
+		},
+		{
+			"path": "pages/web_danye/web_danye_3",
+			"style": {
+				"navigationBarTitleText": ""
+			}
 		}, {
 			"path": "pages/cateList/cateList",
 			"style": {
@@ -93,6 +99,22 @@
 				"enablePullDownRefresh": false
 			}
 
+		},
+		{
+			"path": "pages/helpCenter/helpCenter",
+			"style": {
+				"navigationBarTitleText": "帮助中心",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/userInactive/userInactive",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"subPackages": [{
@@ -216,6 +238,21 @@
 					"enablePullDownRefresh": false,
 					"onReachBottomDistance": 80,
 					"navigationBarBackgroundColor": "#f8f8f8"
+				}
+			},
+			{
+				"path": "scanProduct/scanProduct",
+				"style": {
+					"navigationBarTitleText": "扫码选品",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "shareHome/shareHome",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false,
+					"navigationStyle": "custom"
 				}
 			}
 		]

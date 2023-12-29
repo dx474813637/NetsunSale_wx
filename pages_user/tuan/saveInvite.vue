@@ -12,6 +12,11 @@
 			<u-parse :content="list.info"></u-parse>
 		</view>
 	</view>
+	<UserPhonePopup
+		:show="showUserPhone"
+		@getPhone="getPhone"
+		@onUpdateShow="handleChangeShow2" 
+	></UserPhonePopup>
 	<u-safe-bottom></u-safe-bottom>
 	<TabBar :customStyle="{boxShadow: '0px -3px 10px rgba(0,0,0,0.1)' }">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28" style="height: 100%;">
@@ -36,6 +41,7 @@
 	import { share } from '@/composition/share.js'
 	import { baseStore } from '@/stores/base'
 	import {userStore} from '@/stores/user'
+	useNormal()
 	const user = userStore() 
 	const base = baseStore(); 
 	const {
@@ -46,7 +52,9 @@
 	const $api = inject('$api')    
 	const id = ref('2')
 	const tlogin = ref('')
+	const {user_info, balance} = toRefs(user) 
 	const list = ref({})
+	const showUserPhone = ref(false)
 	onLoad(async (options) => {
 		if(options.hasOwnProperty('id')) {
 			id.value = options.id
@@ -67,13 +75,35 @@
 	}
 	
 	async function accpetEvent() {
+		if(!user_info.value.phonenumber) {
+			showUserPhone.value = true  
+			return
+		}
 		uni.showLoading()
 		const res = await $api.save_invite({params: {id: tlogin.value}})
 		if(res.code == 1) { 
 			uni.showToast({
 				title: res.msg
 			})
+			setTimeout(() => {
+				// user.refreshUserData()
+				base.handleGoto({
+					type: 'reLaunch',
+					url: '/pages_user/index/index'
+				})
+			}, 500)
+			
 		}
+	}
+	async function getPhone(data) {
+		// uni.showLoading()
+		await user.refreshUserData()
+		showUserPhone.value = false  
+		// uni.showLoading()
+		// await changeRole()
+	}
+	function handleChangeShow2(v) {
+		showUserPhone.value = v
 	}
 </script>
 

@@ -10,7 +10,7 @@
 									单号：{{list.express.express}}
 								</view>
 								<view class="item text-base u-font-28">
-									{{list.express.uptime}}
+									同步时间：{{list.express.uptime}}
 								</view>
 							</view> 
 						</view> 
@@ -22,7 +22,7 @@
 							</view> 
 						</view> 
 						<view class="u-flex u-flex-items-start u-flex-wrap u-p-20" v-if="express_list && express_list.length > 0">
-							<u-steps current="0" direction="column"  activeColor="#f00">
+							<u-steps current="0" direction="column"  activeColor="#f00" inactiveColor="#eee">
 								<u-steps-item 
 									v-for="(item, index) in express_list"
 									:key="item.id"  
@@ -96,7 +96,7 @@
 </style>
 <style lang="scss" scoped>
 	.list-w {
-		height: 60vh;
+		height: 80vh;
 		// background-color: #f2f2f2;
 		position: relative;
 		.load-bg {

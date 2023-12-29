@@ -1,9 +1,12 @@
 <template>
-	<view> 
-		<button :disabled="loading" class="btn u-radius-15 u-error-light-bg u-p-l-20 u-p-r-20 u-font-28 u-error" @click="dingyuebtn">
-			立即订阅
-		</button>
-	</view>
+	<view @click="dingyuebtn">
+		<slot>
+			<button :disabled="loading" class="btn u-radius-15 u-error-light-bg u-p-l-20 u-p-r-20 u-font-28 u-error">
+				立即订阅
+			</button>
+		</slot>
+	</view> 
+	<DingYuePopup :show="show" @changeShow="changeShow"></DingYuePopup>
 </template>
 
 <script setup> 
@@ -26,14 +29,14 @@
 	const $api = inject('$api')
 	const list = ref([])
 	const loading = ref(false)
+	const show = ref(false)
 	onMounted(async () => {
 		loading.value = true
 		const res = await $api.tmp_id_list();
 		console.log(res)
 		loading.value = false
 		if(res.code == 1) { 
-			list.value = res.list
-			
+			list.value = res.list 
 		}
 		
 	})
@@ -45,13 +48,18 @@
 	// 		subApi(res.list)
 			
 	// 	}
-	// } 
-	function dingyuebtn() { 
+	// }  
+	function dingyuebtn() {  
 		wx.requestSubscribeMessage({
 			tmplIds: list.value,
 			success: async (res)=>{
-				console.log(res)
-				if(res.YdJHbw1JTP25XL8ErufBuGPjOtve1AhcnhsvHCVqUYc == 'reject') return
+				console.log(res, list.value)
+				// if(res.YdJHbw1JTP25XL8ErufBuGPjOtve1AhcnhsvHCVqUYc == 'reject') return
+				let flag = list.value.every(ele => res[ele] == 'reject')
+				if(flag) {
+					show.value = true
+					return
+				}
 				// uni.showLoading()
 				const res2 = await $api.tmp_id_back({
 					params: {
@@ -67,9 +75,15 @@
 			},
 			fail(error) {
 				console.log(error)
+				if(error.errCode == 20004) {
+					show.value = true
+				}
 			}
 		}) 
 		
+	}
+	function changeShow(v) {
+		show.value = v
 	}
 </script>
 
@@ -81,4 +95,12 @@
 		border: 0;
 	}
 }
+.wrapper {
+	// width: ;
+}
+.haibao {
+	width: 60vw;
+	background-color: transparent;
+	border-radius: 10px; 
+} 
 </style>

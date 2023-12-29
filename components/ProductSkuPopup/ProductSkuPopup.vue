@@ -206,14 +206,14 @@
 	watch(
 		() => product_num_max.value,
 		(val, old) => {
-			// console.log(val);
-			if(val < product_num.value) {
+			console.log(val);
+			if(val <= product_num.value) {
 				product_num.value = product_num_max.value
 				nextTick(() => {
 					countRef.value.init()
 				})
 				
-			}
+			} else product_num.value = 1
 		} 
 	)
 	watch(

@@ -129,7 +129,7 @@
 			<view class="u-p-t-30 u-p-15 bg-white u-m-b-26 rows-menus">
 				<view class="item u-text-center u-p-20 u-p-t-30 u-p-b-30 u-flex u-flex-items-center u-flex-between" 
 					v-for="(item, index) in menus_wd1" :key="index"
-					@click="handleMenusClick(item)"
+					@click="menusClick2(item)"
 					>
 					<view class="u-flex u-flex-items-center">
 						<image class="icon-img" :src="item.icon" mode=""></image>
@@ -139,7 +139,7 @@
 						<u-icon name="arrow-right" color="#ccc"></u-icon>
 					</view>
 				</view>
-				<view class="item u-text-center u-p-20 u-p-t-30 u-p-b-30">
+				<!-- <view class="item u-text-center u-p-20 u-p-t-30 u-p-b-30">
 					<button open-type="contact" type="error" plain class="service-btn " >
 						<view class="u-flex u-flex-items-center service-btn-main u-flex-between">
 							<view class="u-flex u-flex-items-center">
@@ -151,11 +151,10 @@
 							</view>
 						</view>
 					</button>
-				</view>
+				</view> -->
 				 
 			</view>
-		</template>
-		 
+		</template> 
 		<u-safe-bottom></u-safe-bottom>
 		<MenusBar mode='2'></MenusBar>
 	</view>
@@ -163,23 +162,29 @@
 		:show="showUserInfo"
 		@onUpdateShow="handleChangeShow" 
 	></UserInfoPopup>
+	<UserPhonePopup
+		:show="showUserPhone"
+		@getPhone="getPhone"
+		@onUpdateShow="handleChangeShow2" 
+	></UserPhonePopup>
 </template>
 
 
 <script setup>
-	import {
-		onLoad,
-		onShow, 
-		onReachBottom,
-	} from "@dcloudio/uni-app";
-	import {
-		ref,
-		reactive,
-		computed,
-		toRefs,
-		watch,
-		inject
-	} from 'vue'  
+	// import {
+	// 	onLoad,
+	// 	onShow, 
+	// 	onReachBottom,
+	// } from "@dcloudio/uni-app";
+	// import {
+	// 	ref,
+	// 	reactive,
+	// 	computed,
+	// 	toRefs,
+	// 	watch,
+	// 	inject,
+	// 	onMounted
+	// } from 'vue'  
 	// import menusBar from '@/components/menusBar/menusBa	r.vue'
 	import {
 		baseStore,
@@ -197,6 +202,8 @@
 	const user = userStore()
 	const {user_info, balance} = toRefs(user)
 	const showUserInfo = ref(false)
+	const showUserPhone = ref(false)
+	const linkData = ref({}) 
 	onLoad(async () => {
 		// await user.getMallUserInfo()
 		// await user.getCpyInfo() 
@@ -205,7 +212,17 @@
 			showUserInfo.value = true
 		}
 		
-	}) 
+	})   
+	function menusClick2(item) {
+		if(item.auth == 1) {
+			showUserPhone.value = true
+			linkData.value = item
+		}
+		else {
+			handleMenusClick(item)
+		}
+		
+	}
 	function handleMenusClick(item) {
 		console.log(item)
 		if(!item.url) return
@@ -226,11 +243,18 @@
 		}
 		
 		
-		
 	}
-	
+	function getPhone(data) {
+		menus.getMenusData()
+		showUserPhone.value = false
+		handleMenusClick(linkData.value)
+		linkData.value = {}
+	}
 	function handleChangeShow(v) {
 		showUserInfo.value = v
+	}
+	function handleChangeShow2(v) {
+		showUserPhone.value = v
 	}
 </script>
 

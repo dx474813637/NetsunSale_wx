@@ -1,30 +1,33 @@
 <template>
 	<view class="w">
 		<u-navbar
-		ref="navbar"
+			ref="navbar"
 			:fixed="fixed"
 			:bgColor="bgColor || base.themeColor" 
 		>
 			<template #left>
-				<view class="u-flex u-flex-items-center" :style="{color: bgColor? base.themeColor : '#fff'}">
-					<view class="btn u-m-r-20" @click="handleBack" v-if="backBtn">
-						<i class="custom-icon custom-icon-back" :style="{color: bgColor? base.themeColor : '#fff'}"  ></i>
-					</view> 
-					<!-- <view @click="base.handleGoto({url: '/pages/index/home', type: 'reLaunch'})" class="btn u-m-l-20"> 
-						<i class="custom-icon custom-icon-zhuye2" :style="{color: bgColor? base.themeColor : '#fff'}"  ></i>
-					</view>  -->
-					<!-- <view @click="loginBtn" class="btn u-m-l-20 u-primary" v-if="u.login == '0' || !u.login" > 
-						登录
-					</view>  
-					<view @click="logoutBtn" class="btn u-m-l-20 u-error-dark" v-else> 
-						登出
-					</view>  -->
-				</view>
+				<slot name="navLeft">
+					<view class="u-flex u-flex-items-center" :style="{color: activeColor || base.themeColor}">
+						<view class="btn u-m-r-20" @click="handleBack" v-if="backBtn">
+							<i class="custom-icon custom-icon-back" :style="{color: activeColor || base.themeColor}"  ></i>
+						</view> 
+						<view @click="base.handleGoto({url: '/pages/home/home', type: 'reLaunch'})" class="btn u-m-l-20" v-if="!hideHome"> 
+							<i class="custom-icon custom-icon-zhuye2" :style="{color: activeColor || base.themeColor}"  ></i>
+						</view> 
+						<!-- <view @click="loginBtn" class="btn u-m-l-20 u-primary" v-if="u.login == '0' || !u.login" > 
+							登录
+						</view>  
+						<view @click="logoutBtn" class="btn u-m-l-20 u-error-dark" v-else> 
+							登出
+						</view>  -->
+					</view>
+				</slot>
+				
 				
 			</template>
 			<template #center>
 				<slot>
-					<text class="u-line-1" :style="[titleStyle]">
+					<text class="u-line-1" :style="[titleStyle]" v-if="title">
 						{{title}}
 					</text>
 				</slot>
@@ -65,11 +68,19 @@
 			type: Boolean,
 			default: false
 		},
+		hideHome: {
+			type: Boolean,
+			default: true
+		},
 		title: {
 			type: String,
 			default: '',
 		},
 		bgColor: {
+			type: String,
+			default: '',
+		},
+		activeColor: {
 			type: String,
 			default: '',
 		}

@@ -39,7 +39,7 @@
 			达人列表
 		</view>
 		<view class="list">  
-			<view class="list-item" v-for="item in dataList" :key="item.id">
+			<view class="list-item u-m-b-15" v-for="item in dataList" :key="item.id">
 				<DarenCard
 					:origin="item"
 				></DarenCard>

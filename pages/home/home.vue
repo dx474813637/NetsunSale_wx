@@ -199,7 +199,7 @@
 	}
 	function swiperclick(e) {
 		if(swiperList.value[e].url) {
-			uni.reLaunch({
+			uni.navigateTo({
 				url: swiperList.value[e].url
 			})
 		}
@@ -209,7 +209,7 @@
 	}
 	function goto(data) {
 		if(!data.url) return;
-		uni.reLaunch({
+		uni.navigateTo({
 			url: data.url
 		})
 	}

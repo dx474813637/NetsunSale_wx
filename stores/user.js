@@ -19,7 +19,8 @@ export const userStore = defineStore('user', {
 			// 公司信息
 			cpy_info: {},
 			cpy_loading: false,
-			tmp_id_list: []
+			tmp_id_list: [],
+			zx: 0
 		};
 	},
 	getters: { 
@@ -50,10 +51,19 @@ export const userStore = defineStore('user', {
 			data.tid && uni.$u.http.setToken({
 				tid: data.tid
 			})  
+			data.id && uni.$u.http.setToken({
+				poster: data.id
+			})  
 		},
 		async refreshUserData() {
 			const res = await apis.memu()
 			if(res.code == 1) {  
+				this.zx = res.zx 
+				// if(this.zx == 1) {
+				// 	uni.reLaunch({
+				// 		url: '/pages/userInactive/userInactive'
+				// 	})
+				// }
 				this.getUserInfo(res.info)
 				this.balance = res.balance 
 			}

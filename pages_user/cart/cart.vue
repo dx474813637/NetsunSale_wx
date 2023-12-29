@@ -221,10 +221,11 @@
 	})
 	const allCheck = computed({
 		get() {
-			let flag = false 
+			if(cart_list.value.length == 0) return []
+			let flag = true 
 			flag = cart_list.value.some(ele => {
 				return ele.products.filter(item => (!item.disabled || manageMode.value)).some(item => !item.checked)
-			}) 
+			})  
 			return flag? [] : ['all']
 		},
 		set(n) {   

@@ -27,6 +27,7 @@
 								<u-radio-group
 								    v-model="model.cate" 
 									@change="groupChange"
+									:activeColor="themeColor"
 									>
 								    <u-radio
 								      :customStyle="{marginRight: '8px'}"
@@ -39,6 +40,83 @@
 								  </u-radio-group>
 							 	
 							</u-form-item>   
+							
+							<u-form-item
+							 	:borderBottom="false"
+							 	label="选择需要售后的商品(注意数量选择)"  
+							 	required 
+								v-if="model.cate == '退货'"
+							 	> 
+								<u-checkbox-group v-model="products_checked" @change="checkboxChange">
+									<view class="shop-card u-radius-16 bg-white u-p-b-20 u-p-t-20 u-border" style="width: 100%;">
+										<view class="shop-card-main">
+											<view 
+												class="product-item u-flex u-flex-items-start u-p-15"
+												v-for="product in products"
+												:key="product.id" 
+												>
+												<view class="disabled-bg" :class="{
+													disabled: product.disabled 
+												}"></view>
+												<view class="item checkbox u-flex u-flex-items-center u-flex-center u-p-10"> 
+													<u-checkbox 
+													shape="circle" 
+													:activeColor="themeColor"
+													:disabled="product.disabled"
+													:name="product.id"
+													size="22"
+													></u-checkbox>  
+												</view>
+												<view class="item" >
+													<up-image 
+													show-loading
+													:src="product.img" 
+													width="80px" 
+													height="80px" 
+													radius="8"
+													></up-image>
+												</view>
+												<view class="item u-flex-column u-flex-between u-flex-1 u-m-l-15 info" >
+													<view class="title u-line-1" >
+														{{product.name}}
+													</view>
+													<view class="sku u-line-2 u-info u-font-24 u-flex-1 u-m-b-20" >
+														<text class="u-m-r-15" v-for="(specs, index) in product.specs_arr" :key="index">
+															<text>{{specs.label}}：{{specs.value}}；</text>
+														</text>
+													</view>
+													<view class="info u-flex u-flex-between u-flex-items-center">
+														<view class="item">
+															<view class="u-flex u-flex-items-end" style="color: #f00;">
+																<text class="u-font-24">￥</text>
+																<text class="u-font-32">{{product.price}}</text> 
+															</view>
+														</view>
+														<view class="item u-m-r-15">
+															<u-number-box
+																:ref="(el) => setRef(el, product.id)" 
+																:name="product.id"
+																v-model="product.count"  
+																:max="+product.num"
+																:disabled="product.disabled"
+																:min="1" 
+																asyncChange
+																:buttonSize="25"
+																@change="numChange" 
+																></u-number-box>
+														</view>
+													</view>
+												</view>
+											</view>
+											
+										</view>
+									</view>
+								</u-checkbox-group>
+							</u-form-item>  
+							
+							
+							
+							
 							<u-form-item
 							 	:borderBottom="false"
 							 	label="具体说明" 
@@ -144,26 +222,27 @@
 	const { user_info } = toRefs(user)
 	const props = defineProps({  
 		list: {
-			type: Array,
+			type: Object,
 			default: () => {
-				return []
+				return {}
 			},
 		}
 	})    
 	const emits = defineEmits(['submitService'])
+	const products = ref([])
 	const serviceFormShow = ref(false)  
 	const serviceRadiolist = reactive([
 		  {
 			name: '退货',
 			disabled: false,
 		  },
-		  {
-			name: '换货',
-			disabled: false,
-		  }, 
+		 //  {
+			// name: '换货',
+			// disabled: false,
+		 //  }, 
 	]);
 	const model = ref({ 
-		cate: '', 
+		cate: '退货', 
 		info: '',
 		img: [], 
 	})
@@ -177,9 +256,42 @@
 			message: '不能为空',
 			trigger: ['blur', 'change']
 		},   
+		
 	}
+	const numBoxRefs = reactive({});
+	const setRef = (el, id) => { 
+		if (el) {
+			numBoxRefs[id] = el;
+		}
+	};
+	const products_checked = computed({
+		get() {
+			let arr = [];
+			products.value.forEach(item => {
+				if(item.checked) arr.push(item.id)
+			})
+			console.log(arr)
+			return arr
+		},
+		set(n) { 
+			console.log(n)  
+			products.value.forEach(item => {
+				item.checked = n.includes(item.id) ? true : false
+			})  
+		}
+	})
 	onMounted(async () => {  
 	})  
+	watch(
+		() => props.list.pid,
+		(n) => {
+			console.log(n);
+			products.value = uni.$u.deepClone(n).map(ele => ({...ele, checked: false, count: 1, disabled: false}))
+		},
+		{
+			deep: true
+		}
+	)
 	watch(
 		() => serviceFormShow.value,
 		(n) => {
@@ -207,6 +319,26 @@
 	onReady(() => {
 		
 	})    
+	function checkboxChange(e) {
+		console.log(e, products.value)
+	}
+	
+	function numChange(e) { 
+		console.log(e, numBoxRefs[e.name])
+		// product_num.value = e.value
+		products.value.some(item => {
+			if(item.id == e.name) {
+				item.count = e.value
+				return true
+			}
+			return false
+		})
+		nextTick(() => {
+			numBoxRefs[e.name].init()
+		})
+		
+		// console.log(product_num.value)
+	}
 	function previewImage(index, imgs) {
    		uni.previewImage({
    			urls: imgs,
@@ -219,9 +351,30 @@
 			serviceFormShow.value = true
 			return
 		}
-		else {
-			uForm.value.validate().then(async () => { 
-				emits('submitService', {params: {...model.value}})
+		else { 
+			uForm.value.validate().then(async () => {
+				let params = {
+					...model.value
+				}
+				if(model.value.cate == '退货') {
+					if(products_checked.value.length == 0) {
+						uni.showToast({
+							title: '请选择需退货的商品',
+							icon: 'none'
+						})
+						return
+					}
+					let arr = products_checked.value.map((ele, index) => {
+						let num = products.value[index].count
+						return {
+							id: ele,
+							num,
+						}
+					})
+					params.pid_array = JSON.stringify(arr)
+				}
+				
+				emits('submitService', { params })
 			}).catch(errors => {
 				console.log(errors)
 				uni.$u.toast('请检查表单')
@@ -324,5 +477,32 @@
 	.service-card {
 		box-sizing: border-box;
 		width: 100%;
+	}
+	.shop-card-main {
+		.product-item {
+			position: relative;
+			z-index: 10;
+			.disabled-bg { 
+				position: absolute;
+				z-index: 20;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(255,255,255,.5);
+				display: none;
+				&.disabled {
+					display: block;
+				}
+			}
+			.item {
+				&.checkbox {
+					height: 80px;
+				}
+				&.info {
+					min-height: 80px;
+				}
+			}
+		}
 	}
 </style>

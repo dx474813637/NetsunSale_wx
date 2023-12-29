@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-popup :show="$attrs.show" @close="close" @open="open">
+		<u-popup :bgColor="$attrs.bgColor" :show="$attrs.show" @close="close" @open="open">
 			<view class="wrapper">
 				<view class="wrapper-header  u-p-20 "> 
 					<slot name="header">
@@ -14,7 +14,7 @@
 						</view>
 					</slot> 
 				</view>
-				<view class="wrapper-main">
+				<view class="wrapper-main" :style="{backgroundColor: $attrs.bgColor}">
 					<slot></slot> 
 				</view>
 				<view class="wrapper-footer">
@@ -26,18 +26,18 @@
 </template>
 
 <script setup>
-	import {
-		ref,
-		toRefs,
-		inject,
-		computed,
-		onMounted,
-		reactive,
-		watch,
-		useAttrs
-	} from 'vue' 
+	// import {
+	// 	ref,
+	// 	toRefs,
+	// 	inject,
+	// 	computed,
+	// 	onMounted,
+	// 	reactive,
+	// 	watch,
+	// 	useAttrs
+	// } from 'vue'  
 	onMounted(() => {
-		console.log(attrs)
+		// console.log(attrs)
 	}) 
 	const emits = defineEmits(['open'])
 	const attrs = useAttrs()
@@ -64,8 +64,11 @@
 			.u-popup__content {
 				border-radius: 15px 15px 0 0!important;
 			}
+			.u-safe-bottom {
+				background-color: #fff!important;
+			}
 		}
-	}
+	} 
 </style>
 <style lang="scss" scoped>
 	.wrapper-main { 

@@ -11,7 +11,7 @@
 		onLaunch,
 		onShow,
 		onHide,
-	} from "@dcloudio/uni-app";
+	} from "@dcloudio/uni-app"; 
 	// const $ws = inject('$ws')
 	const $api = inject('$api')
 	const $http = inject('$http')
@@ -46,27 +46,41 @@
 					});
 				}
 			});
-		}
-		routingIntercept({$http})  
-		user.refreshUserData()
-		user.sendDingyue()
-		
-	});
-	onShow(async (options) => {
-		console.log('opt.query', options.query)  
-		if(options.query?.share_other) { 
+		} 
+		let options = uni.getLaunchOptionsSync() 
+		if(options.query.hasOwnProperty('scene')) { 
+			let arr = decodeURIComponent(options.query.scene).split('&') 
+			arr.forEach(item => {
+				let arr2 = item.split('=')
+				options.query[arr2[0]] = arr2[1]
+			})
+		} 
+		console.log('opt', options) 
+		if(options.query?.share_other) {
 			base.saveShareInfo(options.query.share_other) 
 		} 
 		if (options.query?.poster) {
 			$http.setToken({
-				poster: options.query.poster
+				poster2: options.query.poster
 			})
+			uni.setStorageSync('poster2', options.query.poster)
 		}
 		if (options.query?.tid) {
 			$http.setToken({
-				tid: options.query.tid
+				tid2: options.query.tid
+			}) 
+			uni.setStorageSync('tid2', options.query.tid)
+		}
+		if (options.query?.gdt_vid || options.query?.qz_gdt) {
+			$http.setToken({
+				clickId: options.query.gdt_vid || options.query.qz_gdt
 			}) 
 		}
+		routingIntercept({$http})  
+		user.refreshUserData()
+		user.sendDingyue()
+	});
+	onShow(async (options) => {   
 		// if(uni.getStorageSync('WebSocketInfo')) $ws.init()
 		 
 		 // if(options.query?.route && options.query.route != '/pages/home/home2' && user.user.login == 0) {

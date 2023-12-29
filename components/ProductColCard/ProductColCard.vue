@@ -1,15 +1,26 @@
 <template>
 	<view class="card u-radius-8 uni-shadow-base bg-white" :style="customStyle" @click.stop="gotoDetail">
 		<view class="img-w">
-			<view class="img">
-				<u--image
+			<!-- <view class="img">
+				<up-image
 					showLoading 
-					width="100%"
-					mode="aspectFill"
+					width="100%" 
+					mode="widthFix"
 					:src="previewImg"
 				 />
+			</view> -->
+			<view class="img"> 
+				<zeroLazyLoad   
+					:image="previewImg" 
+					imgMode="scaleToFill"
+					height="100%"
+					></zeroLazyLoad>
 			</view>
-			
+			<!-- <image 
+				class="img" 
+				mode="aspectFill"
+				:src="previewImg"
+			 /> -->
 		</view>
 		<view class="content-w u-p-20 u-font-32">
 			<view class="u-line-1 u-m-b-10">
@@ -20,7 +31,7 @@
 					<text class="u-font-28">￥</text>
 					<text class="text-bold u-font-38" style="font-family: cursive;">{{origin.price1}}</text> 
 				</view>
-				<view class="u-info u-font-26">已售{{origin.sales_volume}}件</view>
+				<!-- <view class="u-info u-font-26">已售{{origin.sales_volume}}件</view> -->
 			</view>
 			<view class="u-flex u-flex-items-center u-flex-between  u-m-b-10"  
 				v-if="origin.price"
@@ -30,7 +41,8 @@
 					<text>{{origin.price}}</text>
 				</view>
 				<view class="item " >
-					<view class="u-info u-font-26">{{$u.timeFrom(new Date(origin.uptime).getTime(), false)}}</view>
+					<view class="u-info u-font-26">已售{{origin.sales_volume}}件</view>
+					<!-- <view class="u-info u-font-26">{{$u.timeFrom(new Date(origin.uptime).getTime(), false)}}</view> -->
 				</view>
 			</view>
 		</view>
@@ -41,6 +53,7 @@
 <script setup> 
 	import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'  
 	import {useCateStore, baseStore} from '@/stores/base.js'
+	import zeroLazyLoad from '@/uni_modules/zero-lazy-load/components/zero-lazy-load/zero-lazy-load.vue'
 	const base = baseStore()
 	const props = defineProps({
 		origin: {

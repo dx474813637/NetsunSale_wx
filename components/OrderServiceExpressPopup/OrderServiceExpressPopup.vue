@@ -3,6 +3,10 @@
 		<PopupNormal v-bind="$attrs" > 
 			<view class="list-w bg-white">   
 				<scroll-view class="main-list  u-p-30" scroll-y > 
+					<view v-if="info">
+						<u-parse :content="info"></u-parse>
+					</view>
+					
 					<u--form
 						labelPosition="top" 
 						:model="model"  
@@ -62,6 +66,10 @@
 	const user = userStore();
 	const { user_info } = toRefs(user)
 	const props = defineProps({  
+		info: {
+			type: String,
+			default: '',
+		}, 
 		list: {
 			type: Array,
 			default: () => {

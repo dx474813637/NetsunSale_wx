@@ -53,12 +53,18 @@
 						{{product_list.name}}
 					</view> 
 					<view class="item u-p-l-20">
-						<button type="primary"  openType="share"  class="share-btn">
+						<!-- <button type="primary"  openType="share"  class="share-btn">
 							<view class="u-flex-column u-flex-items-center text-black"> 
 								<u-icon name="share-square" color="#333" size="26"></u-icon>
 								<text class="u-font-28 text-nowrap text-black text-thin">分享</text>
 							</view>
-						</button>
+						</button> -->
+						<view class="share-btn" @click="showProductShare = true">
+							<view class="u-flex-column u-flex-items-center text-black"> 
+								<u-icon name="share-square" color="#333" size="26"></u-icon>
+								<text class="u-font-28 text-nowrap text-black text-thin">分享</text>
+							</view>
+						</view>
 					</view>
 				</view>
 				<view class="u-flex u-flex-between u-flex-items-start u-font-28">
@@ -66,7 +72,7 @@
 						{{product_list.recommend_remark}}
 					</view>
 					<view class="item u-info u-p-l-30" style="white-space: nowrap;">
-						{{$u.timeFrom(new Date(product_list.ctime).getTime(), false)}}
+						<!-- {{$u.timeFrom(new Date(product_list.ctime).getTime(), false)}} -->
 					</view>
 				</view>
 			</view> 
@@ -78,7 +84,7 @@
 						发货
 					</view> 
 					<view class="item u-p-l-40">
-						预计 {{product_list.delivery_delay_day}} 天发货
+						预计 {{product_list.delivery_delay_day}} 天内发货
 					</view>
 				</view> 
 				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14">
@@ -140,66 +146,23 @@
 					<u-icon name="arrow-right" color="#ccc"></u-icon> 
 					
 				</view>  
-			</view>
-			
-			
-			<!-- <view class="u-radius-8 u-m-b-20 u-p-30 shop-card">  
-				<view class="u-flex u-flex-center u-flex-items-center u-font-36 u-m-b-20">
-					<view class="item u-m-r-20" v-if="company_list.img">
-						<u--image 
-							showLoading
-							:src="company_list.img"
-							width="34px"
-							height="34px"
-							shape="circle"
-							:customStyle="{
-								border: '2px solid #99d0ff'
-							}"
-						/>
-					</view>
+				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14" v-if="company_list.service">  
 					<view class="item u-flex-1">
-						{{ company_list.company }}
+						{{company_list.service}}
 					</view>
-					<view class="item">
-						<u-button shape="circle" plain type="primary" size="small">进入店铺</u-button>
-					</view>
-				</view>
-				<view class="u-flex u-flex-center u-font-28 u-m-b-10">
-					<view class="item u-flex-1 u-flex u-flex-items-start">
-						<text class="u-info u-m-r-8 text-nowrap">联系人：</text>
-						<text>{{ company_list.contacts }}</text> 
-					</view>
-				</view>
-				<view class="u-flex u-flex-center u-font-28 u-m-b-10" v-if="company_list.address">
-					<view class="item u-flex-1 u-flex u-flex-items-start">
-						<text class="u-info u-m-r-8 text-nowrap">地址：</text>
-						<text class="u-line-1">{{ company_list.address }}</text> 
-					</view>
-				</view>
-				<view class="u-flex u-flex-center u-font-28 u-m-b-10">
-					<view class="item u-flex-1 u-flex u-flex-items-start">
-						<text class="u-info u-m-r-8 text-nowrap">介绍：</text>
-						<text class="u-line-2">{{ company_list.info }}</text> 
-					</view>
-				</view>
-			</view> -->
-			
-			
-			
+				</view> 
+			</view> 
 		</view>
 		<view class="pro-desc">
-			<view class="item"
-				v-for="(item, index) in product_desc_arr"
-				:key="index"
-				>
-				<u--image
-					showLoading
-					:src="item"
-					width="100%"
-					height="auto"
-					mode="widthFix" 
-				/>
-			</view>
+			<view class="item">
+				<zeroLazyLoad  
+					class="lazy-img" 
+					v-for="(item, index) in product_desc_arr" 
+					:key="index"
+					:image="item" 
+					imgMode="widthFix"
+					></zeroLazyLoad>
+			</view> 
 			
 		</view>
 		<u-safe-bottom></u-safe-bottom>
@@ -262,16 +225,25 @@
 		:list="express_info"
 		:onUpdateShow="handleChangeShow3" 
 	></ProductExpressPopup>
+	<sharePopup
+		:show="showProductShare"
+		bgColor="transparent"
+		:origin="origin"
+		:onUpdateShow="handleChangeShow4" 
+	></sharePopup>
 </template>
 
 <script setup>
 	// import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
 	// import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
+	import zeroLazyLoad from '@/uni_modules/zero-lazy-load/components/zero-lazy-load/zero-lazy-load.vue'
 	import { share } from '@/composition/share.js'
-	import useProductSku from '@/composition/useProductSku'
+	import useProductSku from '@/composition/useProductSku';
+	// import useNormal from '@/composition/useNormal';
 	const {
 	    sku2treeData
-	} = useProductSku()
+	} = useProductSku() 
+	useNormal()
 	const { setOnlineControl } = share()
 	const $api = inject('$api')
 	
@@ -284,6 +256,7 @@
 	const cate = useCateStore()
 	const { cate_list, cate_loading } = toRefs(cate)
 	const product_id = ref('')
+	const origin = ref({})
 	const product_list = ref({})
 	const express_info = ref({})
 	const company_list = ref({})
@@ -292,6 +265,7 @@
 	const showProductAttr = ref(false)
 	const showExpressPrice = ref(false)
 	const showProductSku = ref(false)
+	const showProductShare = ref(false)
 	const isOrder = ref(false)
 	
 	const cate_active_name = computed(() => {
@@ -320,6 +294,7 @@
 	})
 	
 	onLoad(async (options) => {
+		console.log(options, 2)
 		if(options.hasOwnProperty('id')) {
 			product_id.value = options.id
 		}
@@ -340,6 +315,9 @@
 	function handleChangeShow3(data) {
 		showExpressPrice.value = data
 	}
+	function handleChangeShow4(data) {
+		showProductShare.value = data
+	}
 	function sku2Cart(data) {
 		console.log(data)
 		handleChangeShow2(false)
@@ -351,6 +329,7 @@
 	async function getData() {
 		const res = await $api.web_product_detail({params: {id: product_id.value}})
 		if(res.code == 1) {
+			origin.value = res
 			product_list.value = res.list
 			express_info.value = res.info
 			company_list.value = res.company

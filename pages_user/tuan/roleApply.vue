@@ -12,6 +12,11 @@
 			</view>
 		</view>
 	</view>
+	<UserPhonePopup
+		:show="showUserPhone"
+		@getPhone="getPhone"
+		@onUpdateShow="handleChangeShow2" 
+	></UserPhonePopup>
 	<u-safe-bottom></u-safe-bottom>
 	<TabBar :customStyle="{boxShadow: '0px -3px 10px rgba(0,0,0,0.1)' }">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28" style="height: 100%;">
@@ -91,6 +96,7 @@
 	})
 	const id = ref('6')
 	const list = ref({})
+	const showUserPhone = ref(false)
 	const {
 		role2Str
 	} = useFilter(role)
@@ -121,6 +127,16 @@
 			setOnlineControl(res)
 		}
 	}
+	async function getPhone(data) {
+		uni.showLoading()
+		await user.refreshUserData()
+		showUserPhone.value = false  
+		// uni.showLoading()
+		// await changeRole()
+	}
+	function handleChangeShow2(v) {
+		showUserPhone.value = v
+	}
 	async function roleClick() {
 		let data = tabs_list.value[0] 
 		uni.showModal({
@@ -128,25 +144,39 @@
 			content: `${data.cardData.title}`,
 			success: async function(res) {
 				if (res.confirm) {
-					uni.showLoading()
-					const res = await $api.change_role({
-						params: {
-							role: data.value
-						}
-					})
-					if (res.code == 1) {
-						uni.showToast({
-							title: res.msg,
-							icon: 'none'
-						})
-						await user.refreshUserData()
+					if(!user_info.value.phonenumber) {
+						showUserPhone.value = true  
+						return
 					}
+					uni.showLoading()
+					await changeRole(data)
+					
 				} else if (res.cancel) {
 					console.log('用户点击取消');
 				}
 			}
 		});
 
+	}  
+	async function changeRole(data) {
+		const res = await $api.change_role({
+			params: {
+				role: data.value
+			}
+		})
+		if (res.code == 1) {
+			uni.showToast({
+				title: res.msg,
+				icon: 'none'
+			}) 
+			setTimeout(() => {
+				// user.refreshUserData()
+				base.handleGoto({
+					type: 'reLaunch',
+					url: '/pages_user/index/index'
+				})
+			}, 500)
+		}
 	}
 </script>
 

@@ -239,7 +239,7 @@
 	
 	async function createOrder() {
 		let arr = dataList.value.map(ele => ele.products.map(item => ({id: item.id, num: item.num}))).reduce((a, b) => a.concat(b))
-		console.log(arr)
+		 
 		const res = await $api.create_order({
 			params: {
 				address_id: addressData.value.id,
@@ -255,14 +255,21 @@
 				cart.removeProductsById(arr.map(ele => ele.id))
 				cart.saveCartData2LocalStorage()
 			} 
-			
-			base.handleGoto({
-				url: '/pages_user/order/orderDetail',
-				type: 'reLaunch',
-				params: {
-					id: res.order[0]
-				}
-			})
+			if(res.order.length == 1) {
+				base.handleGoto({
+					url: '/pages_user/order/orderDetail',
+					type: 'reLaunch',
+					params: {
+						id: res.order[0]
+					}
+				})
+			}
+			else {
+				base.handleGoto({
+					url: '/pages_user/order/orderList',
+					type: 'reLaunch' 
+				})
+			}
 		}
 	} 
 </script>

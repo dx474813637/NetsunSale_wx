@@ -34,6 +34,38 @@
 				<OrderServiceCard
 					:origin="item"
 				></OrderServiceCard>
+				<view class="u-flex u-flex-between u-flex-items-center u-info u-font-28 u-p-10" v-if="item.express">
+					<view class="item">
+						买家快递单
+					</view>
+					<view class="item">
+						{{item.express}}
+					</view>
+				</view>
+				<view class="u-flex u-flex-between u-flex-items-center u-info u-font-28 u-p-10" v-if="item.express1">
+					<view class="item">
+						卖家快递单
+					</view>
+					<view class="item">
+						{{item.express1}}
+					</view>
+				</view>
+				<view class="u-flex u-flex-between u-flex-items-start u-info u-font-28 u-p-10" v-if="item.address">
+					<view class="item text-nowrap u-m-r-20">
+						退换货地址
+					</view>
+					<view class="item" @click="copy(item.address)">
+						{{item.address}} <text class="text-error">[点击复制]</text>
+					</view>
+				</view>
+				<view class="u-flex u-flex-between u-flex-items-center u-info u-font-28 u-p-10" >
+					<view class="item">
+						创建时间
+					</view>
+					<view class="item">
+						{{item.ctime}}
+					</view>
+				</view>
 				<view class="u-p-t-20 u-p-b-20" v-if="item.zt == '1'">
 					<u-button type="error" shape="circle" @click="serviceCardClick(item)">提交快递单号</u-button>
 				</view>
@@ -52,10 +84,25 @@
 	<OrderServiceExpressPopup
 		:show="orderServiceExpressPopupShow" 
 		title="提交快递单"   
+		:info="express_info"
 		:onUpdateShow="handleChangeShow"  
 		@submitExpress="submitExpress" 
 	></OrderServiceExpressPopup>
 	<MenusBar></MenusBar>
+	
+	<ExpressHelpPopup
+		:show="showExpressMoney" 
+		:title="button" 
+		:info="button_info"
+		:homeInfo="info"
+		:onUpdateShow="handleChangeShow2" 
+		@submit="submit"
+	></ExpressHelpPopup> 
+	<TabBar :customStyle="customStyle" v-if="button">
+		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28 bg-white u-border-top" style="height: 100%;">
+			<u-button type="error" shape="circle" @click="showExpressMoney = true">{{button}}</u-button>
+		</view>
+	</TabBar> 
 </template>
 
 <script setup>
@@ -78,6 +125,11 @@
 	const role = ref('1') 
 	const tabs_current = ref(0)
 	const curTarData = ref({})
+	const info = ref({})
+	const button = ref('')
+	const button_info = ref('')
+	const express_info = ref('')
+	const showExpressMoney = ref(false)
 	const tabs_list = ref([
 		{
 			name: '全部',
@@ -101,13 +153,32 @@
 		}
 	]) 
 	
+	const customStyle = ref({
+		paddingBottom: '50px',
+		background: 'transparent' 
+	})  
 	const options = computed(() => {
 		return {
 			params: {
 				// role: role.value,
 				// type: tabs_list.value[tabs_current.value].value
 			},
-			api: 'service_list'
+			api: 'service_list',
+			getDataCallBack: (res) => {
+				if (res.code == 1) {
+					dataList.value = [...dataList.value, ...res.list]
+					info.value = res.info
+					button.value = res.button
+					button_info.value = res.button_info
+					express_info.value = res.ainfo
+					if(dataList.value.length >= res.total) {
+						loadstatus.value = 'nomore'
+					}
+					else {
+						loadstatus.value = 'loadmore'
+					}
+				}
+			}
 		}
 	})
 	
@@ -134,6 +205,9 @@
 		tabs_current.value = +data.index
 		initDataList()
 	} 
+	 function handleChangeShow(data) {
+	 	orderServiceExpressPopupShow.value = data
+	 }
 	async function initOrderTabsData() {
 		const res = await $api.order_type()
 		if(res.code == 1 ) { 
@@ -152,9 +226,30 @@
 		orderServiceExpressPopupShow.value = true
 		
 	} 
-	function handleChangeShow(data) {
-		orderServiceExpressPopupShow.value = data
+	function handleChangeShow2(data) {
+		showExpressMoney.value = data
 	}  
+	async function submit(data) {
+		uni.showLoading()
+		const res = await $api.save_bg({params: {bg: data.name}})
+		if(res.code == 1) {
+			uni.showToast({
+				title: res.msg
+			})
+			showExpressMoney.value = false
+		} 
+		initDataList()
+	}
+	function copy(addr) {
+		uni.setClipboardData({
+			data: addr,
+			success: function () {
+				uni.showToast({
+					title: '复制成功'
+				})
+			}
+		});
+	}
 	function submitExpress(data) {
 		uni.showModal({
 			title: '提示',
@@ -186,7 +281,7 @@
 <style scoped lang="scss">
 .w {
 	min-height: 100vh;
-	padding-bottom: 60px;
+	padding-bottom: 110px;
 } 
 .card {
 	

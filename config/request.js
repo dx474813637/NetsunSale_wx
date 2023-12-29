@@ -83,7 +83,8 @@ export default function($ws) {
 		config.header = {
 			...config.header,
 			// 'shareid': base.shareid,
-			'userid': token
+			userid: token,
+			// poster: uni.getStorageSync('poster')
 		}
 		config.params = {
 			...config.params,
