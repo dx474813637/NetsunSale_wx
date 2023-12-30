@@ -88,11 +88,11 @@
 		<view class="bg-white u-radius-12 u-flex u-flex-end u-flex-wrap btns-w u-m-t-40 u-m-b-20" style="padding-left: 90px;">
 			<view class="item u-p-20" v-if="btnList.button7">
 				<!-- 取消订单 -->
-				<up-button type="info" shape="circle" @click="cancalBtn">{{btnList.button7_title}}</up-button>
+				<up-button type="info" shape="circle" @click="cancelOrderShow = true">{{btnList.button7_title}}</up-button>
 			</view>
 			<view class="item u-p-20" v-if="btnList.button4"> 
 				<!-- 我要退款 -->
-				<up-button type="error" shape="circle" plain @click="refundBtn">{{btnList.button4_title}}</up-button>
+				<up-button type="error" shape="circle" plain @click="refundOrderShow = true">{{btnList.button4_title}}</up-button>
 			</view>
 		</view>  
 		
@@ -126,6 +126,16 @@
 		:list="list"
 		:onUpdateShow="handleChangeShow3" 
 	></OrderExpressPopup>
+	<CancleOrderPopup
+		:show="cancelOrderShow"
+		@submitEvent="submitEvent"
+		@closeEvent="cancelOrderShow = false"
+	></CancleOrderPopup>
+	<RefundOrderPopup
+		:show="refundOrderShow"
+		@submitEvent="submitEvent2"
+		@closeEvent="refundOrderShow = false"
+	></RefundOrderPopup>
 </template>
 
 <script setup>
@@ -149,6 +159,8 @@
 	const id = ref('')
 	const list = ref({})
 	const btnList = ref([])
+	const cancelOrderShow = ref(false)
+	const refundOrderShow = ref(false)
 	const orderServiceShow = ref(false)
 	const orderExpressPopupShow = ref(false)
 	const time = ref(0)
@@ -259,6 +271,27 @@
 				}
 			}
 		});
+	}
+	async function submitEvent() {
+		uni.showLoading()
+		const r = await $api.change_order_status({
+			params: {
+				order_id: list.value.id
+			}
+		})
+		if(r.code == 1) {
+			uni.showToast({
+				title: r.msg,
+				icon: 'none'
+			})  
+			await getData()
+		}
+		cancelOrderShow.value = false
+	}
+	async function submitEvent2() {
+		uni.showLoading()
+		await refundEvent()
+		refundOrderShow.value = false
 	}
 	async function refundEvent(data = {}) {
 		const r = await $api.order_refund({ 
