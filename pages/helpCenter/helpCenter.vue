@@ -80,7 +80,7 @@
 			<!-- <u-button type="error" shape="circle" @click="showProductList = true">
 				在线客服 
 			</u-button> -->
-			<button open-type="contact" type="error" plain class="service-btn u-p-15" >
+			<button @click="base.handleGoto( kefu, 'serviceChat')" type="error" plain class="service-btn u-p-15" >
 				<view class="u-flex u-flex-items-center service-btn-main u-flex-center">
 					<view class="u-flex u-flex-items-center">
 						<up-image 
@@ -114,6 +114,7 @@
 	const backBtnShow = computed(() => {
 		return getCurrentPages().length > 1
 	})
+	const kefu = ref({})
 	const menusActive = ref('')
 	const menusList = ref([])  
 	function changeActiveItem(data) {
@@ -133,6 +134,7 @@
 				if (res.code == 1) {
 					dataList.value = [...dataList.value, ...res.list]
 					menusList.value = res.cate
+					kefu.value = res.kefu
 					setOnlineControl(res)
 					if(dataList.value.length >= res.total) {
 						loadstatus.value = 'nomore'

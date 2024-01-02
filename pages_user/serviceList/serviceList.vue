@@ -66,8 +66,14 @@
 						{{item.ctime}}
 					</view>
 				</view>
-				<view class="u-p-t-20 u-p-b-20" v-if="item.zt == '1'">
+				<!-- <view class="u-p-t-20 u-p-b-20" v-if="item.zt == '1'">
 					<u-button type="error" shape="circle" @click="serviceCardClick(item)">提交快递单号</u-button>
+				</view> -->
+				<view class="u-p-t-20 u-p-b-20 u-flex u-flex-end" v-if="item.return_id"> 
+					<sales-return :returnId="item.return_id">
+					    <up-button shape="circle" type="error" slot="refund">立即退货</up-button>  
+					    <up-button shape="circle" type="primary" plain slot="refund_detail">退货详情</up-button> 
+					</sales-return> 
 				</view>
 			</view>
 			<template v-if="dataList.length == 0">
@@ -98,11 +104,11 @@
 		:onUpdateShow="handleChangeShow2" 
 		@submit="submit"
 	></ExpressHelpPopup> 
-	<TabBar :customStyle="customStyle" v-if="button">
+	<!-- <TabBar :customStyle="customStyle" v-if="button">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28 bg-white u-border-top" style="height: 100%;">
 			<u-button type="error" shape="circle" @click="showExpressMoney = true">{{button}}</u-button>
 		</view>
-	</TabBar> 
+	</TabBar> --> 
 </template>
 
 <script setup>

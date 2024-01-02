@@ -6,8 +6,9 @@
 					<view class="u-m-b-20" v-if="list.express">
 						<view class="service-card u-border u-radius-10 " style="overflow: hidden;">
 							<view class=" u-p-20">
-								<view class="item text-bold u-font-32 u-m-b-10">
-									单号：{{list.express.express}}
+								<view class="item text-bold u-font-32 u-m-b-10" @click="copy(list.express.express)">
+									<text>单号：{{list.express.express}}</text>
+									<text class="text-thin u-m-l-10">[复制]</text> 
 								</view>
 								<view class="item text-base u-font-28">
 									同步时间：{{list.express.uptime}}
@@ -83,7 +84,17 @@
 	const express_list = computed(() => props.list.express_list)
 	onMounted(async () => { 
 	})  
-	 
+	
+	function copy(data) {
+		uni.setClipboardData({
+			data,
+			success() {
+				uni.showToast({
+					title: '复制单号成功'
+				})
+			}
+		})
+	}
 </script>
 <style lang="scss">
 	page {

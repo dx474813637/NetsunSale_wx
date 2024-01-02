@@ -167,6 +167,12 @@
 		</view>
 		<u-safe-bottom></u-safe-bottom>
 	</view>
+	<view class="fixed-menus bg-white uni-shadow-base">
+		<view class="item-mine u-flex-column u-flex-center u-flex-items-center" @click="base.handleGoto( kefu, 'serviceChat')">
+			<u-icon name="server-man" color="#f00" size="25"></u-icon>
+			<view class="text-error u-font-24 text-bold">客服</view>
+		</view>
+	</view>
 	<TabBar :customStyle="{boxShadow: 'none', border: '1rpx solid #eee' }">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28" style="height: 100%;">
 			<view class="u-flex u-flex-items-center" style="height: 100%;"> 
@@ -267,6 +273,7 @@
 	const showProductSku = ref(false)
 	const showProductShare = ref(false)
 	const isOrder = ref(false)
+	const kefu = ref({})
 	
 	const cate_active_name = computed(() => {
 		if(!product_list.value.id || cate_list.value.length == 0) return '' 
@@ -334,6 +341,7 @@
 			express_info.value = res.info
 			company_list.value = res.company
 			spec_prices.value = res.spec_prices
+			kefu.value = res.kefu
 			setOnlineControl(res)
 		}
 	}
@@ -368,6 +376,21 @@
 </script>
 
 <style lang="scss" scoped>
+	.fixed-menus {
+		position: fixed;
+		left: 0;
+		bottom: 110px;
+		padding: 5px;
+		border-radius: 0 30px 30px 0;
+		// padding-left: 10px;
+		.item-mine {
+			width: 45px;
+			height: 45px;
+			border-radius: 30px;
+			border: 2px solid $u-error;
+			background-color: $u-error-light;
+		}
+	}
 	.share-btn {
 		background-color: transparent;
 		color: #000;

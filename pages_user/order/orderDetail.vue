@@ -41,6 +41,10 @@
 				<view class="item u-flex-1 u-text-right text-base">{{ order_zt2str }}</view>
 			</view>
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
+				<view class="item text-nowrap u-p-r-20">无忧退货（运费险）</view>
+				<view class="item u-flex-1 u-text-right text-base">商家赠送</view>
+			</view>
+			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">总金额</view>
 				<view class="item u-flex-1 u-text-right text-base">{{ list.total_fee }} 元</view>
 			</view>
@@ -93,6 +97,10 @@
 			<view class="item u-p-20" v-if="btnList.button4"> 
 				<!-- 我要退款 -->
 				<up-button type="error" shape="circle" plain @click="refundOrderShow = true">{{btnList.button4_title}}</up-button>
+			</view>
+			<view class="item u-p-20" >
+				<!-- 客服按钮 -->
+				<up-button type="error" shape="circle" plain  @click="base.handleGoto( kefu,'serviceChat')">联系客服</up-button>
 			</view>
 		</view>  
 		
@@ -163,6 +171,7 @@
 	const refundOrderShow = ref(false)
 	const orderServiceShow = ref(false)
 	const orderExpressPopupShow = ref(false)
+	const kefu = ref({})
 	const time = ref(0)
 	const { 
 		order_zt2str
@@ -202,6 +211,7 @@
 		if(res.code == 1 ) {
 			btnList.value = res.button
 			time.value = res.time
+			kefu.value = res.kefu
 			// res.list.company = res.sell_info.company
 			// res.list.clogin = res.sell_info.login
 			list.value = res.list

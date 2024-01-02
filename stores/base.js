@@ -73,7 +73,29 @@ export const baseStore = defineStore('base', {
 		saveShareInfo(data) {
 			this.share_other = data;
 		}, 
-		handleGoto(data) {
+		handleGoto(data, type="") {
+			if(type == 'serviceChat') { 
+				if(!data.url || !data.appid) {
+					uni.showToast({ title: '客服参数异常' })
+					return 
+				}
+				wx.openCustomerServiceChat({
+				  extInfo: { url: data.url },
+				  corpId: data.appid,
+				  ...data,
+				  success(res) {
+					  if(data.hasOwnProperty('success')) {
+						  data.success(res)
+					  }
+				  },
+				  fail(err) {
+					  if(data.hasOwnProperty('fail')) {
+						  data.fail(err)
+					  }
+				  }
+				})
+				return
+			}
 			uni.$u.route(data)
 		}, 
 		setNoTokenNeedPermissionRoute(data) {

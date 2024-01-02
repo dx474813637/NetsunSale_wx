@@ -2,7 +2,7 @@
 	<view class="header u-p-20"> 
 		<view class="u-p-l-10 u-p-r-10">
 			<SearchBase></SearchBase>
-		</view>
+		</view> 
 		<view class="u-flex u-flex-items-center u-p-20  ">
 			<view class="text-nowrap u-m-r-20 u-p-10">热点商品</view>
 			<view class="u-flex-1">
@@ -167,7 +167,8 @@
 	onLoad(async () => {
 		initDataList()
 		initHomeData()
-	})
+		
+	}) 
 	async function initHomeData() {
 		await getHomeData()
 		// await getTuijianData()
