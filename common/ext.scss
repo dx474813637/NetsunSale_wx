@@ -3,6 +3,9 @@ $u-error: #F12E24;
 .dx-transition {
 	transition: all .3s;
 }
+.box-border {
+	box-sizing: border-box;
+}
 .text-thin {
 	font-weight: 300;
 }

@@ -138,23 +138,11 @@
 					<view class="">
 						<u-icon name="arrow-right" color="#ccc"></u-icon>
 					</view>
-				</view>
-				<!-- <view class="item u-text-center u-p-20 u-p-t-30 u-p-b-30">
-					<button open-type="contact" type="error" plain class="service-btn " >
-						<view class="u-flex u-flex-items-center service-btn-main u-flex-between">
-							<view class="u-flex u-flex-items-center">
-								<image class="icon-img" src="https://wstm.y.netsun.com/Public/tb/wd099.png" mode=""></image>
-								<text class="text-black u-line-1 u-m-l-30 u-font-32">在线客服</text>
-							</view>
-							<view class="">
-								<u-icon name="arrow-right" color="#ccc"></u-icon>
-							</view>
-						</view>
-					</button>
-				</view> -->
-				 
+				</view> 
 			</view>
 		</template> 
+		<u-button @click="base.handleGoto('/pages/home/home_new')">测试首页</u-button>
+		<u-button @click="base.handleGoto('/pages/zt/zt')">测试专题</u-button>
 		<u-safe-bottom></u-safe-bottom>
 		<MenusBar mode='2'></MenusBar>
 	</view>

@@ -72,6 +72,10 @@
 			type: Boolean,
 			default: true
 		},
+		titleStyle: {
+			type: String,
+			default: '',
+		},
 		title: {
 			type: String,
 			default: '',

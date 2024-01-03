@@ -4,18 +4,17 @@
 			placeholder="请输入商品关键词" 
 			v-model="keyword"
 			bgColor="#fff" 
-			:showAction="false"
-			shape="square"
+			:showAction="false" 
 			@search="handleSearch"
 			></u-search>
-			<view class="u-m-l-20">
+			<!-- <view class="u-m-l-20">
 				<u-button 
 					type="error"   
 					color="#E94A6A"
 					customStyle="height: 34px; border-radius: 6px"
 					@click="handleSearch"
 				>搜索</u-button>
-			</view>
+			</view> -->
 	</view>
 </template>
 

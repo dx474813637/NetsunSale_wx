@@ -5,11 +5,11 @@
 	>
 	
 		<view class="top-box" :style="{
-			'height': '483rpx',
+			'height': '400rpx',
 			'border-radius': `0 0 43% 43%`,
 			'background': `url('http://market.netsun.testwebsite.cn/Public/Upload/diy/61e6b37d4c6d5.png')`,
-			'background': `#1b35ae`,
-			'background': `linear-gradient( 0deg, #1b35ae, #061976)`, 
+			'background': `${themeColor}`,
+			'background': `linear-gradient( 0deg, ${themeColor}, ${themeColor})`, 
 		}"></view>
 		
 		<view class="ww" >
@@ -124,6 +124,7 @@
 	import useDataList from '@/composition/useDataList.js'
 	import {useCateStore, baseStore} from '@/stores/base.js'
 	const base = baseStore() 
+	const {themeColor} = toRefs(base)
 	const { setOnlineControl } = share()
 	const $api = inject('$api')
 	
@@ -269,7 +270,7 @@
 	} = useDataList(options)
 	onReady(() => {
 		uni.setNavigationBarColor({
-			backgroundColor: '#061976',
+			backgroundColor: themeColor.value,
 			frontColor: '#ffffff'
 		})
 	})

@@ -7,11 +7,11 @@
 			"^u-([^-].*)": "uview-plus/components/u-$1/u-$1.vue"
 		}
 	},
-	"plugins": {  
-	    "logisticsPlugin": {  
-	      "version": "2.1.11",  
-	      "provider": "wx9ad912bf20548d92"  
-	    }  
+	"plugins": {
+		"logisticsPlugin": {
+			"version": "2.1.11",
+			"provider": "wx9ad912bf20548d92"
+		}
 	},
 	"pages": [{
 			"path": "pages/home/home",
@@ -123,19 +123,18 @@
 			}
 		},
 		{
-			"path" : "pages/zt/zt",
-			"style" : 
-			{
-				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
+			"path": "pages/zt/zt",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path" : "pages/home/home_new",
-			"style" : 
-			{
-				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
+			"path": "pages/home/home_new",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
 			}
 		}
 	],
