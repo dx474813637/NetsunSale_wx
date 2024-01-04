@@ -135,10 +135,10 @@ export const baseStore = defineStore('base', {
 					});
 			  });
 		},
-		async uploadFilePromise(url) { 
+		async uploadFilePromise(url, api="upimg") { 
 			return new Promise((resolve, reject) => { 
 				uni.uploadFile({
-					url: `${this.configBaseURL}upimg`, 
+					url: `${this.configBaseURL}${api}`, 
 					filePath: url,
 					name: 'file',
 					header: {

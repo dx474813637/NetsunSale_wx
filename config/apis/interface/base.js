@@ -132,6 +132,8 @@ export const memu = (data) => http.get('memu', data)
 
 // upimg 上传图片
 export const upimg = (data, config) => http.post('upimg', data, config)
+// upimg 上传图片 身份证信息专用
+export const upimg1 = (data, config) => http.post('upimg', data, config)
 
 // save_info 保存信息 name昵称 img头像
 export const save_info = (data) => http.get('save_info', data)
@@ -179,3 +181,16 @@ export const follow_list = (data) => http.get('follow_list', data)
 
 //get_url 参数url
 export const get_url = (data) => http.get('get_url', data)
+
+
+// save_linghuo 实名认证接口 参数 
+// 			name姓名 id_card身份证号码 phone手机 bank_account银行卡或支付宝账号
+ // 		front_img 身份证人头面的图片地址 back_img 身份证反面的图片地址 avatar_img 人像照的图片地址
+export const save_linghuo = (data, config={}) => http.post('save_linghuo', data, config)
+
+// linghuo 实名详情 参数无  zt=2的时候不允许再修改
+export const linghuo = (data) => http.get('linghuo', data)
+// add_linghuo_transfer  提现操作
+export const add_linghuo_transfer = (data) => http.get('add_linghuo_transfer', data)
+// divide1  可提现列表 
+export const divide1 = (data) => http.get('divide1', data)

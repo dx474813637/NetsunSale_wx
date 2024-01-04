@@ -7,12 +7,7 @@
 			"^u-([^-].*)": "uview-plus/components/u-$1/u-$1.vue"
 		}
 	},
-	"plugins": {
-		"logisticsPlugin": {
-			"version": "2.1.11",
-			"provider": "wx9ad912bf20548d92"
-		}
-	},
+
 	"pages": [{
 			"path": "pages/home/home",
 			"style": {
@@ -140,6 +135,12 @@
 	],
 	"subPackages": [{
 		"root": "pages_user",
+		"plugins": {
+			"logisticsPlugin": {
+				"version": "2.2.19",
+				"provider": "wx9ad912bf20548d92"
+			}
+		},
 		"pages": [{
 				"path": "index/index",
 				"style": {
@@ -277,6 +278,21 @@
 					"navigationBarTitleText": "",
 					"enablePullDownRefresh": false,
 					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "auth/auth",
+				"style": {
+					"navigationBarTitleText": "",
+					"navigationBarBackgroundColor": "#E7F2FE",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "tuan/tx",
+				"style": {
+					"navigationBarTitleText": "列表",
+					"enablePullDownRefresh": false
 				}
 			}
 		]

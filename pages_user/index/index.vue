@@ -140,9 +140,7 @@
 					</view>
 				</view> 
 			</view>
-		</template> 
-		<u-button @click="base.handleGoto('/pages/home/home_new')">测试首页</u-button>
-		<u-button @click="base.handleGoto('/pages/zt/zt')">测试专题</u-button>
+		</template>  
 		<u-safe-bottom></u-safe-bottom>
 		<MenusBar mode='2'></MenusBar>
 	</view>
