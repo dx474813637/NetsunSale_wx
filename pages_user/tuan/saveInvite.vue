@@ -21,7 +21,7 @@
 	<TabBar :customStyle="{boxShadow: '0px -3px 10px rgba(0,0,0,0.1)' }">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28" style="height: 100%;">
 			<view class="item u-flex-1 "  v-if="tlogin">
-				<u-button type="error" shape="circle" @click="accpetEvent">接受团长邀请成为达人</u-button>
+				<u-button type="error" shape="circle" @click="accpetEvent">接受邀请成为达人</u-button>
 			</view> 
 			<view class="item u-flex-1" v-else>
 				<u-button type="primary" shape="circle" openType="share"  >

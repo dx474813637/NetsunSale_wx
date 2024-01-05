@@ -24,6 +24,7 @@ export const baseStore = defineStore('base', {
 				// 'xcxappid': extConfig.attr.wxappid,
 				'tid2': uni.getStorageSync('tid2') || '',
 				'poster2': uni.getStorageSync('poster2') || '',
+				'shareother': uni.getStorageSync('share_other') || '',
 			},
 			share_other: '',
 			themeColor: '#F12E24',

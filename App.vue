@@ -57,7 +57,16 @@
 		} 
 		console.log('opt', options) 
 		if(options.query?.share_other) {
+			if(options.query.hasOwnProperty('scene')) {
+				$http.setToken({
+					shareother: options.query.share_other
+				})
+				uni.setStorageSync('share_other', options.query.share_other)
+			}
+			
 			base.saveShareInfo(options.query.share_other) 
+			
+			
 		} 
 		if (options.query?.poster) {
 			$http.setToken({
