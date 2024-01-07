@@ -20,8 +20,20 @@
 			</navBar>
 		</view>
 		<view class="header u-p-10 box-border"> 
-			<view class="u-p-l-10 u-p-r-10">
-				<SearchBase></SearchBase>
+			<view class="u-p-l-10 u-p-r-10 u-flex u-flex-items-center">
+				<view class="bg-white u-p-5 u-radius-30 u-flex-1">
+					<SearchBase></SearchBase>
+				</view>
+				<view class="u-m-l-10 u-p-10">
+					<up-image
+						width="25px"
+						height="25px"
+						src="https://wstm.y.netsun.com/Public/tb/m004.png"
+						:customStyle="{ 
+							filter: 'grayscale(100%) brightness(500%)'
+						}"
+					></up-image>
+				</view>
 			</view> 
 			<view class="u-flex u-flex-items-center u-p-10 ">
 				<!-- <view class="text-nowrap u-m-r-20 u-p-10">热点商品</view> -->
@@ -51,28 +63,11 @@
 						</template>
 					</u-tabs>	
 				</view> 
-			</view>
-			<view class="u-p-10">
-				<u-swiper
-					:list="swiper2" 
-					:height="200" 
-					imgMode="scaleToFill"
-					:border-radius="13" 
-					:displayMultipleItems="1"
-					previousMargin="90"
-					nextMargin="90"
-					bgColor="transparent"
-					acceleration
-					circular
-					indicator
-					indicatorMode="dot"
-					@click="handleSwiperClick"
-				></u-swiper>
-			</view>
+			</view> 
 			<view class="u-p-10">
 				<u-swiper
 					:list="swiper" 
-					:height="150" 
+					:height="80" 
 					:border-radius="13"
 					indicator 
 					bgColor="transparent"
@@ -80,67 +75,43 @@
 				></u-swiper>
 			</view>
 			
-			<view class="u-p-l-10 u-p-r-10 u-m-b-20">
+			<view class="u-p-l-10 u-p-r-10 u-m-b-20"> 
 				<view 
-					class="nav u-flex u-flex-wrap u-flex-items-start u-p-20  u-radius-8" 
-					style="background-color: rgba(255,255,255,.5);"
+					class="u-radius-8 box-border" 
+					style="background-color: rgba(255,255,255,.5); overflow: hidden;"
 				>
-					<view class="nav-item u-flex-column u-flex-items-center u-m-b-20"
-						v-for="(item, index) in catelist2"
-						:key="index"
-						@click="click"
+					<u-scroll-list 
+						indicator 
+						indicatorColor="#f3dedf" 
+						:indicatorActiveColor="themeColor"
 					>
-						<view style="width: 50px; height: 50px;">
-							<zeroLazyLoad
-								:image="item.img" 
-								imgMode="scaleToFill" 
-								height="100%"
-								></zeroLazyLoad>
-						</view>
-						
-						<!-- <up-image 
-							:show-loading="true" 
-							:src="item.img" 
-							width="50px" 
-							height="50px"
-							@click="goto(item)" 
-						></up-image> -->
-						<view class="u-line-1 u-m-t-10 u-font-28 text-base" >
-							{{item.name}}
-						</view>
-					</view>
-				</view>
-				<u-scroll-list 
-					indicator 
-					indicatorColor="#f3dedf" 
-					:indicatorActiveColor="themeColor"
-				>
-					<view class="u-flex-column box-border" style="min-width: 100%;">
-						<view
-							v-for="(ele, i) in catelist3"
-							:key="i"
-							class="u-flex u-flex-items-center nav box-border u-m-t-5"
-							style="width: 100%;"
-						>
-							<view 
-								v-for="(item, index) in ele" 
-								:key="index"
-								class="nav-item u-flex-column u-flex-items-center box-border" 
-								>
-								<view style="width: 50px; height: 50px;">
-									<zeroLazyLoad
-										:image="item.img" 
-										imgMode="scaleToFill" 
-										height="100%"
-										></zeroLazyLoad>
+						<view class="u-flex-column box-border" style="min-width: 100%;">
+							<view
+								v-for="(ele, i) in catelist3"
+								:key="i"
+								class="u-flex u-flex-items-center nav box-border u-m-t-5"
+								style="width: 100%;"
+							>
+								<view 
+									v-for="(item, index) in ele" 
+									:key="index"
+									class="nav-item u-flex-column u-flex-items-center box-border" 
+									>
+									<view style="width: 50px; height: 50px;">
+										<zeroLazyLoad
+											:image="item.img" 
+											imgMode="scaleToFill" 
+											height="100%"
+											></zeroLazyLoad>
+									</view>
+									<view class="text-base u-line-1 u-m-t-5 u-font-28">{{item.name}}</view>
 								</view>
-								<view class="text-base u-line-1 u-m-t-5 u-font-28">{{item.name}}</view>
 							</view>
 						</view>
-					</view>
-					
-					
-				</u-scroll-list>
+						
+						
+					</u-scroll-list>
+				</view>
 			</view>
 			
 			<view class="u-flex u-flex-between swiper-w u-p-t-10">
@@ -175,7 +146,7 @@
 					</view>
 				</view>
 			</view>
-			<!-- <view class="ad-w u-flex u-flex-between u-p-t-10 u-p-b-10" v-if="list2 && list2.length == 2">
+			<view class="ad-w u-flex u-flex-between u-p-t-10 u-p-b-10" v-if="list2 && list2.length == 2">
 				<view class="item u-p-10" v-for="(item,index) in list2" :key="index">
 					<img
 						@click="goto(item)"
@@ -186,70 +157,9 @@
 						mode="widthFix"
 						/> 
 				</view>
-			</view> -->
-			
-			
-			<view class="u-p-10 u-p-t-20">
-				
-				<u-scroll-list 
-					indicator 
-					indicatorColor="#f3dedf" 
-					:indicatorActiveColor="themeColor"
-				>
-					<view class="u-flex u-flex-items-center box-border" style="width: 100%;" >
-						<view 
-							class="card-item bg-white u-radius-10 u-p-10" 
-							v-for="item in 6"
-							:key="item"
-						>
-							<view class="card-item-header u-p-10">
-								<view class="u-flex u-flex-items-center ">
-									<view class=" u-line-1 ">防晒一只够吗</view> 
-								</view>
-								<view class="u-font-28 text-thin u-line-1">#精准呵护 #INS BEAUTY</view>
-							</view>
-							<view class="card-item-content">
-								<view class="u-flex u-flex-between card-w" style="height: 180px;">
-									<view class="item u-p-6">
-										<view style="width: 100%; height: 100%;" class="u-radius-8">
-											<zeroLazyLoad
-												image="https://wstm.y.netsun.com//Public/attached/2023/11/30/656880003d300.jpg" 
-												imgMode="scaleToFill" 
-												height="100%"
-												></zeroLazyLoad>
-										</view>
-										<!-- <img
-											@click="goto(item)"
-											class="u-radius-8"
-											src="https://wstm.y.netsun.com//Public/attached/2023/11/30/656880003d300.jpg"
-											style="width: 100%;height: 100%;display: block;"
-											alt="" /> -->
-									</view>
-									<view class="item u-flex-column u-flex-between ">
-										<view class="u-flex-1 u-p-6" v-for="(item,index) in list" :key="index">
-											<view style="width: 100%; height: 100%;" class="u-radius-8">
-												<zeroLazyLoad
-													:image="item.img"
-													imgMode="scaleToFill" 
-													height="100%"
-													></zeroLazyLoad>
-											</view>
-											<!-- <img 
-												@click="goto(item)"
-												class="u-radius-8"
-												:src="item.img"
-												style="width: 100%;height: 100%;display: block;"
-												alt="" /> -->
-										</view>
-									</view>
-								</view>
-							</view>
-						</view>
-					</view>
-					
-					
-				</u-scroll-list>
 			</view>
+			
+			 
 			
 			<view class="u-p-10 u-p-t-20">
 				<view class="bg-white u-radius-8 u-p-20">
@@ -259,25 +169,7 @@
 							<view class="u-m-r-10">全部商品</view>
 							<u-icon name="arrow-right" color="#999" size="14"></u-icon>
 						</view>
-					</view>
-					<view class="tabs-w u-p-6">
-						<u-tabs
-							:list="catelist"  
-							lineWidth="0"  
-							@click="handleTabsClick"
-							:itemStyle="{
-								height: '34px', 
-								color: '#666', 
-								background: '#F5F5F5', 
-								borderRadius: '20px', 
-								fontSize: '12px', 
-								marginRight: '8px' 
-							}"
-							:activeStyle="{ color: themeColor }"
-							:inactiveStyle="{ color: '#333' }"
-						> 
-						</u-tabs>
-					</view>
+					</view> 
 					<view class="u-p-t-20">
 						<u-scroll-list
 							indicator 

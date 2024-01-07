@@ -1,114 +1,63 @@
 <template>
 	<view 
 		class="wrapper bg-white u-font-28"
+		style="padding-top: 44px;"
 		ref="page" 
 	>
-	
-		<view class="top-box" :style="{
+		<u-status-bar></u-status-bar>
+		<navBar
+			bgColor="#f00" 
+			title=""   
+			fixed
+			activeColor="#fff"
+			titleStyle="color: #fff"
+		>
+			<template #navLeft>
+				<view class="u-flex u-flex-items-center left-w u-border u-radius-20 u-p-15 u-p-l-30 u-p-r-30" style="background-color: rgba(0,0,0,.5);">
+					<view class="btn u-m-r-30" @click="handleBack" v-if="backBtnShow">
+						<i class="custom-icon custom-icon-back text-white" ></i>
+					</view>  
+					<view @click="base.handleGoto({url: '/pages/home/home', type: 'reLaunch'})" class="btn" > 
+						<i class="custom-icon custom-icon-home text-white" ></i>
+					</view>  
+				</view>
+			</template>
+		</navBar> 
+		<up-image
+			width="100vw"
+			mode="widthFix"
+			height="auto"
+			src="http://zc.toocle.com/Public/Upload/diy/61e61a4a30012.jpg"
+		></up-image>
+		<!-- <view class="top-box" :style="{
 			'height': '400rpx',
 			'border-radius': `0 0 43% 43%`,
 			'background': `url('http://market.netsun.testwebsite.cn/Public/Upload/diy/61e6b37d4c6d5.png')`,
 			'background': `${themeColor}`,
 			'background': `linear-gradient( 0deg, ${themeColor}, ${themeColor})`, 
-		}"></view>
-		
-		<view class="ww" >
-			<view class="item-wrapper" >
-				<view class="search-wrapper u-flex">
-					<view class="search-left-pic" :style="{
-						flex: `0 0 34%`,
-						width: `34%`,
-					}">
-						<u-image
-							height="64rpx"
-							mode="heightFix"
-							src="http://zc.toocle.com/Public/Upload/diy/61e52fa0dd92a.png"
-						></u-image>
-					</view>
-					<view class="search-content">
-						<u-search
-							v-model="kw"
-							shape="square"
-							bgColor="#FFFFFF" 
-							color="#A2722F" 
-							clearabled 
-							:showAction="false"
-							ctionText="搜索"
-							borderColor="#FFFFFF"
-							@search="handleSearch"
-							@custom="handleSearch"
-							:action-style="{
-								color: '#FFFFFF'
-							}"
-						></u-search>
-					</view>
-				</view>
-			</view>
-			<view class="item-wrapper" >
-				<scroll-view scroll-x >
-					<view class="menu-wrapper u-flex nowrap">
-						<view class="item u-flex u-flex-center text-white" 
-							v-for="(ele, index) in tabs" 
-							:key="index" 
-							>
-							<view class="menu-title" 
-								@click="handleGoto(ele.link)"
-							>{{ele.title}}</view>
-						</view>
-					</view>
-				</scroll-view>
-			</view>
-			<view class="item-wrapper" >
-				<view class="swiper-wrapper" :style="{
-					'padding-left': '15rpx',
-					'padding-right': '15rpx'
-				}"> 
-					<u-swiper 
-						:list="swiper" 
-						:height="150" 
-						:border-radius="13"
-						indicator
-						bgColor="transparent"
-						@click="handleSwiperClick"
-					></u-swiper>
-				</view>
-			</view>
-			<view class="item-wrapper" >
-				<view class="menu-wrapper u-flex u-flex-wrap " >
-					<view class="item u-flex-column u-flex-items-center col-5" 
-						v-for="(ele, index) in nav1" 
-						:key="index"
-						>
-						<view class="menu-img">
-							<u-image 
-								width="50px" 
-								height="50px" 
-								mode="a"
-								:src="ele.url" 
-							></u-image>
-						</view>
-						<view class="menu-title u-line-1 text-base" >{{ele.title}}</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		
-		<view class="u-flex u-flex-items-end u-flex-between u-p-20">
-			<up-image src="https://wstm.y.netsun.com//Public/attached/2023/11/09/654c9201b0def.png" height="30px" width="200px" mode="heightFix" ></up-image>
-			<view class="item u-flex u-flex-items-center u-font-28 u-info text-nowrap u-p-20" @click="base.handleGoto('/pages/product/productList')" style="position: relative;z-index: 20;">
-				<view class="u-m-r-10">全部商品</view>
-				<u-icon name="arrow-right" color="#999" size="14"></u-icon>
-			</view>
-		</view>
-		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10">
+		}"></view> -->
+		 
+		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10 u-m-t-20">
 			 <view 
-				class="list-item u-p-14" 
+				class="list-item box-border u-p-14" 
+				style="flex: 0 0 50%"
 				v-for="item in dataList" 
 				:key="item.id"
 				>
 			 	<ProductColCard
 					:origin="item"
-				></ProductColCard>
+				></ProductColCard>  
+			 </view>	
+			 <view 
+				class="list-item box-border u-p-14" 
+				style="flex: 0 0 100%"
+				v-for="item in dataList" 
+				:key="item.id"
+				> 
+			 	<ProductRowCard
+					:origin="item"
+					mode="normal"
+				></ProductRowCard>
 			 		 
 			 </view>	
 			
@@ -278,6 +227,13 @@
 		initDataList() 
 		
 	}) 
+	const backBtnShow = computed(() => {
+		return getCurrentPages().length > 1
+	})
+	function handleBack() {
+		// $emits('backEvent')
+		uni.navigateBack()
+	}
 </script>
 
 <style lang="scss"> 
@@ -286,9 +242,7 @@
 	
 	.list {
 		box-sizing: border-box;
-		>.list-item {
-			flex: 0 0 50%;
-			box-sizing: border-box;
+		>.list-item { 
 		}
 	}
 	// .wrapper {

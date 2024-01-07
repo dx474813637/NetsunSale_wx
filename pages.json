@@ -121,6 +121,7 @@
 			"path": "pages/zt/zt",
 			"style": {
 				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
 		},

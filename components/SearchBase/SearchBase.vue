@@ -7,14 +7,15 @@
 			:showAction="false" 
 			@search="handleSearch"
 			></u-search>
-			<!-- <view class="u-m-l-20">
+			<view class="u-m-l-20">
 				<u-button 
 					type="error"   
 					color="#E94A6A"
-					customStyle="height: 34px; border-radius: 6px"
+					customStyle="height: 34px "
+					shape="circle"
 					@click="handleSearch"
 				>搜索</u-button>
-			</view> -->
+			</view>
 	</view>
 </template>
 
