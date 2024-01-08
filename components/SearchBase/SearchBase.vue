@@ -10,7 +10,7 @@
 			<view class="u-m-l-20">
 				<u-button 
 					type="error"   
-					color="#E94A6A"
+					color="#f03337"
 					customStyle="height: 34px "
 					shape="circle"
 					@click="handleSearch"

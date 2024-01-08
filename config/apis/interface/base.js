@@ -115,6 +115,8 @@ export const web_tuijian2 = (data) => http.get('web_tuijian2', data)
 export const web_login_shop = (data) => http.get('web_login_shop', data)
 // web_home 首页推荐里的一些数据
 export const web_home = (data) => http.get('web_home', data)
+// web_home1 首页推荐里的一些数据
+export const web_home1 = (data) => http.get('web_home1', data)
 
 
 // home1  
@@ -194,3 +196,5 @@ export const linghuo = (data) => http.get('linghuo', data)
 export const add_linghuo_transfer = (data) => http.get('add_linghuo_transfer', data)
 // divide1  可提现列表 
 export const divide1 = (data) => http.get('divide1', data)
+// zt_detail 专题详情接口 参数id 专题id，测试专题id=1  没有翻页。
+export const zt_detail = (data) => http.get('zt_detail', data)

@@ -1,13 +1,25 @@
 <template>
-	<view class="w">
+	<view class="w"
+		:style="{
+			backgroundImage: `url(${originData.bj})`,
+			backgroundSize: '100% auto',
+			backgroundRepeat: 'no-repeat',
+		}"
+	>
 		<view class="navbar-w">
 			<navBar
 				bgColor="transparent" 
-				title="网盛特卖"  
+				title=""  
 				activeColor="#fff"
 				titleStyle="color: #fff"
 			>
 				<template #navLeft>
+					<up-image
+						height="40px"
+						width="auto"
+						mode="heightFix"
+						:src="originData.logo"
+					></up-image>
 					<!-- <view class="u-flex u-flex-items-center left-w u-border u-radius-20 u-p-15 u-p-l-30 u-p-r-30" >
 						<view class="btn u-m-r-30" @click="handleBack" v-if="backBtnShow">
 							<i class="custom-icon custom-icon-back text-white" ></i>
@@ -32,14 +44,15 @@
 						:customStyle="{ 
 							filter: 'grayscale(100%) brightness(500%)'
 						}"
+						@click="base.handleGoto('/pages_user/cart/cart')"
 					></up-image>
 				</view>
 			</view> 
-			<view class="u-flex u-flex-items-center u-p-10 ">
+			<view class="u-flex u-flex-items-center u-p-10 " v-if="catelist1.length > 0">
 				<!-- <view class="text-nowrap u-m-r-20 u-p-10">热点商品</view> -->
 				<view class="u-flex-1 text-white" style="overflow: hidden;">
 					<u-tabs
-						:list="catelist"  
+						:list="catelist1"  
 						lineWidth="0"  
 						@click="handleTabsClick"
 						:itemStyle="{height: '35px', color: '#fff' }"
@@ -64,30 +77,31 @@
 					</u-tabs>	
 				</view> 
 			</view> 
-			<view class="u-p-10">
+			<view class="u-p-10 u-m-b-20" v-if="swiperList1.length > 0">
 				<u-swiper
-					:list="swiper" 
+					:list="swiperList1" 
+					keyName="img"
 					:height="80" 
 					:border-radius="13"
 					indicator 
 					bgColor="transparent"
-					@click="handleSwiperClick"
+					@click="swiperclick1"
 				></u-swiper>
 			</view>
 			
-			<view class="u-p-l-10 u-p-r-10 u-m-b-20"> 
+			<view class="u-p-l-10 u-p-r-10 u-m-b-20" v-if="catelist2[0].length > 0"> 
 				<view 
-					class="u-radius-8 box-border" 
-					style="background-color: rgba(255,255,255,.5); overflow: hidden;"
+					class="u-radius-8 box-border bg-white" 
+					style=" overflow: hidden;"
 				>
 					<u-scroll-list 
-						indicator 
+						:indicator="catelist2[0].length > 5"
 						indicatorColor="#f3dedf" 
 						:indicatorActiveColor="themeColor"
 					>
 						<view class="u-flex-column box-border" style="min-width: 100%;">
 							<view
-								v-for="(ele, i) in catelist3"
+								v-for="(ele, i) in catelist2"
 								:key="i"
 								class="u-flex u-flex-items-center nav box-border u-m-t-5"
 								style="width: 100%;"
@@ -116,13 +130,13 @@
 			
 			<view class="u-flex u-flex-between swiper-w u-p-t-10">
 				<view class="item u-p-10">
-					<view class="swiper " v-if="swiperList.length > 0">
+					<view class="swiper " v-if="swiperList2.length > 0">
 						<u-swiper
-							:list="swiperList" 
+							:list="swiperList2" 
 							keyName="img"
 							radius="10"
 							height="100%"
-							@click="swiperclick"
+							@click="swiperclick2"
 							indicator
 							bgColor="transparent"
 						></u-swiper>
@@ -161,33 +175,68 @@
 			
 			 
 			
-			<view class="u-p-10 u-p-t-20">
-				<view class="bg-white u-radius-8 u-p-20">
-					<view class="u-flex u-flex-items-end u-flex-between u-p-10 u-m-b-10">
-						<up-image :src="originData.ad" height="30px" width="200px" mode="heightFix" ></up-image>
-						<view class="item u-flex u-flex-items-center u-font-28 u-info text-nowrap u-p-10" @click="base.handleGoto('/pages/product/productList')" style="position: relative;z-index: 20;">
-							<view class="u-m-r-10">全部商品</view>
-							<u-icon name="arrow-right" color="#999" size="14"></u-icon>
+			<view class="u-p-10 u-p-t-20"
+				v-for="item in zt"
+				:key="item.id"
+			>
+				<view class="bg-white u-radius-12 u-p-20" :style="{
+					backgroundImage: `url(${item.pic})`,
+					backgroundSize: '100% auto',
+					backgroundRepeat: 'no-repeat',
+				}">
+					<view class="u-flex u-flex-items-end u-flex-between u-p-10">
+						<view class="item"></view>
+						<!-- <up-image :src="originData.ad" height="30px" width="auto" mode="heightFix" ></up-image> -->
+						<!-- <up-image 
+							:src="originData.ad" 
+							height="30px" 
+							width="auto" 
+							mode="heightFix" 
+							@click="base.handleGoto('/pages/product/productList')"
+						></up-image> -->
+						<view 
+							class="item u-flex u-flex-items-center u-font-28 u-info text-nowrap u-p-10 u-radius-20 text-white u-p-l-20" 
+							@click="goto(item)" 
+							style="position: relative;z-index: 20;background-color: rgba(0,0,0,.3);"
+							>
+							<view class="u-m-r-10">更多</view>
+							<u-icon name="arrow-right" color="#fff" size="14"></u-icon>
 						</view>
 					</view> 
-					<view class="u-p-t-20">
+					<view class="">
 						<u-scroll-list
-							indicator 
-							indicatorColor="#f3dedf" 
-							:indicatorActiveColor="themeColor"
+							:indicator="false"  
 						>
-							<view class="u-flex u-flex-items-center box-border" style="width: 100%;" >
+							<view class="u-flex u-flex-items-center box-border u-p-20 u-radius-12" style="background-color: #f8f8f8;" >
 								<view 
-									class=" u-radius-10 u-m-r-20" 
-									v-for="item in 6"
-									:key="item"
+									class=" u-radius-8 u-m-r-20" 
+									v-for="ele in item.list"
+									:key="ele" 
 								>
-									<view style="width: 120px; height: 150px;" class="u-radius-8">
-										<zeroLazyLoad
-											image="https://wstm.y.netsun.com//Public/attached/2023/11/30/656880003d300.jpg"
-											imgMode="aspectFill" 
-											height="100%"
-											></zeroLazyLoad>
+									<view style="width: 140px;" class="u-radius-8">
+										<ProductColCard
+											:origin="ele"
+											:customStyle="{
+												'box-shadow': 'none!important'
+											}"
+										>
+											<template #content>
+												<view class="content-w u-p-10 u-p-b-20 u-font-26">
+													<view class="u-line-1 u-m-b-10">
+														{{ele.name}}
+													</view>
+													<view class="u-text-center">
+														<up-text
+															type="error" 
+															mode="price" 
+															bold
+															:text="ele.price1" 
+															size="14" 
+														></up-text>
+													</view>
+												</view>
+											</template>
+										</ProductColCard>
 									</view>
 									<!-- <up-image
 										width="120px"
@@ -200,10 +249,7 @@
 						</u-scroll-list>
 					</view>
 				</view>
-			</view>
-				
-			
-			
+			</view> 
 		</view>
 		
 	</view>
@@ -214,29 +260,65 @@
 			<u-icon name="arrow-right" color="#999" size="14"></u-icon>
 		</view>
 	</view> -->
-	<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10">
-		 <view 
-			class="list-item u-p-14" 
-			v-for="item in dataList" 
-			:key="item.id"
+	<view class="u-p-20">
+		<view class="u-flex u-flex-items-center bg-white u-radius-12">
+			<view class="item u-flex-1 u-radius-12 u-text-center"
+				style="line-height: 45px;"
+				:style="{
+					background: index == pl_current ?'#FAE2E2': '#fff'
+				}"
+				v-for="(item, index) in pl_tabs"
+				:key="item.value"
+				@click="tabsClick(item, index)"
 			>
-		 	<ProductColCard
-				:origin="item"
-			></ProductColCard>
-		 		 
-		 </view>	
-		
-		 		
-	</view>
-	<template v-if="dataList.length == 0">
-		<view class="u-flex u-flex-center u-p-40">
-			<u-empty mode="data" :icon="base.empty" />
+				{{item.name}}
+			</view>
 		</view>
-		
+	</view>
+	
+	<template v-if="pl_value == 0"> 
+		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10" v-if="pl_value == 0">
+			 <view 
+				class="list-item u-p-14" 
+				v-for="item in tj" 
+				:key="item.id"
+				>
+				<ProductColCard
+					:origin="item"
+				></ProductColCard>
+					 
+			 </view>	
+			
+					
+		</view>
 	</template>
-	<template v-else>
-		<u-loadmore :status="loadstatus" />
-	</template>  
+	
+	<template v-if="pl_value == 1">
+		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10" >
+			 <view 
+				class="list-item u-p-14" 
+				v-for="item in dataList" 
+				:key="item.id"
+				>
+			 	<ProductColCard
+					:origin="item"
+				></ProductColCard>
+			 		 
+			 </view>	
+			
+			 		
+		</view>
+		<template v-if="dataList.length == 0">
+			<view class="u-flex u-flex-center u-p-40">
+				<u-empty mode="data" :icon="base.empty" />
+			</view>
+			
+		</template>
+		<template v-else>
+			<u-loadmore :status="loadstatus" />
+		</template>  
+	</template>
+	
 	
 	
 	<view class="u-p-b-50 u-p-t-50"></view>
@@ -260,105 +342,10 @@
 	const shopCurrent = ref(0)
 	const swiperList = ref([])
 	const shopTabs = ref([])
-	const navList = ref([])
-	const catelist = ref([
-		{
-			cate: "7",
-			id: "16",
-			img: "",
-			name: "羽绒服1",
-			rank: "0",
-			url: "/pages/product/productList?terms=羽绒服",
-		},
-		{
-			cate: "7",
-			id: "16",
-			img: "",
-			name: "羽绒服2",
-			rank: "0",
-			url: "/pages/product/productList?terms=羽绒服",
-		},
-		{
-			cate: "7",
-			id: "16",
-			img: "",
-			name: "羽绒服3",
-			rank: "0",
-			url: "/pages/product/productList?terms=羽绒服",
-		},
-		{
-			cate: "7",
-			id: "16",
-			img: "",
-			name: "羽绒服4",
-			rank: "0",
-			url: "/pages/product/productList?terms=羽绒服",
-		},
-		{
-			cate: "7",
-			id: "16",
-			img: "",
-			name: "羽绒服5",
-			rank: "0",
-			url: "/pages/product/productList?terms=羽绒服",
-		},
-		{
-			cate: "7",
-			id: "16",
-			img: "",
-			name: "羽绒服6",
-			rank: "0",
-			url: "/pages/product/productList?terms=羽绒服",
-		},
-	])
-	const swiper =ref([
-		{
-			id: 0,
-			url: "http://zc.toocle.com/Public/Upload/diy/61e61a4a30012.jpg",
-			link: "/pages/prodList/prodList",
-		},
-		{
-			id: 2,
-			url: "http://zc.toocle.com/Public/Upload/diy/61e61a5182395.jpg",
-			link: "/pages/prodList/prodList",
-		}
-	])
-	const swiper2 =ref([
-		{
-			id: 0,
-			url: "http://zc.toocle.com/Public/Upload/diy/61e61a4a30012.jpg",
-			link: "/pages/prodList/prodList",
-		},
-		{
-			id: 2,
-			url: "http://zc.toocle.com/Public/Upload/diy/61e61a5182395.jpg",
-			link: "/pages/prodList/prodList",
-		},
-		{
-			id: 0,
-			url: "http://zc.toocle.com/Public/Upload/diy/61e61a4a30012.jpg",
-			link: "/pages/prodList/prodList",
-		},
-		{
-			id: 2,
-			url: "http://zc.toocle.com/Public/Upload/diy/61e61a5182395.jpg",
-			link: "/pages/prodList/prodList",
-		},
-		{
-			id: 0,
-			url: "http://zc.toocle.com/Public/Upload/diy/61e61a4a30012.jpg",
-			link: "/pages/prodList/prodList",
-		},
-		{
-			id: 2,
-			url: "http://zc.toocle.com/Public/Upload/diy/61e61a5182395.jpg",
-			link: "/pages/prodList/prodList",
-		},
-	])
 	// const catelist = computed(() => originData.value.catelist)
-	const catelist2 = computed(() => [...originData.value.catelist2, ...originData.value.catelist2])
-	const catelist3 = computed(() => {
-		let data = [...originData.value.catelist2, ...originData.value.catelist2, ...originData.value.catelist2 ];
+	const catelist1 = computed(() => originData.value.catelist || [])
+	const catelist2 = computed(() => {
+		let data = originData.value.catelist2 || [];
 		let len = data.length
 		if(len < 10) return [data] 
 		let arr = [
@@ -368,12 +355,32 @@
 		console.log(arr)
 		return arr
 	})
-	const list = computed(() => originData.value.list)
-	const list2 = computed(() => originData.value.list2)
+	const swiperList1 = computed(() => originData.value.swiper || [])
+	const swiperList2 = computed(() => originData.value.swiper1 || [])
+	 
+	const list = computed(() => originData.value.list || [])
+	const list2 = computed(() => originData.value.list2 || [])
 	const shopCurrentLogin = computed(() => {
 		return shopTabs.value[shopCurrent.value]?.login || ''
 	})
+	
+	const tj = computed(() => originData.value.tj || [])
+	const zt = computed(() => originData.value.zt || [])
 	const shopCurrentData = ref({})
+	const pl_tabs = ref([
+		{
+			name: '精选推荐',
+			value: '0',
+			disabled: false
+		},
+		{
+			name: '最新上架',
+			value: '1',
+			disabled: false
+		},
+	])
+	const pl_current = ref(0)
+	const pl_value = computed(() => pl_tabs.value[pl_current.value].value)
 	const options = computed(() => {
 		return {
 			params: {},
@@ -388,7 +395,8 @@
 						loadstatus.value = 'loadmore'
 					}
 				}
-			}
+			},
+			noReach: pl_value.value == '0'
 		}
 	})
 	
@@ -410,10 +418,9 @@
 		// await getTuijianData()
 	}
 	async function getHomeData() {
-		const res = await $api.web_home();
+		const res = await $api.web_home1();
 		if(res.code == 1) {
-			originData.value = res
-			swiperList.value = res.swiper
+			originData.value = res 
 			setOnlineControl(res)
 		}
 	}
@@ -434,10 +441,17 @@
 			}
 		}
 	}
-	function swiperclick(e) {
-		if(swiperList.value[e].url) {
+	function swiperclick1(e) {
+		if(swiperList1.value[e].url) {
 			uni.navigateTo({
-				url: swiperList.value[e].url
+				url: swiperList1.value[e].url
+			})
+		}
+	}
+	function swiperclick2(e) {
+		if(swiperList2.value[e].url) {
+			uni.navigateTo({
+				url: swiperList2.value[e].url
 			})
 		}
 	}
@@ -449,6 +463,9 @@
 		uni.navigateTo({
 			url: data.url
 		})
+	}
+	function tabsClick(data, index) {
+		pl_current.value = index
 	}
 	function handleTabsClick(e) { 
 		goto(e)

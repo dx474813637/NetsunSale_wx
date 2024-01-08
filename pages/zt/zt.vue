@@ -1,12 +1,12 @@
 <template>
 	<view 
-		class="wrapper bg-white u-font-28"
+		class="wrapper   u-font-28"
 		style="padding-top: 44px;"
 		ref="page" 
 	>
 		<u-status-bar></u-status-bar>
 		<navBar
-			bgColor="#f00" 
+			:bgColor="info.colour" 
 			title=""   
 			fixed
 			activeColor="#fff"
@@ -23,12 +23,18 @@
 				</view>
 			</template>
 		</navBar> 
-		<up-image
-			width="100vw"
-			mode="widthFix"
-			height="auto"
-			src="http://zc.toocle.com/Public/Upload/diy/61e61a4a30012.jpg"
-		></up-image>
+		<view class="img-w">
+			<up-image
+				width="100vw"
+				mode="widthFix"
+				height="auto"
+				:src="info.pic"
+			></up-image>
+			<view class="title">
+				{{info.name}}
+			</view>
+		</view>
+		
 		<!-- <view class="top-box" :style="{
 			'height': '400rpx',
 			'border-radius': `0 0 43% 43%`,
@@ -37,32 +43,111 @@
 			'background': `linear-gradient( 0deg, ${themeColor}, ${themeColor})`, 
 		}"></view> -->
 		 
-		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10 u-m-t-20">
-			 <view 
-				class="list-item box-border u-p-14" 
-				style="flex: 0 0 50%"
-				v-for="item in dataList" 
-				:key="item.id"
-				>
-			 	<ProductColCard
-					:origin="item"
-				></ProductColCard>  
-			 </view>	
-			 <view 
-				class="list-item box-border u-p-14" 
-				style="flex: 0 0 100%"
-				v-for="item in dataList" 
-				:key="item.id"
-				> 
-			 	<ProductRowCard
-					:origin="item"
-					mode="normal"
-				></ProductRowCard>
-			 		 
-			 </view>	
-			
-			 		
-		</view>
+		 <template v-if="info.cate == '1'">
+		 	<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10 u-m-t-20">
+		 		 <view 
+		 			class="list-item box-border u-p-14" 
+		 			style="flex: 0 0 50%"
+		 			v-for="item in dataList" 
+		 			:key="item.id"
+		 			>
+		 		 	<ProductColCard
+		 				:origin="item"
+		 			>
+						<template #content>
+							<view class="content-w u-p-15 u-font-28 u-p-b-25">
+								<view class="u-line-2 u-m-b-10 text-bold u-p-l-10 u-p-r-10">
+									{{item.name}}
+								</view>
+								<view class="u-radius-30 u-flex " style="background-color: #EA5743; overflow: hidden; height: 38px;">
+									<view class="item u-flex-1 u-p-t-5 box-border u-p-l-20 u-radius-20" style="background-color: #FDF3F1;">
+										<view class="text-error u-font-20 u-m-l-10">到手价：</view>
+										<view>
+											<up-text 
+												type="error" 
+												mode="price" 
+												:text="item.price1" 
+												size="16"
+												iconStyle="12" 
+											></up-text>
+										</view>
+									</view>
+									<view class="item text-white u-flex u-flex-items-center u-p-l-10 u-p-r-10 qiang-btn" style="height: 100%;background-color: #EA5743;">
+										<text class="u-m-r-5 text-bold">抢</text>
+										<u-icon name="arrow-right" color="#fff" size="10"></u-icon>
+									</view>
+								</view>
+							</view>
+						</template>
+					</ProductColCard>  
+		 		 </view>	  
+		 	</view>
+		 </template>
+		<template v-if="info.cate == '2'">
+			<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10 u-m-t-20"> 
+				 <view 
+					class="list-item box-border u-p-20 uni-shadow-base bg-white u-radius-10 u-m-b-20" 
+					style="flex: 0 0 100%"
+					v-for="item in dataList" 
+					:key="item.id"
+					> 
+				 	<ProductRowCard
+						:origin="item"
+						mode="normal"
+						:customStyle="{
+							'box-shadow': 'none!important'
+						}"
+					>
+						<template #content>
+							<view class="content-w u-p-5 u-p-l-20 u-font-32 u-flex-1 u-flex-column u-flex-between u-flex-items-start" style="width: 100%;">
+								<view class="u-line-2 u-m-b-10 text-bold" style="width: 100%;" @click.stop="base.handleGoto({
+									url: '/pages/product/productDetail',
+									params: {
+										id: item.id, 
+									}
+								})">
+									{{item.name}}
+								</view>
+								<view class="u-radius-30 u-flex " style="background-color: #EA5743; overflow: hidden; height: 38px; width: 100%;">
+									<view class="item u-flex-1 u-p-t-5 box-border u-p-l-20 u-radius-20 u-flex u-flex-items-start" style="background-color: #FDF3F1;">
+										<view class="">
+											<view class="text-error u-font-20 u-m-l-10">到手价：</view>
+											<view>
+												<up-text 
+													type="error" 
+													mode="price" 
+													:text="item.price1" 
+													size="16"
+													iconStyle="12" 
+												></up-text>
+											</view>
+										</view>
+										<view class=" u-m-l-30" style="opacity: .6;">
+											<view class="text-error u-font-20 u-m-l-10">吊牌价：</view>
+											<view class="text-error" style="text-decoration: line-through; ">
+												<up-text 
+													type="error" 
+													mode="price" 
+													:text="item.price" 
+													size="12"
+													iconStyle="12" 
+												></up-text>
+											</view>
+										</view>
+										
+									</view>
+									<view class="item text-white u-flex u-flex-items-center u-p-l-10 u-p-r-10 qiang-btn" style="height: 100%;background-color: #EA5743;">
+										<text class="u-m-r-5 text-bold">抢</text>
+										<u-icon name="arrow-right" color="#fff" size="10"></u-icon>
+									</view>
+								</view>
+							</view>
+						</template>
+					</ProductRowCard> 
+				 </view>	 
+			</view>
+		</template>
+		
 		<u-safe-bottom></u-safe-bottom>
 		<MenusBar ></MenusBar>
 	</view>
@@ -190,42 +275,26 @@
 			url: "http://market.netsun.testwebsite.cn/Public/Upload/diy/61e617de2e5a9.jpg",
 		}
 	])
-	 
-	const options = computed(() => {
-		return {
-			params: {},
-			api: 'web_product',
-			getDataCallBack: (res) => {  
-				if (res.code == 1) {
-					dataList.value = [...dataList.value, ...res.list]
-					if(dataList.value.length >= res.total) {
-						loadstatus.value = 'nomore'
-					}
-					else {
-						loadstatus.value = 'loadmore'
-					}
-				}
-			}
-		}
-	})
-	
-	const { 
-		dataList,
-		curP,
-		loadstatus,
-		params,
-		getDataList,
-		initDataList, 
-	} = useDataList(options)
+	const dataList = ref([])  
+	const zt = ref('')
+	const info = ref({})
 	onReady(() => {
 		uni.setNavigationBarColor({
 			backgroundColor: themeColor.value,
 			frontColor: '#ffffff'
 		})
 	})
-	onLoad(async () => {
-		initDataList() 
-		
+	onLoad(async (options) => { 
+		if(options.hasOwnProperty('id')) {
+			zt.value = options.id
+		}
+		else {
+			uni.reLaunch({
+				url: '/pages/home/home'
+			})
+			return
+		}
+		await getData()
 	}) 
 	const backBtnShow = computed(() => {
 		return getCurrentPages().length > 1
@@ -234,12 +303,37 @@
 		// $emits('backEvent')
 		uni.navigateBack()
 	}
+	async function getData() {
+		const res = await $api.zt_detail({
+			params: {id: zt.value}
+		})
+		if(res.code == 1) {
+			info.value = res.info
+			dataList.value = res.list
+		}
+	}
 </script>
 
 <style lang="scss"> 
 </style>
 <style lang="scss" scoped>
-	
+	.qiang-btn {
+		position: relative; 
+	}
+	.img-w {
+		width: 100%;
+		position: relative;
+		.title {
+			position: absolute; 
+			top: 78px;
+			font-size: 24px;
+			left: 50%;
+			transform: translateX(-50%);
+			color: #fff;
+			white-space: nowrap;
+			font-weight: bold;
+		}
+	}
 	.list {
 		box-sizing: border-box;
 		>.list-item { 
@@ -254,7 +348,7 @@
 	.wrapper {
 		position: relative;
 		overflow-x: hidden;
-		background-color: #fff;
+		background-color: #f8f8f8;
 		padding-bottom: 100px;
 		.top-box {
 			position: absolute;
@@ -280,182 +374,7 @@
 		.tabbar {
 			min-height: 65px;
 		}
-	}
-	.navbar {
-		color: #000;
-		height: 100rpx;
-		font-size: 16px;
-		// border-bottom: 1rpx solid #f8f8f8;
-		position: relative;
-		z-index: 50;
-		.item {
-			
-		}
-	}
-	.btns {
-		position: fixed;
-		right: 30rpx;
-		bottom: 200rpx;
-		z-index: 200;
-		width: 100rpx;
-		.btns-style {
-			width: 100rpx;
-			height: 100rpx;
-			padding: 10rpx;
-			border-radius: 50%;
-			box-shadow: 0 0 10px rgba(0,0,0,0.2);
-			background-color: #fff;
-			image {
-				display: block;
-				width: 100%;
-				height: 100%;
-				border-radius: 50%;
-				
-			}
-		}
-		.btns-main {
-			transition: all .3s;
-			color: #585772;
-			&.active {
-				transform: rotate(45deg);
-				color: #fff;
-				background-color: #585772;
-			}
-		}
-		.btns-list {
-			position: absolute;
-			bottom: 100%;
-			left: 0;
-			display: none;
-			&.active {
-				display: block;
-				.item {
-					animation: zhuan .5s;
-				}
-			}
-			.item {
-				margin-bottom: 10px;
-			}
-		}
-	}
-	
-	@keyframes zhuan {
-		0% {
-			opacity: 0;
-			transform: translateY(-10px);
-		}
-		100% {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-	.alertAd-wrapper {
-		padding: 40px 15px 25px;
-		height: 100%;
-		image {
-			width: 100%;
-			height: 100%;
-			border-radius: 3px;
-		}
-	}
-	.ww { 
-		position: relative; 
-		z-index: 20;
-		.item-wrapper {
-			position: relative;
-			
-			.search-wrapper {
-				padding: 15rpx;
-				position: relative;
-				.search-left-pic {
-					padding-right: 10px;
-				}
-				.search-content {
-					flex: 1;
-				}
-				
-			} 
-			.swiper-wrapper {
-				position: relative;
-				.swiper-header-row {
-					padding: 0 12px;
-					height: 50px;
-					position: absolute;
-					left: 0;
-					top: 10px;
-					width: 100%;
-					z-index: 200;
-					.shop-name {
-						font-weight: bold;
-						color: #fff;
-						font-size: 32rpx;
-					}
-					.item-search-icon {
-						width: 30px;
-						height: 30px;
-						border-radius: 50%;
-						background-color: rgba(255,255,255,.2);
-						border: 1rpx solid #fff;
-						color: #fff;
-						.custom-icon {
-							font-size: 16px;
-						}
-					}
-				}
-			}
-			.menu-wrapper {
-				padding: 0 5px 10px;
-				&.nowrap {
-					padding: 10px 10px;
-					.item {
-						min-height: 25px;
-						flex-direction: row;
-						margin: 0 10px;
-						flex: 0 0 auto;
-						padding: 0;
-						&:first-child {
-							margin-left: 0;
-						}
-						&:last-child {
-							margin-right: 0;
-						}
-					}
-				}
-				.item {
-					min-height: 80px;
-					flex-direction: column;
-					flex: 1;
-					padding-top: 10px;
-					&.col-4 {
-						flex: 0 0 25%;
-						width: 25%;
-					}
-					&.col-5 {
-						flex: 0 0 20%;
-						width: 20%;
-					}
-					&.col-6 {
-						flex: 0 0 16.6%;
-						width: 16.6%;
-						.menu-img {
-							width: 40px;
-							height: 40px;
-							margin-bottom: 8px;
-						}
-					}
-					.menu-img {
-						width: 50px;
-						height: 50px;
-						margin-bottom: 10px;
-					}
-					.menu-title {
-						width: 100%;
-						text-align: center;
-					}
-				}
-			} 
-		}
-	}
+	} 
 	.tabbar {
 		position: fixed;
 		bottom: 0;
