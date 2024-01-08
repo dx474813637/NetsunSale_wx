@@ -84,6 +84,7 @@
 					:height="80" 
 					:border-radius="13"
 					indicator 
+					circular
 					bgColor="transparent"
 					@click="swiperclick1"
 				></u-swiper>
@@ -134,6 +135,7 @@
 						<u-swiper
 							:list="swiperList2" 
 							keyName="img"
+							circular
 							radius="10"
 							height="100%"
 							@click="swiperclick2"
@@ -203,11 +205,11 @@
 							<u-icon name="arrow-right" color="#fff" size="14"></u-icon>
 						</view>
 					</view> 
-					<view class="">
+					<view class="u-radius-12" style="background-color: #f8f8f8;" >
 						<u-scroll-list
 							:indicator="false"  
 						>
-							<view class="u-flex u-flex-items-center box-border u-p-20 u-radius-12" style="background-color: #f8f8f8;" >
+							<view class="u-flex u-flex-items-center box-border u-p-20 " >
 								<view 
 									class=" u-radius-8 u-m-r-20" 
 									v-for="ele in item.list"

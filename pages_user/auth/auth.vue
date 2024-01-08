@@ -78,7 +78,21 @@
 							:readonly="disabled"
 						></up-input> 
 					</u-form-item>  
-					<template v-if="sh != 1">
+					<template v-if="ewm">
+						<u-form-item
+							:borderBottom="false"
+							label="二维码"  
+							> 
+							<up-image
+								width="300px"
+								height="auto"
+								mode="widthFix"
+								@click="previewImage([ewm])"
+								:src="ewm"
+							></up-image>
+						</u-form-item> 
+					</template>
+					<template v-else-if="sh != 1">
 						<u-form-item
 							:borderBottom="false"
 							:label="onlineConfig.bank_account" 
@@ -229,6 +243,7 @@
 		back_img: '', 
 		avatar_img: '', 
 	}) 
+	const ewm = ref('')
 	const sh = ref(0)
 	const zt = ref('')
 	const fileLists = reactive({
@@ -284,7 +299,7 @@
 	onReady(() => {
 		uForm.value.setRules(rules)
 	})    
-	function previewImage(imgs, index=0,) {
+	function previewImage(imgs, index=0) {
    		uni.previewImage({
    			urls: imgs,
    			current: index, 
@@ -298,6 +313,7 @@
 			origin.value = res.list || {}
 			sh.value = res.sh;
 			onlineConfig.value = res.info
+			ewm.value = res.ewm
 			initForm(res)
 			if(res.sh != 1) {
 				uni.setNavigationBarTitle({
@@ -308,6 +324,7 @@
 			// setOnlineControl(res)
 		}
 	}
+	 
 	function initForm(res) {  
 		let data = res.list || {}
 		model.value.name = data.name
