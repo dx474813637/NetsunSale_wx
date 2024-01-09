@@ -11,9 +11,9 @@
 	"pages": [{
 			"path": "pages/home/home",
 			"style": {
-				"navigationBarTitleText": "首页",
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#EBEDFC"
+				"navigationStyle": "custom" 
 			}
 
 		},

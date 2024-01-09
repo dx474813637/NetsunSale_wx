@@ -18,10 +18,11 @@
 		</template>  
 		<template v-else>
 			<view class="u-flex u-flex-between u-flex-items-center text-base u-p-10 u-font-28 u-m-b-20" v-if="origin.id">
-				<view class="item">最近更新：{{origin.uptime}}</view>
+				<view class="item">最近提交：{{origin.uptime}}</view>
 				<view class="item">
-					<template v-if="origin.zt == 1">待认证</template>
-					<template v-if="origin.zt == 2">成功认证</template>
+					<template v-if="origin.zt == 1">待认证签约</template>
+					<template v-if="origin.zt == 2">认证成功</template>
+					<template v-if="origin.zt == 3">签约成功</template>
 				</view>
 			</view>
 			<view  class="u-p-20 u-p-l-40 bg-white u-radius-10">
@@ -46,7 +47,7 @@
 							v-model="model.name" 
 							placeholder="姓名"
 							clearable 
-							:readonly="disabled"
+							:disabled="!isEdit"
 						></up-input>  
 					</u-form-item> 
 					<u-form-item
@@ -57,12 +58,18 @@
 						required 
 						v-if="sh != 1"
 						> 
-						<up-input
-							v-model="model.id_card" 
-							placeholder="身份证号码"
-							clearable 
-							:readonly="disabled"
-						></up-input> 
+						<template v-if="isEdit">
+							<up-input
+								v-model="model.id_card" 
+								placeholder="身份证号码"
+								clearable  
+							></up-input> 
+						</template>
+						<template v-else>
+							<view class="u-radius-5 u-border u-p-20" style="background-color: #F5F7FA;">
+								<up-text :text="model.id_card" format="encrypt" mode="phone"></up-text>
+							</view>
+						</template> 
 					</u-form-item>  
 					<u-form-item
 						:borderBottom="false"
@@ -70,29 +77,28 @@
 						prop="phone"  
 						ref="phone" 
 						required 
-						> 
+						>  
 						<up-input
 							v-model="model.phone" 
 							placeholder="手机"
 							clearable 
-							:readonly="disabled"
+							:disabled="!isEdit"
 						></up-input> 
 					</u-form-item>  
-					<template v-if="ewm">
+					<!-- <template v-if="auth_url">
 						<u-form-item
 							:borderBottom="false"
-							label="二维码"  
+							label="跳转链接"  
 							> 
-							<up-image
-								width="300px"
-								height="auto"
-								mode="widthFix"
-								@click="previewImage([ewm])"
-								:src="ewm"
-							></up-image>
+							<view class="u-flex u-flex-between">
+								<view class=" u-flex-1 u-radius-5 u-p-10 u-border page-bg2">
+									<view class="u-line-1">{{auth_url}}</view>
+								</view>
+								<view class="u-m-l-15"><u-button type="primary" plain size="small" shape="circle">复制</u-button></view>
+							</view>
 						</u-form-item> 
-					</template>
-					<template v-else-if="sh != 1">
+					</template> -->
+					<template v-if="sh != 1">
 						<u-form-item
 							:borderBottom="false"
 							:label="onlineConfig.bank_account" 
@@ -102,101 +108,26 @@
 							> 
 							<up-input
 								v-model="model.bank_account" 
-								placeholder="银行卡或支付宝账号"
+								:placeholder="onlineConfig.bank_account"
 								clearable 
-								:readonly="disabled"
+								:disabled="!isEdit"
 							></up-input> 
 						</u-form-item> 
-						<u-form-item
-							:borderBottom="false"
-							:label="onlineConfig.front_img" 
-							prop="front_img"  
-							ref="front_img" 
-							required 
-							> 
-							<template v-if="disabled">
-								<up-image
-									:src="model.front_img"
-									width="200px"
-									height="auto"
-									mode="widthFix"
-									@click="previewImage([model.front_img])"
-								></up-image>
-							</template>
-							<u-upload
-								v-else
-								:fileList="fileLists.front_img"
-								@afterRead="afterRead"
-								@delete="deletePic"
-								name="front_img" 
-								:maxCount="1" 
-								:maxSize="2048000"
-								@oversize="handleoversize"
-							></u-upload>
-						</u-form-item>
-						<u-form-item
-							:borderBottom="false"
-							:label="onlineConfig.back_img" 
-							prop="back_img"  
-							ref="back_img" 
-							required 
-							> 
-							<template v-if="disabled">
-								<up-image
-									:src="model.back_img"
-									width="200px"
-									height="auto"
-									mode="widthFix"
-									@click="previewImage([model.back_img])"
-								></up-image>
-							</template>
-							<u-upload
-								v-else
-								:fileList="fileLists.back_img"
-								@afterRead="afterRead"
-								@delete="deletePic"
-								name="back_img" 
-								:maxCount="1" 
-								:maxSize="2048000"
-								@oversize="handleoversize"
-							></u-upload>
-						</u-form-item>   
-						<u-form-item
-							:borderBottom="false"
-							:label="onlineConfig.avatar_img" 
-							prop="avatar_img"  
-							ref="avatar_img" 
-							required 
-							> 
-							<template v-if="disabled">
-								<up-image
-									:src="model.avatar_img"
-									width="200px"
-									height="auto"
-									mode="widthFix"
-									@click="previewImage([model.avatar_img])"
-								></up-image>
-							</template>
-							<u-upload
-								v-else
-								:fileList="fileLists.avatar_img"
-								@afterRead="afterRead"
-								@delete="deletePic"
-								name="avatar_img" 
-								:maxCount="1" 
-								:maxSize="2048000"
-								@oversize="handleoversize"
-							></u-upload>
-						</u-form-item>
+						
 					</template>
 					   
 				</u--form> 
 				
 			</view>
 			<view class="u-p-t-30 u-p-b-30">
-				<view class="u-flex u-flex-items-center u-flex-center" v-if="!disabled">
+				<view class="u-flex u-flex-items-center u-flex-center u-m-b-30" v-if="!disabled">
 					<view class="item u-flex-1">
-						<u-button type="error" @click="submit" :loading="loading" throttleTime="500">{{config.submitBtnText}}</u-button>
+						<u-button :type="isEdit ? 'error' : 'primary'" @click="submit" :loading="loading" throttleTime="500">{{config.submitBtnText}}</u-button>
+					</view> 
+				</view> 
+				<view class="u-flex u-flex-items-center u-flex-center" v-if="origin.zt == 1 || origin.zt == 2">
+					<view class="item u-flex-1">
+						<u-button type="error" @click="rzShow = true" >认证签约</u-button>
 					</view> 
 				</view> 
 				<view class="u-flex u-flex-items-center u-flex-center u-m-t-40">
@@ -207,7 +138,21 @@
 		</template>
 		
 	</view>
-	
+	<u-popup 
+		:show="rzShow" 
+		mode="center" 
+		@close="rzShow = false" 
+		round="10" 
+		:safeAreaInsetBottom="false"
+		>
+		<view class="u-p-20 box-border" style="width: 65vw;"> 
+			<view style="min-height: 100px;">
+				<u-parse :content="auth_info"></u-parse> 
+			</view>
+			
+			<u-button type="primary" shape="circle" @click="copy" v-if="auth_url">复制链接</u-button>
+		</view>
+	</u-popup>
 	<u-safe-bottom></u-safe-bottom>
 	<MenusBar ></MenusBar>
 </template>
@@ -222,7 +167,7 @@
 	const $api = inject('$api')    
 	const config = computed(() => {
 		let func = 'save_linghuo';
-		let submitBtnText = '提交';
+		let submitBtnText = isEdit.value ? '提交表单' : '我要修改';
 		let params = {...model.value };  
 		return {
 			func,
@@ -239,22 +184,17 @@
 		id_card: '',
 		phone: '',
 		bank_account: '',
-		front_img: '', 
-		back_img: '', 
-		avatar_img: '', 
 	}) 
-	const ewm = ref('')
+	const auth_url = ref('')
+	const auth_info = ref('')
 	const sh = ref(0)
 	const zt = ref('')
-	const fileLists = reactive({
-		front_img: [],
-		back_img: [],
-		avatar_img: []
-	});
 	const onlineConfig = ref({})
+	const isEdit = ref(true)
+	const rzShow = ref(false)
 	const disabled = computed(() => {
-		return origin.value.zt == 2
-	})
+		return origin.value.zt > 1
+	}) 
 	const rules = {
 		name: {
 			required: true,
@@ -276,47 +216,34 @@
 			message: '不能为空',
 			trigger: ['blur', 'change']
 		},   
-		front_img: {
-			required: true,
-			message: '不能为空',
-			trigger: ['blur', 'change']
-		},   
-		back_img: {
-			required: true,
-			message: '不能为空',
-			trigger: ['blur', 'change']
-		},   
-		avatar_img: {
-			required: true,
-			message: '不能为空',
-			trigger: ['blur', 'change']
-		},   
 	}
 	onLoad(async(options) => { 
 		uni.showLoading()
 		await getData()
 	})
+	watch(
+		() => zt.value,
+		(n) => {
+			if(n >= 1 && model.value.name) {
+				isEdit.value = false
+			}
+		}
+	)
 	onReady(() => {
 		uForm.value.setRules(rules)
-	})    
-	function previewImage(imgs, index=0) {
-   		uni.previewImage({
-   			urls: imgs,
-   			current: index, 
-   			loop: true
-   		})
-   	} 
+	})     
 	async function getData() {
 		const res = await $api.linghuo();
 		if(res.code == 1) { 
-			zt.value = res.list?.zt
+			zt.value = res.list?.zt || 0
 			origin.value = res.list || {}
 			sh.value = res.sh;
 			onlineConfig.value = res.info
-			ewm.value = res.ewm
+			auth_url.value = res.ewm
+			auth_info.value = res.ewm_info
 			initForm(res)
 			if(res.sh != 1) {
-				uni.setNavigationBarTitle({
+				res.title && uni.setNavigationBarTitle({
 					title: res.title
 				})
 			}
@@ -331,70 +258,12 @@
 		model.value.id_card = data.id_card 
 		model.value.phone = data.phone 
 		model.value.bank_account = data.bank_account  
-		if(data.front_img) {
-			model.value.front_img = data.front_img
-			fileLists.front_img = [{url: data.front_img}]
-		}
-		if(data.back_img) {
-			model.value.back_img = data.back_img
-			fileLists.back_img = [{url: data.back_img}]
-		}
-		if(data.avatar_img) {
-			model.value.avatar_img = data.avatar_img
-			fileLists.avatar_img = [{url: data.avatar_img}]
-		}
 	}
-	// 新增图片
-	async function afterRead(event) {
-		// console.log(event)
-		// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-		let lists = [].concat(event.file)
-		let obj = fileLists[event.name]
-		let fileListLen = obj.length
-		lists.map((item, index) => {
-			obj.push({
-				...item,
-				status: 'uploading',
-				message: '上传中'
-			})
-		})
-		console.log(lists)
-		for (let i = 0; i < obj.length; i++) {
-			let item = obj[i]
-			console.log(item) 
-			const result = await base.uploadFilePromise(item.thumb, 'upimg1')  
-			if(result.code == 1) {
-				obj.splice(i, 1, Object.assign(item, {
-					status: 'success',
-					message: '',
-					url: result.list[0],
-					name: result.list[0]
-				}))  
-			}
-			else {
-				obj.splice(i, 1)  
-				uni.showToast({
-					title: result.msg,
-					icon: 'none'
-				})
-			}
-			
-			
-			
-		}
-		model.value[event.name]= fileLists[event.name].map(ele => ele.url).join('|')
-	}  
-	function deletePic(event) {
-		fileLists[event.name].splice(event.index, 1) 
-		model.value[event.name] = ''
-	} 
-	function handleoversize() {
-		uni.showToast({
-			title: '建议上传2M以内的图片',
-			icon: 'none'
-		})
-	} 
 	function submit() {
+		if(!isEdit.value) {
+			isEdit.value = true
+			return
+		}
 		uForm.value.validate().then(async () => {  
 			loading.value = true;
 			uni.showLoading()
@@ -407,6 +276,7 @@
 					})   
 					getData()
 					success.value = 1
+					isEdit.value = false
 				}
 			}catch(e){
 				//TODO handle the exception
@@ -417,10 +287,18 @@
 			console.log(errors)
 			uni.$u.toast('请检查表单')
 		}) 
-	}   
-	function reset() {
-		uForm.value.resetFields()
-	} 
+	}    
+	function copy() {
+		uni.setClipboardData({
+			data: auth_url.value,
+			success() {
+				uni.showToast({
+					title: '复制网址成功，请在其他浏览器操作',
+					icon: 'none'
+				})
+			}
+		})
+	}
 </script>
 
 <style lang="scss">

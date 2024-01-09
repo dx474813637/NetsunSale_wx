@@ -1,5 +1,5 @@
 <template>
-	<view class="card-header bg-white u-radius-12 uni-shadow-base u-p-30"> 
+	<view class="card-header bg-white u-radius-12 uni-shadow-base u-p-30" @click="analysisBtn"> 
 		<view class=" u-flex u-flex-between u-flex-items-center">
 			<up-image
 				showLoading
@@ -28,9 +28,13 @@
 				return {}
 			}
 		}, 
+		kg: {
+			type: Number,
+			default: 0
+		}, 
 	}) 
 	
-	const emits = defineEmits(['cardClick']) 
+	const emits = defineEmits(['cardClick', 'analysis']) 
 	
 	function gotoDetail() {
 		// if(props.gotoDetail) {
@@ -44,7 +48,10 @@
 		// }
 		emits('cardClick', {data: props.origin})
 	}
-	
+	function analysisBtn() {
+		if(props.kg == 0) return
+		emits('analysis', {data: props.origin})
+	}
 	
 </script>
 

@@ -89,7 +89,7 @@ export const order_score = (data) => http.get('order_score', data)
 export const web_danye = (data) => http.get('web_danye', data)
 // cate_list  
 export const cate_list = (data) => http.get('cate_list', data)
-// web_product  
+// web_product  参数order=2 按分成从高到低排序， order=3 按销量排序 其他值或不传默认排序
 export const web_product = (data) => http.get('web_product', data)
 // web_search  
 export const web_search = (data) => http.get('web_search', data)
@@ -164,6 +164,8 @@ export const divide_type = (data) => http.get('divide_type', data)
 export const divide = (data) => http.get('divide', data)
 // daren_list 邀请达人列表 参数p
 export const daren_list = (data) => http.get('daren_list', data)
+// divide_analysis 达人分销分析 参数id 达人的账号，达人列表里的did
+export const divide_analysis = (data) => http.get('divide_analysis', data)
 // selection 参数name tel company person
 export const selection = (data) => http.get('selection', data)
 

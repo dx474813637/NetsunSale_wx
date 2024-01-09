@@ -37,7 +37,8 @@
 					<SearchBase></SearchBase>
 				</view>
 				<view class="u-m-l-10 u-p-10">
-					<up-image
+					<u-icon name="shopping-cart" size="35" :color="originData.bj_color" @click="base.handleGoto('/pages_user/cart/cart')"></u-icon>
+					<!-- <up-image
 						width="25px"
 						height="25px"
 						src="https://wstm.y.netsun.com/Public/tb/m004.png"
@@ -45,7 +46,7 @@
 							filter: 'grayscale(100%) brightness(500%)'
 						}"
 						@click="base.handleGoto('/pages_user/cart/cart')"
-					></up-image>
+					></up-image> -->
 				</view>
 			</view> 
 			<view class="u-flex u-flex-items-center u-p-10 " v-if="catelist1.length > 0">
@@ -55,9 +56,9 @@
 						:list="catelist1"  
 						lineWidth="0"  
 						@click="handleTabsClick"
-						:itemStyle="{height: '35px', color: '#fff' }"
-						:activeStyle="{ color: '#fff' }"
-						:inactiveStyle="{ color: '#fff' }"
+						:itemStyle="{height: '35px', color: originData.bj_color }"
+						:activeStyle="{ color: originData.bj_color }"
+						:inactiveStyle="{ color: originData.bj_color }"
 					>
 						<template #right>
 							<view 
@@ -69,9 +70,9 @@
 									name="list"
 									size="21"
 									bold
-									color="#fff"
+									:color="originData.bj_color"
 								></u-icon>
-								<view class="u-m-l-6">分类</view>
+								<view class="u-m-l-6" :style="{color: originData.bj_color}">分类</view>
 							</view>
 						</template>
 					</u-tabs>	
@@ -83,7 +84,8 @@
 					keyName="img"
 					:height="80" 
 					:border-radius="13"
-					indicator 
+					:indicator="swiperList1.length > 1"
+					imgMode="scaleToFill"
 					circular
 					bgColor="transparent"
 					@click="swiperclick1"
@@ -111,6 +113,7 @@
 									v-for="(item, index) in ele" 
 									:key="index"
 									class="nav-item u-flex-column u-flex-items-center box-border" 
+									@click="goto(item)"
 									>
 									<view style="width: 50px; height: 50px;">
 										<zeroLazyLoad
@@ -146,7 +149,9 @@
 				</view>
 				<view class="item u-flex-column u-flex-between ">
 					<view class="u-flex-1 u-p-10" v-for="(item,index) in list" :key="index">
-						<view style="width: 100%; height: 100%;" class="u-radius-8">
+						<view style="width: 100%; height: 100%;" class="u-radius-8"
+							@click="goto(item)"
+						>
 							<zeroLazyLoad
 								:image="item.img" 
 								imgMode="scaleToFill" 
@@ -181,12 +186,12 @@
 				v-for="item in zt"
 				:key="item.id"
 			>
-				<view class="bg-white u-radius-12 u-p-20" :style="{
-					backgroundImage: `url(${item.pic})`,
+				<view class="bg-white u-radius-12 u-p-l-20 u-p-r-20 u-p-b-20 u-p-t-12" :style="{
+					backgroundImage: `url(${item.img})`,
 					backgroundSize: '100% auto',
 					backgroundRepeat: 'no-repeat',
 				}">
-					<view class="u-flex u-flex-items-end u-flex-between u-p-10">
+					<view class="u-flex u-flex-items-end u-flex-between u-p-b-10">
 						<view class="item"></view>
 						<!-- <up-image :src="originData.ad" height="30px" width="auto" mode="heightFix" ></up-image> -->
 						<!-- <up-image 
@@ -197,19 +202,20 @@
 							@click="base.handleGoto('/pages/product/productList')"
 						></up-image> -->
 						<view 
-							class="item u-flex u-flex-items-center u-font-28 u-info text-nowrap u-p-10 u-radius-20 text-white u-p-l-20" 
+							class="item u-flex u-flex-items-center u-font-26 u-info text-nowrap u-p-5 u-p-l-10 u-p-r-10 u-radius-20 text-white u-p-l-20" 
 							@click="goto(item)" 
 							style="position: relative;z-index: 20;background-color: rgba(0,0,0,.3);"
+							v-if="item.url"
 							>
-							<view class="u-m-r-10">更多</view>
-							<u-icon name="arrow-right" color="#fff" size="14"></u-icon>
+							<view class="u-m-r-5">更多</view>
+							<u-icon name="arrow-right" color="#fff" size="12"></u-icon>
 						</view>
 					</view> 
 					<view class="u-radius-12" style="background-color: #f8f8f8;" >
 						<u-scroll-list
 							:indicator="false"  
 						>
-							<view class="u-flex u-flex-items-center box-border u-p-20 " >
+							<view class="u-flex u-flex-items-center box-border u-p-l-20 u-p-r-20 u-p-t-20 " >
 								<view 
 									class=" u-radius-8 u-m-r-20" 
 									v-for="ele in item.list"
@@ -519,7 +525,7 @@
 }
 .w {
 	box-sizing: border-box;
-	background: linear-gradient(to bottom, $u-error, $u-error, $page-bg2 350px);
+	// background: linear-gradient(to bottom, $u-error, $u-error, $page-bg2 350px);
 	
 }
 .header {
@@ -535,6 +541,7 @@
 	// left: 0;
 	width: 100%; 
 	box-sizing: border-box; 
+	overflow: hidden;
 	// z-index: 20;
 }
 .nav {

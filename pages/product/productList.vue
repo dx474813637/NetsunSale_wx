@@ -75,6 +75,7 @@
 	const showCateList = ref(false)
 	const curP = ref(1)
 	const cateId = ref('')
+	const order = ref('')
 	const cate_label = ref('全部')
 	const dataList = ref([])
 	const loadstatus = ref('loadmore')
@@ -88,7 +89,8 @@
 		else {
 			return {
 				p: curP.value,
-				cate: cateId.value 
+				cate: cateId.value ,
+				order: order.value 
 			}
 		}
 		
@@ -99,6 +101,9 @@
 	onLoad(async (options) => {
 		if(options.hasOwnProperty('terms')) {
 			terms.value = options.terms
+		}
+		if(options.hasOwnProperty('order')) {
+			order.value = options.order
 		}
 		if(cate_list.value.length == 0) {
 			await cate.getCateData() 
