@@ -1,30 +1,30 @@
 <template>
 	<view>
 		<view class="album u-flex u-flex-items-start">
-			<view class="album__avatar u-flex u-flex-center u-flex-items-start" style="flex: 0 0 60px" @click="gotodetail" v-if="front != 1">
+			<!-- <view class="album__avatar u-flex u-flex-center u-flex-items-start" style="flex: 0 0 60px" @click="gotodetail" v-if="front != 1">
 				<u--image :src="origin.avatar" bgColor="#eee" mode="aspectFill" width="45px" height="45px" shape="circle"></u--image>
-			</view>
+			</view> -->
 			<view class="album__content u-flex-1 u-m-l-10">
-				<view class="u-m-b-20 u-flex u-flex-items-center u-flex-between u-p-r-14" @click="gotodetail" v-if="front != 1">
+				<!-- <view class="u-m-b-20 u-flex u-flex-items-center u-flex-between u-p-r-14" @click="gotodetail" v-if="front != 1">
 					<view class="u-flex-1">
 						<u--text :text="origin.name"  bold size="17"></u--text>
 					</view>
 					<u-tag text="名片" plain type="primary" size="mini" @click.stop="handleGoto({url: '/pages/index/frontCard/frontCard' , params: {login: origin.login, autoGoto: '0'}})"> </u-tag> 
-				</view>
-				<view class=" u-p-b-30 u-font-32 text-base" v-if="origin.content" style="word-break: break-all;" @click="gotodetail">
-					<!-- <u--text margin="0 0 8px 0" :text="origin.content" size="14"></u--text> -->
-					<rich-text :nodes="`${origin.content}`"></rich-text>
+				</view> -->
+				<view class=" u-p-b-30 u-font-32 text-base" v-if="origin.info" style="word-break: break-all;" @click="gotodetail">
+					<!-- <u--text margin="0 0 8px 0" :text="origin.info" size="14"></u--text> -->
+					<rich-text :nodes="`${origin.info}`"></rich-text>
 					<!-- <u--textarea
-						:value="origin.content"    
+						:value="origin.info"    
 						autoHeight  
 						readonly 
 						:customStyle="{border: 'none', padding:'0', fontSize: '16px', lineHeight: '24px'}"
 					></u--textarea> -->
 				</view>
-				<view class="u-m-b-30" v-if="origin.imgList && origin.imgList.length > 0 && reply!= 1" >
-					<u-album :urls="origin.imgList" multipleSize="80"></u-album>
+				<view class="u-m-b-30" v-if="origin.pic " > 
+					<u-album :urls="origin.pic.split('|')" multipleSize="80"></u-album>
 				</view> 
-				<view class="album__content__footer u-flex u-flex-between u-flex-items-center u-p-r-5 " @click="gotodetail">
+				<!-- <view class="album__content__footer u-flex u-flex-between u-flex-items-center u-p-r-5 " @click="gotodetail">
 					<view class="item text-base u-font-26">{{$u.timeFrom(origin.publishtime*1000)}}</view>
 					<view class="item" >
 						<view class="u-flex u-flex-items-center u-font-28 text-base">
@@ -54,84 +54,58 @@
 					type: 'reLaunch'
 				})">
 					发布于群：{{origin.qun_name}}
-				</view>
+				</view> -->
 				
 			</view>
 		</view>
 	</view>
 </template>
 
-<script>
-	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
-	export default {
-		name: "groupMsgCard",
-		props: {
-			origin: {
-				type: Object,
-				default: () => {
-					return {}
-				}
-			},
-			manager: {
-				type: String | Number,
-				default: 0
-			},
-			detail: {
-				type: String | Number,
-				default: 0
-			},
-			reply: {
-				type: String | Number,
-				default: 0
-			},
-			front: {
-				type: String | Number,
-				default: 0
+<script setup>
+	import {useCateStore, baseStore} from '@/stores/base.js'
+	const base = baseStore() 
+	const {themeColor, empty} = toRefs(base)
+	const show = ref(false)
+	const props = defineProps({
+		origin: {
+			type: Object,
+			default: () => {
+				return {}
 			}
-		},
-		data() {
-			return {
-				show: false
-			};
-		},
-		methods: {
-			...mapMutations({
-				handleGoto: 'user/handleGoto'
-			}),
-			commentBtn() {
-				if(this.front == 1) return
-				this.$emit('comment', {data: this.origin})
-			},
-			likeBtn() {
-				if(this.front == 1) return
-				this.$emit('like', {data: this.origin, reply: this.reply})
-			},
-			deleteBtn() {
-				if(this.front == 1) return
-				uni.showModal({
-					title: '提示',
-					content: '是否删除',
-					success: (res) => {
-						if (res.confirm) {
-							this.$emit('delete', {data: this.origin, reply: this.reply})
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
-					}
-				});
-				
-			},
-			gotodetail() {
-				if(this.detail == 1 || this.reply == 1 || this.front == 1) return
-				this.handleGoto({
-					url: '/pages/index/dynamic/dynamic',
-					params: {
-						id: this.origin.id
-					}
-				})
-			}
-		}
+		}, 
+	})  
+	function commentBtn() {
+		if(this.front == 1) return
+		this.$emit('comment', {data: this.origin})
 	}
+	function likeBtn() {
+		if(this.front == 1) return
+		this.$emit('like', {data: this.origin, reply: this.reply})
+	}
+	function deleteBtn() {
+		if(this.front == 1) return
+		uni.showModal({
+			title: '提示',
+			content: '是否删除',
+			success: (res) => {
+				if (res.confirm) {
+					this.$emit('delete', {data: this.origin, reply: this.reply})
+				} else if (res.cancel) {
+					console.log('用户点击取消');
+				}
+			}
+		});
+		
+	}
+	function gotodetail() {
+		if(this.detail == 1 || this.reply == 1 || this.front == 1) return
+		this.handleGoto({
+			url: '/pages/index/dynamic/dynamic',
+			params: {
+				id: this.origin.id
+			}
+		})
+	} 
 </script> 
 <style lang="scss" scoped>
 	.more-btns {

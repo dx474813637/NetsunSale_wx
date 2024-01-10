@@ -60,7 +60,7 @@
 			api: 'product_longs',
 			getDataCallBack: (res) => {
 				if (res.code == 1) {
-					dataList.value = [...dataList.value, ...res.list]
+					dataList.value = [...dataList.value, ...res.list] 
 					setOnlineControl(res)
 					if(dataList.value.length >= res.total) {
 						loadstatus.value = 'nomore'

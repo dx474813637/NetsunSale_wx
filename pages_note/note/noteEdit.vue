@@ -17,7 +17,7 @@
 			</view> -->  
 		</template>  
 		<template v-else>
-			<view class="u-p-20 bg-white">
+			<view class="u-p-20 bg-white u-p-l-40">
 				<u--form
 					labelPosition="top" 
 					:model="model" 
@@ -29,8 +29,8 @@
 					>
 					 
 					 <u-form-item
-					 	:borderBottom="false"
-					 	label="姓名" 
+					 	:borderBottom="true"
+					 	label="笔记" 
 					 	prop="info"  
 					 	ref="info"
 					 	required 
@@ -40,6 +40,7 @@
 							placeholder="请输入笔记（文案）"  
 							:customStyle="{border: 'none'}"
 							autoHeight
+							maxlength="500"
 						></u--textarea>
 					</u-form-item> 
 					<u-form-item
@@ -87,6 +88,7 @@
 								:maxSize="40960000"
 								@oversize="handleoversize(40)"
 							></u-upload> --> 
+							<!-- <UploadVideo></UploadVideo> -->
 							<view class="u-info u-font-28">视频</view>
 						</view>
 					</u-form-item>
@@ -107,20 +109,13 @@
 	
 	</TabBar> 
 </template>
- 
-<script> 
-const VodUploader = require('../../utils/vod-wx-sdk-v2.js');
-// import '../../utils/vod-wx-sdk-v2.js'
-console.log(VodUploader)
-</script>
+  
 <script setup>
 	import zeroLazyLoad from '@/uni_modules/zero-lazy-load/components/zero-lazy-load/zero-lazy-load.vue'
 	import { share } from '@/composition/share.js'
 	import useDataList from '@/composition/useDataList.js'
-	import {useCateStore, baseStore} from '@/stores/base.js'  
-	// import * as all from  '@/pages_note/note/vod-wx-sdk-v2.js'
-	// const VodUploader = require('@/pages_note/note/vod-wx-sdk-v2.js');
-	// console.log(all)
+	import {useCateStore, baseStore} from '@/stores/base.js' 
+	// import UploadVideo from '@/components/UploadVideo/UploadVideo.vue' 
 	const base = baseStore() 
 	const {themeColor, empty} = toRefs(base)
 	const { setOnlineControl } = share()

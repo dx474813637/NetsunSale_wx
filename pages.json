@@ -132,14 +132,6 @@
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
-		},
-		{
-			"path" : "components/UploadVideo/UploadVideo",
-			"style" : 
-			{
-				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
-			}
 		}
 	],
 	"subPackages": [{
