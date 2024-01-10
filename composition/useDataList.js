@@ -8,7 +8,7 @@ import {
 import {
 	onLoad,
 	onReachBottom
-} from '@dcloudio/uni-app'
+} from '@dcloudio/uni-app' 
 export default function useDataList(data = { value: {params: {}, api: '', noReach: false} }) { 
 	const $api = inject('$api')   
 	const dataList = ref([])

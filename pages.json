@@ -132,6 +132,14 @@
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path" : "components/UploadVideo/UploadVideo",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"subPackages": [{
@@ -293,6 +301,31 @@
 				"path": "tuan/tx",
 				"style": {
 					"navigationBarTitleText": "列表",
+					"enablePullDownRefresh": false
+				}
+			}
+		]
+	},{
+		"root": "pages_note",
+		"pages": [ 
+			{
+				"path": "note/note",
+				"style": {
+					"navigationBarTitleText": "", 
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "note/noteList",
+				"style": {
+					"navigationBarTitleText": "", 
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "note/noteEdit",
+				"style": {
+					"navigationBarTitleText": "", 
 					"enablePullDownRefresh": false
 				}
 			}

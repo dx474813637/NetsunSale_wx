@@ -200,3 +200,10 @@ export const add_linghuo_transfer = (data) => http.get('add_linghuo_transfer', d
 export const divide1 = (data) => http.get('divide1', data)
 // zt_detail 专题详情接口 参数id 专题id，测试专题id=1  没有翻页。
 export const zt_detail = (data) => http.get('zt_detail', data)
+
+// product_longs 种草列表（逛列表）参数p 商品id
+export const product_longs = (data) => http.get('product_longs', data)
+// add_product_longs 发布种草 参数id 商品id info笔记（文案） pic图片多个图片中间用符号隔开
+export const add_product_longs = (data, config={}) => http.post('add_product_longs', data, config) 
+// get_vod_sign 获取视频上传签名
+export const get_vod_sign = (data) => http.get('get_vod_sign', data)
