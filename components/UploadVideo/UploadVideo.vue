@@ -14,6 +14,9 @@
 			return {
 				
 			};
+		},
+		created() {
+			console.log(VodUploader)
 		}
 	}
 </script>
