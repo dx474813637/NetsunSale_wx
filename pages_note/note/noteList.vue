@@ -53,7 +53,7 @@
 	const {themeColor, empty} = toRefs(base)
 	import {userStore} from '@/stores/user.js' 
 	const user = userStore() 
-	const {biji_files} = toRefs(user)
+	const { biji_files, biji_step, biji_info, biji_linshi } = toRefs(user)
 	const { setOnlineControl } = share()
 	const $api = inject('$api')
 	const id = ref('') 
@@ -104,7 +104,9 @@
 		paddingBottom: '50px', 
 	}) 
 	
-	async function chooseBtn() {
+	async function chooseBtn() { 
+		biji_step.value = false
+		biji_files.value = []
 		const res = await chooseMedia()
 		if(res) {
 			base.handleGoto({

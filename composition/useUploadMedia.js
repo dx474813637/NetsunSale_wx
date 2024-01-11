@@ -28,7 +28,7 @@ export default function useUploadMedia(
 		
 	const base = baseStore() 
 	const user = userStore() 
-	const { biji_files, biji_step } = toRefs(user)
+	const { biji_files, biji_step, biji_info, biji_linshi } = toRefs(user)
 	const $api = inject('$api')   
 	const $http = inject('$http')
 	const $VodUploader = VodUploader // inject('$VodUploader') 
@@ -82,7 +82,7 @@ export default function useUploadMedia(
 					uni.showModal({
 						title: '添加提示',
 						content: content,
-						confirmText: '下一步', 
+						confirmText: '进入预览', 
 						success: (r) => {
 							if (r.confirm) {
 								console.log('用户点击确定');
@@ -136,35 +136,77 @@ export default function useUploadMedia(
 			// }, 5000) 
 			
 			for (let i = 0; i < files.value.length; i++) {
-				let item = files.value[i]
-				console.log(item, item.tempFilePath) 
-				let result = {}
-				if(item.fileType == 'image') {
-					result = await base.uploadFilePromise(item.tempFilePath)  
-					files.value.splice(i, 1, Object.assign(item, {
-						status: 'success',
-						message: '',
-						url: result.list[0],
-						name: result.list[0]
-					}))  
+				let item = files.value[i] 
+				if(item.status != 'success') {
+					let result = {}
+					if(item.fileType == 'image') {
+						result = await base.uploadFilePromise(item.tempFilePath) 
+						if(result.code == 1) {
+							files.value.splice(i, 1, Object.assign(item, {
+							 	status:'success',
+							 	message:'',
+							 	title:'',
+							 	url: result.list[0],
+							 	name: result.list[0]
+							}))  
+						}
+						else {
+							files.value.splice(i, 1, Object.assign(item, {
+								status: 'error',
+								message: result.msg, 
+								url: '',
+								name: ''
+							}))  
+							 
+						}
+						
+					} 
+					else if(item.fileType == 'video') {
+						result = await videoUploadEvent(item) 
+						files.value.splice(i, 1, Object.assign(item, {
+							status: result.status,
+							message: '',
+							url: result.result.videoUrl,
+							name: result.result.fileId
+						}))  
+					} 
+					else {
+						files.value.splice(i, 1, Object.assign(item, {
+							status: 'error',
+							message: '文件有误',
+							url: '',
+							name: ''
+						}))
+					}
+					console.log(result)
 				} 
-				if(item.fileType == 'video') {
-					result = await videoUploadEvent(item) 
-					files.value.splice(i, 1, Object.assign(item, {
-						status: 'success',
-						message: '',
-						url: result.videoUrl,
-						name: result.fileId
-					}))  
-				} 
-				console.log(result)
 				
 				
 				
 			}
-			biji_step.value = true
-			biji_files.value = files.value
-			console.log(files.value)
+			uploadLoading.value = false
+			let errArr = files.value.filter(ele => ele.status == 'error') 
+			if(errArr.length > 0) {
+				
+				uni.showModal({
+					title: '上传提示',
+					content: `当前传输列表共计${files.value.length}个文件，其中${errArr.length}个文件发生上传错误，是否移除错误文件并下一步编辑文案？`, 
+					success: (r) => {
+						if (r.confirm) {
+							console.log('用户点击确定');
+							files.value = files.value.filter(ele => ele.status == 'success') 
+							biji_files.value = files.value
+						} else if (r.cancel) {
+							console.log('用户点击取消'); 
+						}
+					}
+				}); 
+			}
+			else {
+				biji_step.value = true
+				biji_files.value = files.value
+			}
+			 
 			
 			
 	
@@ -196,7 +238,7 @@ export default function useUploadMedia(
 						content: JSON.stringify(result),
 						showCancel: false
 					});
-					reject(result)
+					reject({result, status: 'error'})
 				},
 				progress: (result) => {
 					console.log('progress');
@@ -208,9 +250,9 @@ export default function useUploadMedia(
 				finish: (result) => {
 					console.log('finish');
 					console.log(result); 
-					uploadLoading.value = false
+					
 					uni.hideLoading();	
-					resolve(result)
+					resolve({result, status: 'success'})
 				}
 			});
 		})

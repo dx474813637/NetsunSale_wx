@@ -22,7 +22,9 @@ export const userStore = defineStore('user', {
 			tmp_id_list: [],
 			zx: 0,
 			biji_files: [],
-			biji_step: false
+			biji_info: '',
+			biji_step: false,
+			biji_linshi: false
 		};
 	},
 	getters: { 

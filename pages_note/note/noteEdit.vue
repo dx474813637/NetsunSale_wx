@@ -3,6 +3,14 @@
 		<template v-if="step == 1">
 			<view class="step-one box-border u-flex-column u-flex-between">
 				<view class="swiper-w box-border u-flex-1">
+					<view class="error-w u-flex u-flex-items-center u-flex-center text-white box-border u-p-20" 
+						v-if="biji_files[swiperCurrent].status == 'error'" 
+					>
+						<view class="u-p-20 u-radius-40 u-font-28 u-flex u-flex-items-center" style="background-color: #5f595a;">
+							<u-icon name="error-circle" color="#fff" size="16"></u-icon>
+							<view class="u-m-l-20">{{biji_files[swiperCurrent].message}}</view>
+						</view>
+					</view>
 					<u-swiper
 						:list="swiperlist"
 						height="100%"
@@ -13,7 +21,7 @@
 						bgColor="#222"
 						indicator
 						:indicatorActiveColor="themeColor"
-						indicatorMode="dot"
+						indicatorMode="dot" 
 						@change="swiperChange"
 					></u-swiper>
 				</view>
@@ -22,7 +30,9 @@
 						<view v-for="(item, index) in swiperlist" class="preview-pic-w" :key="index">
 							<view class="item u-m-r-20 u-radius-5" 
 								:class="{
-									active: index == swiperCurrent
+									success: item.status == 'success',
+									error: item.status == 'error',
+									active: index == swiperCurrent,
 								}" 
 							>
 								<view class="u-radius-5" @click="previewClick(index)">
@@ -35,7 +45,13 @@
 									>
 									</up-image>
 									<view class="video-icon" v-if="item.fileType == 'video'">
-										<u-icon name="play-right-fill" color="#fff" size="18"></u-icon>
+										<u-icon name="play-right-fill" color="#fff" size="14"></u-icon>
+									</view>
+									<view class="success-w u-flex u-flex-items-center u-flex-center" >
+										<u-icon name="checkmark-circle-fill" color="#00aa7f" size="18"></u-icon>
+									</view>
+									<view class="error-w u-flex u-flex-items-center u-flex-center" >
+										<u-icon name="error-circle-fill" color="#FF2442" size="18"></u-icon>
 									</view>
 								</view> 
 							</view>
@@ -50,6 +66,7 @@
 							shape="circle" 
 							type="error"  
 							@click="deleteBtn"
+							v-if="biji_files.length > 1"
 						>
 							<view class="u-flex u-flex-items-baseline">
 								<view class="u-m-r-10">移除当前文件</view>
@@ -85,17 +102,32 @@
 					<u-icon name="checkmark-circle-fill" color="#F12E24" size="50"></u-icon>
 				</view>
 				<view class="u-font-34 u-m-b-40">发布成功</view>
-			</view>
-			<!-- <view class="u-p-t-30 u-p-b-30">
-				<view class="u-flex u-flex-items-center u-flex-center">
-					<view class="item u-flex-1">
-						<u-button type="error" @click="success = 0" >返回</u-button>
-					</view> 
-				</view>   
-			</view> -->  
+			</view>  
 		</template>  
 		<template v-else>
-			<view class="u-p-20 bg-white u-p-l-40">
+			<view class="u-p-20 box-border bg-white u-radius-10 u-m-b-20">
+				<u-scroll-list :indicator="false">
+					<view v-for="(item, index) in swiperlist" class="preview-pic-w" :key="index">
+						<view class="item u-m-r-20 u-radius-5" >
+							<view class="u-radius-5" >
+								<up-image
+									width="50px"
+									height="50px"
+									mode="aspectFit"
+									:src="item.fileType == 'video' ? item.thumbTempFilePath : item.tempFilePath "
+									radius="5"
+								>
+								</up-image>
+								<view class="video-icon" v-if="item.fileType == 'video'">
+									<u-icon name="play-right-fill" color="#fff" size="14"></u-icon>
+								</view> 
+							</view> 
+						</view>
+						
+					</view>
+				</u-scroll-list>
+			</view>
+			<view class="u-p-20 bg-white u-p-l-40 u-radius-10">
 				<u--form
 					labelPosition="top" 
 					:model="model" 
@@ -117,7 +149,7 @@
 							v-model="model.info" 
 							placeholder="请输入笔记（文案）"  
 							:customStyle="{border: 'none'}"
-							height="500"
+							height="350"
 							maxlength="500"
 						></u--textarea>
 					</u-form-item>  
@@ -131,7 +163,7 @@
 	<TabBar >
 		<view class="pan-tabbar u-flex u-flex-items-center u-flex-around " style="height: 100%;"> 
 			<view class="item-btn  u-flex u-flex-items-center u-flex-center u-flex-1 u-p-10 u-p-l-20 u-p-r-20">
-				<u-button type="error" shape="circle" @click="submit">{{config.submitBtnText}}</u-button>
+				<u-button type="error" shape="circle" @click="submit" :disabled="success == 1">{{config.submitBtnText}}</u-button>
 	
 			</view>
 		</view>
@@ -147,7 +179,7 @@
 	import {useCateStore, baseStore} from '@/stores/base.js'  
 	import {userStore} from '@/stores/user.js' 
 	const user = userStore() 
-	const { biji_files, biji_step } = toRefs(user)
+	const { biji_files, biji_step, biji_info, biji_linshi  } = toRefs(user)
 	const base = baseStore() 
 	const {themeColor, empty} = toRefs(base)
 	const { setOnlineControl } = share()
@@ -183,7 +215,7 @@
 			disabled: false,
 			value: 2,
 		}
-	])
+	]) 
 	const config = computed(() => {
 		let func = 'add_product_longs';
 		let submitBtnText = '确认发布';
@@ -210,7 +242,7 @@
 	watch(
 		() => biji_files.value,
 		(n) => {
-			// console.log(n)
+			console.log(n)
 			swiperlist.value = n
 		},
 		{
@@ -221,8 +253,7 @@
 	watch(
 		() => biji_step.value,
 		(n) => {
-			if(n) {
-				console.log(n)
+			if(n) { 
 				step.value = 2
 				model.value.pic = biji_files.value.map(ele => ele.url).join('|')
 			}
@@ -230,14 +261,33 @@
 		{
 			immediate: true
 		}
-	)
+	) 
 	onLoad(async (options) => { 
 		if (options.hasOwnProperty('id')) {
 			id.value = options.id
 		}    
 		// console.log(biji_files.value)
-		// await initDataList() 
-	})
+		// await initDataList()  
+	}) 
+	function backHandler() {
+		if(biji_step.value) {
+			uni.showModal({
+				title: '退出提示',
+				content: `是否临时保存草稿箱`, 
+				success: (r) => {
+					if (r.confirm) {
+						console.log('用户点击确定');
+						biji_files.value = files.value
+						biji_info.value = model.info
+						biji_linshi.value = true 
+					} else if (r.cancel) {
+						console.log('用户点击取消'); 
+					}
+				}
+			}); 
+		} 
+		return true
+	}
 	function groupChange(e) {
 		
 	}
@@ -320,21 +370,57 @@
 		background-color: #222;
 		.swiper-w {
 			// height: 100%;
+			position: relative;
+			.error-w {
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				top: 20%; 
+				width: 100%;
+				z-index: 50;
+			}
 		}
 	}
 	.preview-pic-w {
 		.item {
-			border: 3px solid #eee;
+			border: 2px solid #eee;
 			position: relative;
 			&.active {
-				border-color: #FF2442;
+				border-color: #FF2442!important;
 			} 
+			&.success {
+				border-color: #00aa7f;
+				.success-w {
+					display: flex;
+					background-color: rgba(0, 168, 126, .15);
+				}
+			}
+			&.error {
+				border-color: #ffaa00;
+				.error-w {
+					display: flex;
+					background-color: rgba(255, 170, 32, 0.1);
+				}
+			}
 			.video-icon {
 				position: absolute;
-				left: 50%;
-				top: 50%;
-				transform: translate(-50%, -50%);
+				right: 5%;
+				bottom: 5%;
+				// transform: translate(-50%, -50%);
+			}
+			.success-w,
+			.error-w, {
+				display: none;
+				position: absolute;
+				z-index: 50; 
+				top: 0;
+				left: 0;
+				width: 100%; 
+				height: 100%;
 			}
 		}
+	}
+	.w {
+		padding-bottom: 60px;
 	}
 </style>
