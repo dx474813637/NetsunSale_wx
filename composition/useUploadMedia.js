@@ -1,0 +1,241 @@
+import {
+	defineComponent,
+	ref,
+	reactive,
+	inject,
+	computed,
+	watch
+} from 'vue'
+import {
+	onLoad,
+	onReachBottom
+} from '@dcloudio/uni-app' 
+import {useCateStore, baseStore} from '@/stores/base.js'   
+import {userStore} from '@/stores/user.js' 
+import "../utils/vod-wx-sdk-v2.js"
+const VodUploader = require("../utils/vod-wx-sdk-v2.js"); 
+console.log(VodUploader)
+export default function useUploadMedia(
+		data = {
+			value: {
+				count: 9,
+				mediaType: ['mix'],
+				sourceType: ['album', 'camera'],
+				maxDuration: 30, 
+			}
+		}
+	) { 
+		
+	const base = baseStore() 
+	const user = userStore() 
+	const { biji_files, biji_step } = toRefs(user)
+	const $api = inject('$api')   
+	const $http = inject('$http')
+	const $VodUploader = VodUploader // inject('$VodUploader') 
+	const files = ref([])
+	const uploadLoading = ref(false)
+	const coverFile = ref({tempFilePaths:[]})
+	watch(
+		() => biji_files.value,
+		(n) => {
+			console.log(n)
+			files.value = n
+		},
+		{
+			deep: true,
+			immediate: true
+		}
+	)
+	// const dataList = ref([])
+	// const curP = ref(1)
+	// const loadstatus = ref('loadmore')
+	function chooseMedia() { 
+		console.log(data) 
+		return new Promise((resolve, reject) => {
+			uni.chooseMedia({
+				count: data.value.count,
+				mediaType: data.value.mediaType,
+				sourceType: data.value.sourceType,
+				maxDuration: data.value.maxDuration,
+				camera: 'back',
+				success: function (res) {
+					console.log(res)
+					// const files_type = res.type
+					let indexs = []
+					let data = res.tempFiles.filter((ele, index) => {
+						let {flag, err} = validateFile(ele)
+						if(!flag) indexs.push({index, err})
+						return flag
+					})
+					 
+					files.value = data 
+					
+					console.log(`all files`, res);
+					console.log(`add files`, data);
+					
+					let content = `共选择${res.tempFiles.length}个文件，添加成功${files.value.length}个，失败${indexs.length}个。`
+					if(indexs.length > 0) {
+						let errStr = indexs.map(ele => `【第${ele.index+1}个文件：${ele.err.join('；')}】`)
+						content += `失败原因：${errStr}。`
+					}
+					console.log(content)  
+					uni.showModal({
+						title: '添加提示',
+						content: content,
+						confirmText: '下一步', 
+						success: (r) => {
+							if (r.confirm) {
+								console.log('用户点击确定');
+								biji_files.value = data
+								files.value = data
+								resolve(true)
+							} else if (r.cancel) {
+								console.log('用户点击取消');
+								reject(false)
+							}
+						}
+					}); 
+					
+					
+				},
+				fail: (err) => {
+					console.log(err)
+				}
+			});
+		})
+		
+	}
+	function validateFile(file) {
+		const type = file.fileType 
+		let flag = true
+		let err = []
+		if(type == 'image') {
+			if(file.size > 5120000) { 
+				flag = false
+				err.push('图片大小请勿超过5MB')
+			}
+		}
+		else if(type == 'video') {
+			if (file.duration > data.value.maxDuration) {
+				flag = false
+				err.push(`视频时长请勿超过${data.value.maxDuration}秒`) 
+				
+			}else if (file.size > data.value.videoSize && data.value.hasOwnProperty('videoSize')) {
+				flag = false
+				err.push(`视频大小请勿超过${data.value.videoSize/1000000}MB`) 
+			}
+		}
+		return { flag, err }
+	}
+	 
+	async function startUpload() {
+		if (!uploadLoading.value) {
+			uploadLoading.value = true
+			// setTimeout(()=> {
+			// 	uploadLoading.value = false
+			// }, 5000) 
+			
+			for (let i = 0; i < files.value.length; i++) {
+				let item = files.value[i]
+				console.log(item, item.tempFilePath) 
+				let result = {}
+				if(item.fileType == 'image') {
+					result = await base.uploadFilePromise(item.tempFilePath)  
+					files.value.splice(i, 1, Object.assign(item, {
+						status: 'success',
+						message: '',
+						url: result.list[0],
+						name: result.list[0]
+					}))  
+				} 
+				if(item.fileType == 'video') {
+					result = await videoUploadEvent(item) 
+					files.value.splice(i, 1, Object.assign(item, {
+						status: 'success',
+						message: '',
+						url: result.videoUrl,
+						name: result.fileId
+					}))  
+				} 
+				console.log(result)
+				
+				
+				
+			}
+			biji_step.value = true
+			biji_files.value = files.value
+			console.log(files.value)
+			
+			
+	
+		}else {
+			uni.showToast({
+				title:'请稍后重试',
+				icon:'none'
+			})
+		}
+	}
+	function videoUploadEvent(fileItem) {
+		// console.log(fileItem)
+		return new Promise((resolve, reject) => { 
+			$VodUploader.start({
+				mediaFile: fileItem, //必填，把chooseVideo回调的参数(file)传进来
+				getSignature: getSignature, //必填，获取签名的函数
+				mediaName: '', //选填，名称，强烈推荐填写(如果不填，则默认为“来自微信小程序”)
+				coverFile: coverFile.value, // 选填，封面
+				// success: (result) => {
+				// 	console.log('success');
+				// 	console.log(result);
+					
+				// },
+				error: (result) => {
+					console.log('error');
+					console.log(result);
+					uni.showModal({
+						title: '上传失败',
+						content: JSON.stringify(result),
+						showCancel: false
+					});
+					reject(result)
+				},
+				progress: (result) => {
+					console.log('progress');
+					console.log(result);
+					uni.showLoading({
+						title: '上传中 ' + result.percent * 100 + '%'
+					});
+				},
+				finish: (result) => {
+					console.log('finish');
+					console.log(result); 
+					uploadLoading.value = false
+					uni.hideLoading();	
+					resolve(result)
+				}
+			});
+		})
+		
+	} 
+	function getSignature (callback) {
+		// console.log(22)
+		$api.get_vod_sign()
+		.then(res => {
+			console.log(res)
+			if (res.code == 1) {
+				callback(res.list);
+			} else {
+				return '获取签名失败';
+			}
+		}).catch(err => {
+			console.log(err)
+		})
+	} 
+	
+	return {
+		files,
+		getSignature,
+		startUpload,
+		chooseMedia,
+		uploadLoading
+	}
+}

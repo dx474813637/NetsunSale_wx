@@ -20,7 +20,9 @@ export const userStore = defineStore('user', {
 			cpy_info: {},
 			cpy_loading: false,
 			tmp_id_list: [],
-			zx: 0
+			zx: 0,
+			biji_files: [],
+			biji_step: false
 		};
 	},
 	getters: { 

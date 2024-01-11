@@ -32,8 +32,10 @@
 	<TabBar :customStyle="customStyle">
 		<view class="pan-tabbar u-flex u-flex-items-center u-flex-around " style="height: 100%;"> 
 			<view class="item-btn  u-flex u-flex-items-center u-flex-center u-flex-1 u-p-10 u-p-l-20 u-p-r-20">
-				<u-button type="error" shape="circle" @click="base.handleGoto({url: '/pages_note/note/noteEdit', params: {id: id}})">我要发布</u-button>
+				<!-- <u-button type="error" shape="circle" @click="base.handleGoto({url: '/pages_note/note/noteEdit', params: {id: id}})">我要发布</u-button> -->
 	
+		<u-button type="error" shape="circle" @click="chooseBtn" throttleTime="800">我要发布</u-button>
+		
 			</view>
 		</view>
 	
@@ -45,9 +47,13 @@
 	import zeroLazyLoad from '@/uni_modules/zero-lazy-load/components/zero-lazy-load/zero-lazy-load.vue'
 	import { share } from '@/composition/share.js'
 	import useDataList from '@/composition/useDataList.js'
+	import useUploadMedia from '@/composition/useUploadMedia.js'
 	import {useCateStore, baseStore} from '@/stores/base.js' 
 	const base = baseStore() 
 	const {themeColor, empty} = toRefs(base)
+	import {userStore} from '@/stores/user.js' 
+	const user = userStore() 
+	const {biji_files} = toRefs(user)
 	const { setOnlineControl } = share()
 	const $api = inject('$api')
 	const id = ref('') 
@@ -81,6 +87,12 @@
 		getDataList,
 		initDataList, 
 	} = useDataList(options)
+	const { 
+		files,
+		getSignature,
+		startUpload,
+		chooseMedia
+	} = useUploadMedia()
 	onLoad(async (options) => { 
 		if (options.hasOwnProperty('id')) {
 			id.value = options.id
@@ -91,6 +103,19 @@
 	const customStyle = ref({
 		paddingBottom: '50px', 
 	}) 
+	
+	async function chooseBtn() {
+		const res = await chooseMedia()
+		if(res) {
+			base.handleGoto({
+				url: '/pages_note/note/noteEdit',
+				params: {
+					id: id.value
+				}
+			})
+		}
+		
+	}
 	function showToast(params) {
 		uToast.value.show({
 			position: 'bottom',

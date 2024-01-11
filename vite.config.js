@@ -2,7 +2,7 @@ import {
 	defineConfig
 } from 'vite';
 import uni from '@dcloudio/vite-plugin-uni';
-import AutoImport from 'unplugin-auto-import/vite' 
+import AutoImport from 'unplugin-auto-import/vite'  
 export default defineConfig({
 	plugins: [
 		uni(),
@@ -22,7 +22,7 @@ export default defineConfig({
 						// ['useFetch',
 						// 'useMyFetch'], // import { useFetch as useMyFetch } from '@vueuse/core',
 					]
-				}
+				}, 
 			]
 		})
 	],

@@ -203,7 +203,9 @@ export const zt_detail = (data) => http.get('zt_detail', data)
 
 // product_longs 种草列表（逛列表）参数p 商品id
 export const product_longs = (data) => http.get('product_longs', data)
+// product_longs_detail 种草详情  参数id
+export const product_longs_detail = (data) => http.get('product_longs_detail', data)
 // add_product_longs 发布种草 参数id 商品id info笔记（文案） pic图片多个图片中间用符号隔开
 export const add_product_longs = (data, config={}) => http.post('add_product_longs', data, config) 
 // get_vod_sign 获取视频上传签名
-export const get_vod_sign = (data) => http.get('get_vod_sign', data)
+export const get_vod_sign = (data, config={}) => http.post('get_vod_sign', data, config) 
