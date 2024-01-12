@@ -23,7 +23,7 @@ export default function useDataList(data = { value: {params: {}, api: '', noReac
 	}) 
 	
 	onReachBottom(() => {  
-		console.log(data.value.noReach)
+		// console.log(data.value.noReach)
 		if(data.value.noReach) return
 		getMoreDataList()
 	}) 

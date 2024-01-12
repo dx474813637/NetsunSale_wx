@@ -151,6 +151,22 @@
 						{{company_list.service}}
 					</view>
 				</view> 
+				<u-line length="100%" margin="10px 0"></u-line>
+				<view class="u-flex u-flex-between u-flex-items-center u-p-10 u-p-b-14 u-p-t-14">
+					<view class="item text-bold">发现笔记</view>
+					<view class="item u-flex u-flex-items-baseline" @click="base.handleGoto({url: 'pages_note/note/noteList', params: {id: product_id}})">
+						<view class="u-info u-m-r-5 u-font-28">全部({{product_longs.total}})</view>
+						<u-icon name="arrow-right" color="#ccc" size="14"></u-icon>
+					</view>
+				</view>
+				<view class="biji-list u-flex" v-if="product_longs.total > 0">
+					<view class="item u-p-10 box-border" v-for="item in product_longs.list" :key="item.id"> 
+						<noteCard
+							:origin="item"
+							imgHeight="120px"
+						></noteCard>  
+					</view>
+				</view>
 			</view> 
 		</view>
 		<view class="pro-desc">
@@ -274,6 +290,8 @@
 	const showProductShare = ref(false)
 	const isOrder = ref(false)
 	const kefu = ref({})
+	const product_longs = ref({})
+	const $http = inject('$http')
 	
 	const cate_active_name = computed(() => {
 		if(!product_list.value.id || cate_list.value.length == 0) return '' 
@@ -299,12 +317,26 @@
 		if(!product_sku.value  ) return [] 
 		return sku2treeData(product_sku.value)
 	})
-	
+	onShow(() => {
+		
+	})
 	onLoad(async (options) => {
 		console.log(options, 2)
 		if(options.hasOwnProperty('id')) {
 			product_id.value = options.id
 		}
+		if (options.hasOwnProperty('tid')) {
+			$http.setToken({
+				tid2: options.tid
+			}) 
+			uni.setStorageSync('tid2', options.tid)
+		} 
+		if (options.hasOwnProperty('poster')) {
+			$http.setToken({
+				poster2: options.poster
+			}) 
+			uni.setStorageSync('poster2', options.poster)
+		} 
 		if(cate_list.value.length == 0) {
 			cate.getCateData()
 		}
@@ -342,6 +374,7 @@
 			company_list.value = res.company
 			spec_prices.value = res.spec_prices
 			kefu.value = res.kefu
+			product_longs.value = res.product_longs
 			setOnlineControl(res)
 		}
 	}
@@ -428,5 +461,10 @@
 	}
 	.shop-card {
 		background: linear-gradient(to bottom, #e7e9ff, #f3f9ff);
+	}
+	.biji-list {
+		.item {
+			flex: 0 0 50%
+		}
 	}
 </style>

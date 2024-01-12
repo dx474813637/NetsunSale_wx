@@ -66,6 +66,7 @@
 							shape="circle" 
 							type="error"  
 							@click="deleteBtn"
+							:disabled="uploadLoading"
 							v-if="biji_files.length > 1"
 						>
 							<view class="u-flex u-flex-items-baseline">
@@ -105,7 +106,10 @@
 			</view>  
 		</template>  
 		<template v-else>
-			<view class="u-p-20 box-border bg-white u-radius-10 u-m-b-20">
+			<view class="text-base u-font-28 u-p-20">
+				已上传文件
+			</view>
+			<view class="u-p-l-20 u-p-t-20 u-p-r-20 box-border bg-white u-radius-10 u-m-b-20">
 				<u-scroll-list :indicator="false">
 					<view v-for="(item, index) in swiperlist" class="preview-pic-w" :key="index">
 						<view class="item u-m-r-20 u-radius-5" >
@@ -137,8 +141,30 @@
 					:borderBottom="false"
 					:labelStyle="{color: '#7c88a0', fontSize: '30rpx', lineHeight: '18px'}"
 					>
-					 
-					 <u-form-item
+					<u-form-item
+					 	:borderBottom="false"
+					 	label="笔记" 
+					 	prop="info"  
+					 	ref="info"
+					 	required 
+					 	>
+						<view class="editor-wrapper">
+							<editor 
+								id="editor" 
+								class="ql-container" 
+								placeholder="开始输入..." 
+								show-img-size 
+								show-img-toolbar
+								show-img-resize 
+								@statuschange="onStatusChange"  
+								@ready="onEditorReady"
+								@blur="blur"
+							>
+							</editor>
+						</view>
+					</u-form-item>
+					
+					<!-- <u-form-item
 					 	:borderBottom="false"
 					 	label="笔记" 
 					 	prop="info"  
@@ -152,7 +178,7 @@
 							height="350"
 							maxlength="500"
 						></u--textarea>
-					</u-form-item>  
+					</u-form-item> --> 
 				</u--form>
 			</view>
 		</template>
@@ -204,6 +230,8 @@
 	const mode = ref(1)
 	const videoLoading = ref(false)
 	const videoFile = ref({})
+	const editorCtx = ref('')
+	const formats = ref({})
 	const modeTabs = ref([
 		{
 			name: '图片',
@@ -235,7 +263,7 @@
 	const rules = {
 		info: {
 			required: true,
-			message: '不能为空',
+			message: '请输入中字',
 			trigger: ['blur', 'change']
 		},
 	}
@@ -269,6 +297,35 @@
 		// console.log(biji_files.value)
 		// await initDataList()  
 	}) 
+	const blur = (e) => {
+		console.log(e)
+		if(containsChinese(e.detail.html)) {
+			model.value.info = e.detail.html
+		}
+		else {
+			model.value.info = ''
+		}
+		uForm.value.validateField('info')
+	}
+	function containsChinese(str) {
+		var pattern = /[\u4e00-\u9fa5]/;
+		return pattern.test(str);
+	}
+	function onEditorReady() {
+		// #ifdef MP-BAIDU
+		editorCtx.value = requireDynamicLib('editorLib').createEditorContext('editor');
+		// #endif
+
+		// #ifdef APP-PLUS || MP-WEIXIN || H5
+		uni.createSelectorQuery().select('#editor').context((res) => {
+			editorCtx.value = res.context
+		}).exec()
+		// #endif
+	}
+	function onStatusChange(e) {
+		const formats = e.detail
+		formats.value = formats
+	}
 	function backHandler() {
 		if(biji_step.value) {
 			uni.showModal({
@@ -287,10 +344,7 @@
 			}); 
 		} 
 		return true
-	}
-	function groupChange(e) {
-		
-	}
+	} 
 	function submitFilesBtn() {
 		startUpload()
 	}
@@ -310,30 +364,43 @@
 		})
 	}
 	function submit() {
-		uForm.value.validate().then(async () => {
-			loading.value = true;
-			uni.showLoading()
-			try{
-				const res = await $api[config.value.func]({...config.value.params});
-				if(res.code == 1) { 
-					uni.showToast({
-						title: res.msg,
-						icon: 'success'
-					})    
-					success.value = 1 
-					setTimeout(() => {
-						uni.navigateBack()
-					}, 1500)
+		uni.showModal({
+			title: '提示',
+			content: `是否发布`, 
+			success: (r) => {
+				if (r.confirm) {
+					console.log('用户点击确定'); 
+					uForm.value.validate().then(async () => {
+						loading.value = true;
+						uni.showLoading()
+						try{
+							const res = await $api[config.value.func]({...config.value.params});
+							if(res.code == 1) { 
+								uni.$emit('list_refresh')
+								uni.showToast({
+									title: res.msg,
+									icon: 'success'
+								})    
+								success.value = 1 
+								setTimeout(() => {
+									uni.navigateBack()
+								}, 1500)
+							}
+						}catch(e){
+							//TODO handle the exception
+						}
+						loading.value = false;
+						
+					}).catch(errors => {
+						console.log(errors)
+						uni.$u.toast('请检查表单')
+					}) 
+				} else if (r.cancel) {
+					console.log('用户点击取消'); 
 				}
-			}catch(e){
-				//TODO handle the exception
 			}
-			loading.value = false;
-			
-		}).catch(errors => {
-			console.log(errors)
-			uni.$u.toast('请检查表单')
-		}) 
+		}); 
+		
 	} 
 	function deleteBtn() {
 		biji_files.value.splice(swiperCurrent.value, 1)
@@ -360,6 +427,20 @@
 	}
 </style>
 <style lang="scss" scoped>
+	.editor-wrapper {
+		height: 400px;
+		background: #fff;
+	}
+	.ql-container {
+		box-sizing: border-box;
+		padding: 12px 15px;
+		width: 100%;
+		min-height: 30vh;
+		height: 100%;
+		margin-top: 20px;
+		font-size: 16px;
+		line-height: 1.5;
+	}
 	.step-one {
 		position: fixed;
 		left: 0;

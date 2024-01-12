@@ -15,18 +15,20 @@ import {userStore} from '@/stores/user.js'
 import "../utils/vod-wx-sdk-v2.js"
 const VodUploader = require("../utils/vod-wx-sdk-v2.js"); 
 console.log(VodUploader)
-export default function useUploadMedia(
-		data = {
-			value: {
-				count: 9,
-				mediaType: ['mix'],
-				sourceType: ['album', 'camera'],
-				maxDuration: 30, 
-			}
-		}
-	) { 
-		
+export default function useUploadMedia(data = {}) { 
+	const defaultConfig = {
+		count: 9,
+		mediaType: ['mix'],
+		sourceType: ['album', 'camera'],
+		maxDuration: 30, 
+		pic_maxSize: 5120000,
+		video_maxSize: 51200000,
+	}	  
 	const base = baseStore() 
+	const config = computed(() => ({
+		...defaultConfig,
+		...data.value
+	}))
 	const user = userStore() 
 	const { biji_files, biji_step, biji_info, biji_linshi } = toRefs(user)
 	const $api = inject('$api')   
@@ -50,13 +52,13 @@ export default function useUploadMedia(
 	// const curP = ref(1)
 	// const loadstatus = ref('loadmore')
 	function chooseMedia() { 
-		console.log(data) 
+		console.log(data, config) 
 		return new Promise((resolve, reject) => {
 			uni.chooseMedia({
-				count: data.value.count,
-				mediaType: data.value.mediaType,
-				sourceType: data.value.sourceType,
-				maxDuration: data.value.maxDuration,
+				count: config.value.count,
+				mediaType: config.value.mediaType,
+				sourceType: config.value.sourceType,
+				maxDuration: config.value.maxDuration,
 				camera: 'back',
 				success: function (res) {
 					console.log(res)
@@ -110,19 +112,19 @@ export default function useUploadMedia(
 		let flag = true
 		let err = []
 		if(type == 'image') {
-			if(file.size > 5120000) { 
+			if(file.size > config.value.pic_maxSize) { 
 				flag = false
-				err.push('图片大小请勿超过5MB')
+				err.push(`图片大小请勿超过${config.value.pic_maxSize/1000000}MB`)
 			}
 		}
 		else if(type == 'video') {
-			if (file.duration > data.value.maxDuration) {
+			if (file.duration > config.value.maxDuration) {
 				flag = false
-				err.push(`视频时长请勿超过${data.value.maxDuration}秒`) 
+				err.push(`视频时长请勿超过${config.value.maxDuration}秒`) 
 				
-			}else if (file.size > data.value.videoSize && data.value.hasOwnProperty('videoSize')) {
+			}else if (file.size > config.value.video_maxSize ) {
 				flag = false
-				err.push(`视频大小请勿超过${data.value.videoSize/1000000}MB`) 
+				err.push(`视频大小请勿超过${config.value.video_maxSize/1000000}MB`) 
 			}
 		}
 		return { flag, err }
@@ -185,17 +187,22 @@ export default function useUploadMedia(
 				
 			}
 			uploadLoading.value = false
-			let errArr = files.value.filter(ele => ele.status == 'error') 
+			let errArr = files.value.filter(ele => ele.status == 'error')  
 			if(errArr.length > 0) {
-				
+				let content = `当前传输列表共计${files.value.length}个文件，其中${errArr.length}个文件发生上传错误。`
+				if(files.value.length > errArr.length) {
+					content += '是否移除错误文件？'
+				}
 				uni.showModal({
 					title: '上传提示',
-					content: `当前传输列表共计${files.value.length}个文件，其中${errArr.length}个文件发生上传错误，是否移除错误文件并下一步编辑文案？`, 
+					content: content, 
 					success: (r) => {
 						if (r.confirm) {
+							if(files.value.length > errArr.length) {
+								files.value = files.value.filter(ele => ele.status == 'success') 
+								biji_files.value = files.value
+							} 
 							console.log('用户点击确定');
-							files.value = files.value.filter(ele => ele.status == 'success') 
-							biji_files.value = files.value
 						} else if (r.cancel) {
 							console.log('用户点击取消'); 
 						}
