@@ -170,6 +170,8 @@ export const menusStore = defineStore('menus', {
 			menus_wd: [],
 			menus_wd1: [], 
 			menus_ad: {},
+			menus_xr: {},
+			menus_xr_loading: false,
 			new_memu: [],
 			news: 0,
 			currPage: {
@@ -213,6 +215,7 @@ export const menusStore = defineStore('menus', {
 				this.menus_wd = res.list
 				this.menus_wd1 = res.list1
 				this.menus_ad = res.ad
+				this.menus_xr = res.xr
 				 
 			} 
 		}

@@ -13,7 +13,7 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
-				"navigationStyle": "custom" 
+				"navigationStyle": "custom"
 			}
 
 		},
@@ -295,22 +295,28 @@
 					"navigationBarTitleText": "列表",
 					"enablePullDownRefresh": false
 				}
+			},
+			{
+				"path": "coupon/coupon",
+				"style": {
+					"navigationBarTitleText": "我的优惠券",
+					"enablePullDownRefresh": false
+				}
 			}
 		]
-	},{
+	}, {
 		"root": "pages_note",
-		"pages": [ 
-			{
+		"pages": [{
 				"path": "note/note",
 				"style": {
-					"navigationBarTitleText": "", 
+					"navigationBarTitleText": "",
 					"enablePullDownRefresh": false
 				}
 			},
 			{
 				"path": "note/noteList",
 				"style": {
-					"navigationBarTitleText": "", 
+					"navigationBarTitleText": "",
 					"enablePullDownRefresh": true,
 					"navigationBarBackgroundColor": "#F2F2F2"
 				}
@@ -318,7 +324,7 @@
 			{
 				"path": "note/noteEdit",
 				"style": {
-					"navigationBarTitleText": "", 
+					"navigationBarTitleText": "",
 					"enablePullDownRefresh": false
 				}
 			}

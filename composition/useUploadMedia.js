@@ -20,9 +20,9 @@ export default function useUploadMedia(data = {}) {
 		count: 9,
 		mediaType: ['mix'],
 		sourceType: ['album', 'camera'],
-		maxDuration: 30, 
+		maxDuration: 60, 
 		pic_maxSize: 5120000,
-		video_maxSize: 51200000,
+		// video_maxSize: 51200000,
 	}	  
 	const base = baseStore() 
 	const config = computed(() => ({
@@ -114,7 +114,7 @@ export default function useUploadMedia(data = {}) {
 		if(type == 'image') {
 			if(file.size > config.value.pic_maxSize) { 
 				flag = false
-				err.push(`图片大小请勿超过${config.value.pic_maxSize/1000000}MB`)
+				err.push(`图片大小请勿超过${Math.round(config.value.pic_maxSize/1024/1024)}MB`)
 			}
 		}
 		else if(type == 'video') {
@@ -122,7 +122,7 @@ export default function useUploadMedia(data = {}) {
 				flag = false
 				err.push(`视频时长请勿超过${config.value.maxDuration}秒`) 
 				
-			}else if (file.size > config.value.video_maxSize ) {
+			}else if ( config.value.hasOwnProperty('video_maxSize') && file.size > config.value.video_maxSize ) {
 				flag = false
 				err.push(`视频大小请勿超过${config.value.video_maxSize/1000000}MB`) 
 			}

@@ -203,7 +203,7 @@
 			count: 9,
 			mediaType: ['mix'],
 			sourceType: ['album', 'camera'],
-			maxDuration: 30, 
+			maxDuration: 60, 
 			...upload_config.value
 		}
 	})

@@ -105,6 +105,20 @@
 				</view>
 			</view>
 		</view>
+		
+		<u-sticky bgColor="#fff">
+			<view class="tabs-w bg-white">
+				<u-tabs
+					:list="tabs_list"  
+					lineWidth="0"
+					:current="tabs_current" 
+					:activeStyle="{
+						color: themeColor
+					}"
+					@change="handleTabsChange"
+				></u-tabs>	
+			</view> 
+		</u-sticky>
 		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10"> 
 			 <view 
 				class="list-item u-p-14" 
@@ -193,6 +207,7 @@
 	useNormal()
 	import {useCateStore, baseStore} from '@/stores/base.js'
 	const base = baseStore()
+	const { themeColor } = toRefs(base)
 	const cate = useCateStore()
 	const { cate_list, cate_loading } = toRefs(cate)
 	import {
@@ -214,6 +229,14 @@
 		paddingBottom: '80px',
 		background: 'transparent' 
 	})  
+	const tabs_current = ref(0)
+	const tabs_list = ref([
+		{
+			name: '全部',
+			value: '',
+			disabled: false
+		}
+	])  
 	const showBaseInfo = ref(false)
 	const showHomeInfo = ref(false)
 	const showShare = ref(false)
@@ -231,7 +254,7 @@
 	})
 	const list = ref([])
 	const loading = ref(false)
-	onLoad(async (options) => { 
+	onLoad(async (options) => {  
 		if(options.hasOwnProperty('userid')) {
 			userid.value = options.userid
 		}
@@ -257,7 +280,8 @@
 		if(loadstatus.value == 'loading') return
 		loadstatus.value = 'loading'
 		const res = await $api.shop_product_list({params: {
-			login: userid.value
+			login: userid.value,
+			cate: tabs_list.value[tabs_current.value].value
 		}})
 		if (res.code == 1) { 
 			dataList.value = res.list.sort((a,b) => b.sid - a.sid )
@@ -268,6 +292,21 @@
 			others.value = res.other || []
 			notice.value = res.notice || []
 			setOnlineControl(res)
+			tabs_list.value = [
+				{
+					name: '全部',
+					value: '',
+					disabled: false
+				}, 
+				...res.catelist.map(ele => {
+					return {
+						...ele,
+						disabled: false,
+						value: ele.id,
+						name: ele.name
+					}
+				})
+			]
 			if(dataList.value.length >= +res.total || res.xuan == 1) {
 				loadstatus.value = 'nomore'
 			}
@@ -311,8 +350,10 @@
 			initDataParams(); 
 			xuan.value = 1
 			loadstatus.value = 'nomore'
+			// initDataParams();
+			getData()
 		}
-		if(data.checked) {
+		else if(data.checked) {
 			dataList.value.unshift(data)
 			// dataList.value = dataList.value.sort((a,b) => b.id - a.id )
 		}
@@ -353,6 +394,10 @@
 		baseInfo.value = {...data}
 		showBaseInfo.value = true
 	}
+	function handleTabsChange(data) {
+		tabs_current.value = +data.index
+		initData() 
+	}  
 </script>
 
 <style > 

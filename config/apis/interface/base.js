@@ -209,3 +209,14 @@ export const product_longs_detail = (data) => http.get('product_longs_detail', d
 export const add_product_longs = (data, config={}) => http.post('add_product_longs', data, config) 
 // get_vod_sign 获取视频上传签名
 export const get_vod_sign = (data, config={}) => http.post('get_vod_sign', data, config) 
+
+// coupon_list 活动列表
+export const coupon_list = (data) => http.get('coupon_list', data)
+// get_coupon 领优惠券 参数hid=活动id  hid=0 领新人券
+export const get_coupon = (data) => http.get('get_coupon', data)
+// my_coupon_list 我的优惠券
+export const my_coupon_list = (data) => http.get('my_coupon_list', data)
+// search_coupon 订单可用优惠券 参数id=订单id
+export const search_coupon = (data) => http.get('search_coupon', data)
+// use_coupon 使用优惠券 参数id=订单id guid=优惠券guid
+export const use_coupon = (data) => http.get('use_coupon', data)

@@ -124,6 +124,15 @@
 			</view>
 		</template>
 		
+		<view class="u-p-15 u-p-l-20 u-p-r-20 u-m-b-26 u-flex u-flex-between u-flex-items-center bg-white u-font-26 " v-if="menus_xr.zt">
+			<image 
+				@click="handleXrClick"
+				style="width: 100%;"
+				class="u-radius-5"
+				:src="menus_xr.img" 
+				mode="widthFix"
+			></image>
+		</view>
 		<!-- 其他公告列表 远程控制 -->
 		<template v-if="menus_wd1 && menus_wd1.length > 0">
 			<view class="u-p-t-30 u-p-15 bg-white u-m-b-26 rows-menus">
@@ -184,12 +193,13 @@
 	// baseNotify(notify) 
 	const base = baseStore()
 	const menus = menusStore()
-	const { menus_wd, menus_wd1, menus_ad } = toRefs(menus)
+	const { menus_wd, menus_wd1, menus_ad, menus_xr, menus_xr_loading } = toRefs(menus)
 	const user = userStore()
 	const {user_info, balance} = toRefs(user)
 	const showUserInfo = ref(false)
 	const showUserPhone = ref(false)
 	const linkData = ref({}) 
+	const $api = inject('$api')   
 	onLoad(async () => {
 		// await user.getMallUserInfo()
 		// await user.getCpyInfo() 
@@ -207,6 +217,23 @@
 		else {
 			handleMenusClick(item)
 		}
+		
+	}
+	async function handleXrClick() {
+		if(menus_xr_loading.value) return
+		menus_xr_loading.value = true
+		uni.showLoading();
+		try{
+			const res = await $api.get_coupon({params: {hid: 0}})
+			if(res.code == 1){
+				uni.showToast({
+					title: res.msg
+				})
+			}
+		}catch(e){
+			//TODO handle the exception
+		}
+		menus_xr_loading.value = false
 		
 	}
 	function handleMenusClick(item) {
