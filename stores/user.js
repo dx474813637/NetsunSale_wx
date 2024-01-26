@@ -63,11 +63,11 @@ export const userStore = defineStore('user', {
 			const res = await apis.memu()
 			if(res.code == 1) {  
 				this.zx = res.zx 
-				// if(this.zx == 1) {
-				// 	uni.reLaunch({
-				// 		url: '/pages/userInactive/userInactive'
-				// 	})
-				// }
+				if(this.zx == 1) {
+					uni.reLaunch({
+						url: '/pages/userInactive/userInactive'
+					})
+				}
 				this.getUserInfo(res.info)
 				this.balance = res.balance 
 			}

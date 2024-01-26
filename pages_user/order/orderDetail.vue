@@ -114,6 +114,16 @@
 			<view class="text-error u-font-24 text-bold">我的</view>
 		</view>
 	</view>
+	<CouponListPopup
+		:show="couponListShow" 
+		title="（可用优惠券）点击使用"  
+		:list="coupon_list"
+		:activeId="coupon_id"
+		:onUpdateShow="handleChangeShow4"  
+		@confirmCoupon="confirmCoupon"
+		@refresh="refreshCoupon"
+		@submit="submitCoupon"
+	></CouponListPopup>
 	<OrderScorePopup
 		:show="orderScorePopupShow" 
 		title="订单评分"  
@@ -166,7 +176,10 @@
 	const $api = inject('$api')   
 	const id = ref('')
 	const list = ref({})
+	const coupon_list = ref([])
 	const btnList = ref([])
+	const coupon_id = ref('')
+	const couponListShow = ref(false)
 	const cancelOrderShow = ref(false)
 	const refundOrderShow = ref(false)
 	const orderServiceShow = ref(false)
@@ -181,6 +194,9 @@
 	// 	onlineControl
 	// } = share()
 	const orderScorePopupShow = ref(false)
+	const noUseCoupon = computed(() => {
+		return coupon_list.value.findIndex(ele => ele.id == coupon_id.value) == -1
+	})
 	// const buyBtnShow = computed(() => {  
 	// 	return list.value.status == 0 || list.value.status == 6
 	// })
@@ -200,6 +216,9 @@
 			uni.showLoading()
 			await getData()
 		} 
+		if(list.value.status == 0) {
+			getSearchCoupon()
+		}
 	})
 	
 	async function getData() {
@@ -218,6 +237,34 @@
 		}
 	}
 	
+	async function getSearchCoupon() {
+		const res = await $api.search_coupon({
+			params: {
+				id: id.value
+			}
+		})
+		if(res.code == 1 ) { 
+			coupon_list.value = res.list.map(ele => {
+				return {
+					...ele,
+					active: false
+				}
+			})
+		}
+	}
+	function confirmCoupon({origin}) {
+		if(coupon_id.value == origin.id ) {
+			coupon_id.value = 0
+		}
+		else {
+			coupon_id.value = origin.id 
+		}
+		
+	}
+	async function refreshCoupon() {
+		uni.showLoading()
+		await getSearchCoupon()
+	}
 	function cancalBtn() { 
 		uni.showModal({
 			title: '提示',
@@ -331,8 +378,13 @@
 		});
 	}
 	async function orderBuyBtn () {
-		uni.showLoading()
-		wxPay()
+		if(coupon_list.value.length > 0) {
+			couponListShow.value = true
+		}
+		else { 
+			uni.showLoading()
+			wxPay()
+		}
 	} 
 	async function wxPay() {
 		let res = await $api.xcx_pay({
@@ -404,6 +456,37 @@
 			}
 		});
 	}
+	function submitCoupon () {
+		let guid = !noUseCoupon.value? coupon_list.value.filter(ele => ele.id == coupon_id.value)[0]?.guid: ''
+		const obj = {
+			content: noUseCoupon.value?'当前您有未使用的优惠券，可考虑选择使用':'当前选择了一张优惠券，确认支付',
+			confirmText: noUseCoupon.value?'去支付':'确认',
+			cancelText: noUseCoupon.value?'考虑下':'取消'
+		}
+		uni.showModal({
+			title: '提示',
+			content: obj.content, 
+			confirmText: obj.confirmText, 
+			cancelText: obj.cancelText, 
+			success: async (r) => {
+				if (r.confirm) {
+					if(!noUseCoupon.value) { 
+						const res = await $api.use_coupon({
+							params: {
+								id: id.value,
+								guid: guid
+							}
+						}) 
+					}
+					couponListShow.value = false
+					uni.showLoading()
+					wxPay()
+					
+				} else if (r.cancel) { 
+				}
+			}
+		}); 
+	}
 	function handleChangeShow(data) {
 		orderScorePopupShow.value = data
 	}  
@@ -413,6 +496,9 @@
 	function handleChangeShow3(data) {
 		orderExpressPopupShow.value = data
 	}  
+	function handleChangeShow4(data) {
+		couponListShow.value = data
+	}
 	async function finishTime() {
 		uni.showLoading()
 		await getData()

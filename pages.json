@@ -132,6 +132,13 @@
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/activity/activity",
+			"style": {
+				"navigationBarTitleText": "活动列表",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"subPackages": [{

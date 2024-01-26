@@ -1,6 +1,6 @@
 <template>
-	<view class="card" @click="cardClick">
-		<view class="card-header u-p-20 u-radius-10" :style="{
+	<view class="card" @click="click">
+		<view class="card-header u-p-20 u-radius-8" :style="{
 			backgroundImage: 'linear-gradient(to right, #FCEABE, #BBA16D)'
 		}">
 			<view class="u-flex u-flex-between coupon u-p-10">
@@ -19,7 +19,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="card-footer u-flex u-radius-10 bg-white u-flex-between u-flex-items-center u-font-28">
+		<view class="card-footer u-flex u-radius-8 bg-white u-flex-between u-flex-items-center u-font-24 u-p-20">
 			<view class="item">
 				使用时间：
 				<template v-if="origin.begin == '长期'">
@@ -56,15 +56,18 @@
 			}
 		})
 	}
-	function cardClick(e) { 
+	function click(e) { 
 		
-		emits('checkedClick', {check: e, origin: props.origin})
+		emits('cardClick', {origin: props.origin})
 	}
 </script>
 
 <style lang="scss" scoped>
 	.card-header {
 		overflow: hidden;
+	}
+	.card-footer {
+		color: #795107;
 	}
 	.coupon {
 		color: #654B18;
