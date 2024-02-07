@@ -19,6 +19,7 @@
 				<OrderCard
 					:origin="list"
 					:gotoDetail="false"
+					gotoProduct
 				></OrderCard>
 			</view>
 			
@@ -41,7 +42,7 @@
 				<view class="item u-flex-1 u-text-right text-base">{{ order_zt2str }}</view>
 			</view>
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
-				<view class="item text-nowrap u-p-r-20">无忧退货（运费险）</view>
+				<view class="item text-nowrap u-p-r-20">无忧退货（运费险最高8元）</view>
 				<view class="item u-flex-1 u-text-right text-base">商家赠送</view>
 			</view>
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
@@ -71,6 +72,10 @@
 			<view class="item u-p-15" v-if="btnList.button1">
 				<!-- 订单支付  -->
 				<up-button type="error" shape="circle" @click="orderBuyBtn">{{btnList.button1_title}}</up-button>
+			</view>
+			<view class="item u-p-15" v-if="btnList.button1 && coupon_list.length > 0">
+				<!-- 使用优惠券  -->
+				<up-button type="error" plain shape="circle" @click="orderBuyBtn">使用优惠券</up-button>
 			</view>
 			<view class="item u-p-15" v-if="btnList.button2"> 
 				<!-- 收货确认 -->

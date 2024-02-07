@@ -18,6 +18,7 @@
 			<view class="item" v-for="item in dataList.pid" :key="item.id">
 				<OrderProductRowCard
 					:product="item"
+					:gotoDetail="gotoProduct"
 				></OrderProductRowCard>
 			</view>
 			<!-- <view 
@@ -110,7 +111,11 @@
 		gotoDetail: {
 			type: Boolean,
 			default: true
-		}
+		},
+		gotoProduct: {
+			type: Boolean,
+			default: false
+		},
 	})
 	const zt = computed(() => {
 		return {

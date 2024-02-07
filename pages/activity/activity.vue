@@ -15,7 +15,13 @@
 					<CouponRowCard
 						:origin="item"
 						@cardClick="cardClick"
-					></CouponRowCard>
+					> 
+						<template #btn>
+							<view class=" u-radius-4 u-p-10 u-p-l-25 u-p-r-25 u-font-26 u-m-t-20" style="background-color: #fff5dc;">
+								查看详情
+							</view>
+						</template>
+					</CouponRowCard>
 			 </view>	 
 			<template v-if="dataList.length == 0">
 				<u-empty
@@ -104,17 +110,12 @@
 		}
 	}
 	async function cardClick({origin}) {
-		uni.showLoading();
-		const res = await $api.get_coupon({
+		base.handleGoto({
+			url: '/pages/activity/activityDetail',
 			params: {
-				hid: origin.id
+				id: origin.id
 			}
 		})
-		if(res.code == 1) {
-			uni.showToast({
-				title: res.msg
-			})
-		}
 	}
 </script>
 

@@ -219,7 +219,7 @@
 								<view 
 									class=" u-radius-8 u-m-r-20" 
 									v-for="ele in item.list"
-									:key="ele" 
+									:key="ele.id" 
 								>
 									<view style="width: 140px;" class="u-radius-8">
 										<ProductColCard

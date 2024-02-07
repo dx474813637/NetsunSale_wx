@@ -214,8 +214,8 @@ export const menusStore = defineStore('menus', {
 				// 获取个人中心基础菜单
 				this.menus_wd = res.list
 				this.menus_wd1 = res.list1
-				this.menus_ad = res.ad
-				this.menus_xr = res.xr
+				this.menus_ad = res.ad || {}
+				this.menus_xr = res.xr || {}
 				 
 			} 
 		}

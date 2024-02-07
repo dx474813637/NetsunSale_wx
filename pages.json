@@ -139,6 +139,14 @@
 				"navigationBarTitleText": "活动列表",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path" : "pages/activity/activityDetail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "活动详情",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"subPackages": [{
@@ -215,6 +223,13 @@
 				"path": "tuan/darenList",
 				"style": {
 					"navigationBarTitleText": "邀请达人列表",
+					"enablePullDownRefresh": false
+				}
+
+			},{
+				"path": "tuan/mynewtuan",
+				"style": {
+					"navigationBarTitleText": "员工发展团长列表",
 					"enablePullDownRefresh": false
 				}
 

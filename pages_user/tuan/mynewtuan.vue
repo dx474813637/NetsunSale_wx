@@ -1,6 +1,6 @@
 <template>
 	<view class="w u-p-20" >
-		<view class="status-w u-text-center u-p-t-20 u-p-b-40 u-font-40 text-bold text-white u-line-2" >
+		<!-- <view class="status-w u-text-center u-p-t-20 u-p-b-40 u-font-40 text-bold text-white u-line-2" >
 			{{ tuan.title }}
 		</view> 
 		<view class="u-m-b-20">
@@ -16,17 +16,32 @@
 					</view> 
 				</view> 
 			</view> 
-		</view>
+		</view> -->
 		<view class="u-p-20  text-bold u-info u-font-28">
-			达人列表
+			团长列表
 		</view>
 		<view class="list">  
 			<view class="list-item u-m-b-15" v-for="item in dataList" :key="item.id">
-				<DarenCard
-					:origin="item"
-					:kg="kg"
-					@analysis="analysisEvent"
-				></DarenCard>
+				
+				<view class="card-header bg-white u-radius-12 uni-shadow-base u-p-30" >
+					<view class=" u-flex u-flex-between u-flex-items-center">
+						<up-image
+							showLoading
+							:src="item.login_info.img"
+							width="50px"
+							height="50px"
+							shape="circle" 
+						></up-image>
+						<view class="u-flex-1 u-p-l-20">
+							<view class="u-m-b-10">{{item.login_info.name}}</view>
+							<view class="u-flex u-flex-items-baseline"> 
+								<view class="text-white u-font-24 u-info-bg u-p-l-8 u-p-r-8 u-radius-5 u-m-r-8">UID:{{item.login_info.id}}</view>
+								<view class="u-info u-font-28">{{item.login_info.purephonenumber}}</view>
+							</view>
+						</view> 
+					</view>
+					
+				</view> 
 			</view>
 			<template v-if="dataList.length == 0">
 				<u-empty mode="data" :icon="base.empty" />
@@ -38,13 +53,7 @@
 				
 			<u-safe-bottom></u-safe-bottom>
 		</view>	 
-	</view>
-	<DarenAnalysisPopup
-		:show="showDarenAnalysis" 
-		title="达人分析" 
-		:list="daren_analysis"
-		:onUpdateShow="handleChangeShow" 
-	></DarenAnalysisPopup>
+	</view> 
 	<MenusBar></MenusBar>
 </template>
 
@@ -74,12 +83,12 @@
 				// role: role.value,
 				// type: tabs_list.value[tabs_current.value].value
 			},
-			api: 'daren_list',
+			api: 'tuan_list',
 			getDataCallBack: (res) => {
 				if (res.code == 1) {
 					dataList.value = [...dataList.value, ...res.list]
-					tuan.value = res.tuan
-					kg.value = res.kg
+					// tuan.value = res.tuan
+					// kg.value = res.kg
 					
 					if(dataList.value.length >= res.total) {
 						loadstatus.value = 'nomore'
@@ -149,10 +158,25 @@
 <style scoped lang="scss">
 .w {
 	// min-height: 100vh;
-	padding-bottom: 60px;
-	background: linear-gradient(to bottom, #F12E24,  #F12E24 100px, #f8f8f8 180px);
+	padding-bottom: 80px!important;
+	// background: linear-gradient(to bottom, #F12E24,  #F12E24 100px, #f8f8f8 180px);
 } 
 .card {
 	
 }
+.shop-card-header {
+		border-bottom: 1rpx solid #f8f8f8;
+	}
+	.shop-card-main {
+		.product-item {
+			.item {
+				&.checkbox {
+					height: 70px;
+				}
+				&.info {
+					min-height: 70px;
+				}
+			}
+		}
+	}
 </style>

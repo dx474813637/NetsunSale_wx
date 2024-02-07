@@ -11,8 +11,9 @@
 						<view class="num-dw u-p-l-10">元</view>
 					</view>
 				</view>
-				<view class="item u-border-left u-flex u-flex-items-center box-border u-p-l-40" style="flex: 0 0 40%;border-color: #a28c61!important;">
+				<view class="item u-border-left u-flex-column u-flex-items-start u-flex-center box-border u-p-l-40" style="flex: 0 0 40%;border-color: #a28c61!important;">
 					<view class="u-font-34">{{origin.title}}</view> 
+					<slot name="btn"></slot>
 				</view>
 				<view class="icon-w">
 					<u-icon name="rmb-circle" size="140" color="#B09762"></u-icon>

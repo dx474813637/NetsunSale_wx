@@ -164,6 +164,8 @@ export const divide_type = (data) => http.get('divide_type', data)
 export const divide = (data) => http.get('divide', data)
 // daren_list 邀请达人列表 参数p
 export const daren_list = (data) => http.get('daren_list', data)
+// tuan_list 参数p  员工发展团长
+export const tuan_list = (data) => http.get('tuan_list', data)
 // divide_analysis 达人分销分析 参数id 达人的账号，达人列表里的did
 export const divide_analysis = (data) => http.get('divide_analysis', data)
 // selection 参数name tel company person
@@ -212,6 +214,8 @@ export const get_vod_sign = (data, config={}) => http.post('get_vod_sign', data,
 
 // coupon_list 活动列表
 export const coupon_list = (data) => http.get('coupon_list', data)
+// coupon_detail 参数id
+export const coupon_detail = (data) => http.get('coupon_detail', data)
 // get_coupon 领优惠券 参数hid=活动id  hid=0 领新人券
 export const get_coupon = (data) => http.get('get_coupon', data)
 // my_coupon_list 我的优惠券
