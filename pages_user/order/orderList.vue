@@ -133,4 +133,11 @@
 .card {
 	
 }
+.tabs-w {
+	::v-deep {
+		.u-tabs .u-tabs__wrapper__scroll-view-wrapper {
+			-webkit-overflow-scrolling: touch
+		} 
+	}
+}
 </style>

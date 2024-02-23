@@ -68,6 +68,11 @@
 			
 		</TabBar>
 	</view>
+	<UserPhonePopup
+		:show="showUserPhone"
+		@getPhone="getPhone"
+		@onUpdateShow="handleChangeShow2" 
+	></UserPhonePopup>
 </template>
 
 <script setup>
@@ -75,7 +80,10 @@
 	import { share } from '@/composition/share.js'
 	import useDataList from '@/composition/useDataList.js'
 	import {useCateStore, baseStore} from '@/stores/base.js'
+	import {userStore} from '@/stores/user'
 	const base = baseStore() 
+	const user = userStore() 
+	const {user_info, balance} = toRefs(user) 
 	const {themeColor} = toRefs(base)
 	const { setOnlineControl } = share()
 	const $api = inject('$api')
@@ -83,6 +91,7 @@
 	const detail = ref({})  
 	const id = ref('') 
 	const url = ref('') 
+	const showUserPhone = ref(false)
 	const options = computed(() => {
 		return {
 			params: {
@@ -119,7 +128,11 @@
 		} 
 		await initDataList()
 	})  
-	async function cardClick({origin}) {
+	async function cardClick({origin}) { 
+		if(!user_info.value.phonenumber) {
+			showUserPhone.value = true  
+			return
+		}
 		uni.showLoading();
 		const res = await $api.get_coupon({
 			params: {
@@ -139,6 +152,16 @@
 				}
 			})
 		}
+	}
+	async function getPhone(data) {
+		// uni.showLoading()
+		await user.refreshUserData()
+		showUserPhone.value = false  
+		// uni.showLoading()
+		// await changeRole()
+	}
+	function handleChangeShow2(v) {
+		showUserPhone.value = v
 	}
 </script>
 

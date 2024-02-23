@@ -131,6 +131,33 @@
 					</view>
 				</u-scroll-list>
 			</view>
+			<view class="text-base u-font-28 u-p-20">
+				已关联商品
+			</view>
+			<view class="u-p-20 box-border bg-white u-radius-10 u-m-b-20">
+				<view class="product-list u-p-10">
+					<view class="product-item u-flex u-flex-between u-flex-items-center u-m-b-20"
+						v-for="(item, index) in dataList"
+						:key="item.id"
+					>
+						<view class="u-flex-1">
+							<ProductRowCard
+								:origin="item"
+								mode="normal"
+								:customStyle="{
+									'box-shadow': 'none!important'
+								}"
+							></ProductRowCard>
+						</view>
+						<view class="u-flex u-flex-between u-flex-items-center u-m-l-10 u-radius-20 u-p-10" style="background-color: #f00;" @click="removeItem(item)">
+							<u-icon name="trash" size="20" color="#fff"></u-icon>
+						</view>
+					</view>
+				</view>
+				<view class="u-m-t-10">
+					<u-button type="warning" shape="circle" @click="showProductList = true">添加商品</u-button>
+				</view>
+			</view>
 			<view class="u-p-20 bg-white u-p-l-40 u-radius-10">
 				<u--form
 					labelPosition="top" 
@@ -186,6 +213,15 @@
 		 
 	</view>
 	<u-safe-bottom></u-safe-bottom>
+	<ProductListPopup
+		:show="showProductList" 
+		title="商品列表"  
+		:xuanList="dataList"
+		:asyncEvent="false"
+		:xuan="xuan"
+		:onUpdateShow="handleChangeShow"  
+		@xuanEvent="xuanEvent"
+	></ProductListPopup>
 	<TabBar >
 		<view class="pan-tabbar u-flex u-flex-items-center u-flex-around " style="height: 100%;"> 
 			<view class="item-btn  u-flex u-flex-items-center u-flex-center u-flex-1 u-p-10 u-p-l-20 u-p-r-20">
@@ -219,6 +255,9 @@
 	const fileLists = reactive({
 		pic: [] 
 	});
+	const showProductList = ref(false)
+	const xuan = ref(1)  
+	const dataList = ref([]) 
 	const swiperCurrent = ref(0)
 	const swiperlist = ref([])
 	const step = ref(1)
@@ -245,9 +284,9 @@
 		}
 	]) 
 	const config = computed(() => {
-		let func = 'add_product_longs';
+		let func = 'add_longs_new';
 		let submitBtnText = '确认发布';
-		let params = {...model.value, id: id.value };  
+		let params = {...model.value, id: dataList.value.map(ele => ele.id).join(',') };  
 		return {
 			func,
 			submitBtnText,
@@ -293,9 +332,9 @@
 	onLoad(async (options) => { 
 		if (options.hasOwnProperty('id')) {
 			id.value = options.id
+			await initData()  
 		}    
 		// console.log(biji_files.value)
-		// await initDataList()  
 	}) 
 	const blur = (e) => {
 		console.log(e)
@@ -402,8 +441,47 @@
 		}); 
 		
 	} 
+	async function initData() {
+		const res = await $api.web_product_detail({params: {id: id.value}})
+		if(res.code == 1) {
+			let data = res.list 
+			dataList.value = [data]
+		}
+	}
 	function deleteBtn() {
 		biji_files.value.splice(swiperCurrent.value, 1)
+	}
+	function handleChangeShow(data) {
+	 	showProductList.value = data
+	}
+	function removeItem(data) {
+		let i = dataList.value.findIndex(ele => ele.id == data.id)
+		if(i == -1) return;
+		dataList.value.splice(i, 1)
+	} 
+	function xuanEvent({data, index, checked}) {
+		// console.log(data, data.checked)
+		if(!xuan.value) {
+			// initDataParams(); 
+			xuan.value = 1
+			// loadstatus.value = 'nomore'
+			// initDataParams();
+			// getData()
+		}
+		if(data.checked) {
+			dataList.value.unshift(data)
+			// dataList.value = dataList.value.sort((a,b) => b.id - a.id )
+		}
+		else {
+			let i = dataList.value.findIndex(ele => ele.id == data.id)
+			if(i == -1) return;
+			dataList.value.splice(i, 1)
+			// if(dataList.value.length == 0) {
+			// 	initDataParams();
+			// 	getData()
+			// }
+		}
+		console.log(dataList.value)
 	}
 </script>
 

@@ -17,6 +17,12 @@
 							class="waterfall-item">
 							<noteCard
 								:origin="item"
+								:urlObj="{
+									url: '/pages_note/note2/note',
+									params: {
+										id: item.id, 
+									}
+								}"
 							></noteCard> 
 						</view>
 					</view>
@@ -30,6 +36,12 @@
 							class="waterfall-item">
 							<noteCard
 								:origin="item"
+								:urlObj="{
+									url: '/pages_note/note2/note',
+									params: {
+										id: item.id, 
+									}
+								}"
 							></noteCard> 
 						</view>
 					</view>
@@ -52,11 +64,10 @@
 	</view>
 	<u-toast ref="uToast"></u-toast>
 	<u-safe-bottom></u-safe-bottom>
-	<TabBar :customStyle="customStyle" :mainStyle="{height: 'auto'}"  > 
-		<view class="shop-card u-flex u-flex-items-center u-p-20 box-border" 
+	<TabBar :customStyle="customStyle" v-if="id" :mainStyle="{height: 'auto'}" > 
+		<view class="shop-card u-flex u-flex-items-center u-p-10 u-p-l-20 u-p-r-20 box-border bg-white " 
 			@click.stop="base.handleGoto({url: '/pages/product/productDetail', params: {id: id}, type: 'reLaunch' })"
-			v-if="id"
-		>
+			>
 			<view class="shop-img">
 				<up-image
 					width="80px"
@@ -71,7 +82,7 @@
 					{{product.name}}
 				</view>
 				<view class="u-line-1 u-m-b-10 u-flex u-flex-items-center" >
-					<view class="u-flex-1 u-flex u-flex-items-center  u-error" >
+					<view class="u-flex-1 u-flex u-flex-items-center  u-error" v-if="product">
 						<text class="text-bold" style="font-family: cursive;">{{product.price1}}</text>
 						<text class="u-font-28 u-p-l-10">起</text>
 					</view>
@@ -83,67 +94,29 @@
 								<!-- <view >分享</view> -->
 								<u-icon name="share-square" size="22" color="#333"></u-icon>
 							</button>
-						</view>
-						<view class="u-m-l-10 u-p-10" @click="base.handleGoto({url: '/pages/home/home' , type: 'reLaunch' })">
-							<u-icon name="home" color="#333" size="22"></u-icon>
-							<!-- <u-button type="warning" shape="circle" throttleTime="800" size="small"> 
-								<view class="">首页</view>
-							</u-button> -->
-						</view>
+						</view> 
 					</view>
 					<view class="u-flex u-flex-items-center">
 						<view class="u-m-l-10" @click.stop="base.handleGoto({url: '/pages/product/productDetail', params: {id: id}, type: 'reLaunch' })" >
 							<view class="u-flex u-flex-items-center">
-								<u-icon name="heart" color="#ff4f0b" size="20"></u-icon>
-								<view class="u-m-l-5 u-font-34 u-p-b-5" style="color: #ff4f0b;">想要</view>
+								<i class="custom-icon-quanbushangpin custom-icon" style="color: #ff4f0b;"></i>
+								<view class="u-m-l-10 u-font-34" style="color: #ff4f0b;">想要</view>
 							</view>
 						</view>
-						<view class="u-m-l-30" @click.stop="chooseBtn"  v-if="user_info.role != 0">
+						<!-- <view class="u-m-l-30" @click.stop="chooseBtn"  v-if="user_info.role != 0">
 							<view class="u-flex u-flex-items-center">
 								<u-icon name="plus-circle" color="#FF2442" size="20"></u-icon>
 								<view class="u-m-l-5 u-font-34 u-p-b-5" style="color: #FF2442;">新笔记</view>
-							</view>
-							<!-- <u-button
-								:customStyle="{background: '#FF2442'}" 
-								shape="circle" 
-								type="error"   
-								size="small"
-							>
-								<view class="u-flex u-flex-items-baseline">
-									<u-icon name="plus-circle" color="#fff" size="14"></u-icon>
-									<view class="u-m-l-10">新笔记</view>
-								</view>
-							</u-button> -->
-						</view>
+							</view> 
+						</view> -->
 					</view>
 					
 				</view>
 			</view> 
 		</view> 
 	
-		<view class="shop-card u-flex u-flex-items-center u-flex-between u-p-20 box-border" v-else>
-			<view class="item">
-				
-			</view>
-			<view class="u-flex u-flex-items-center">
-				<view class="u-flex-1 u-flex u-flex-items-center  u-error" > 
-					<text class="text-bold" style="font-family: cursive;">{{product.price1}}</text> 
-				</view>
-				<view  @click.stop="() => {}">
-					<button openType="share"  class="share-btn u-font-28 u-flex u-flex-center u-flex-items-center " style="width: 80px; height: 40px; line-height: 40px; background-color: #FF2442;">
-						<view >分享</view>
-					</button>
-				</view>
-				<view class="u-m-l-10" style="width: 80px;" @click="base.handleGoto({url: '/pages/home/home' , type: 'reLaunch' })">
-					<u-button type="warning" shape="circle" throttleTime="800" >
-						<!-- <u-icon name="home" color="#fff"></u-icon> -->
-						<view class="">首页</view>
-					</u-button>
-				</view> 
-			</view>
-		</view>
 	</TabBar> 
-	<!-- <MenusBar></MenusBar> -->
+	<MenusBar :prodId="id"></MenusBar>
 </template>
 
 <script setup>
@@ -154,6 +127,7 @@
 	import { share } from '@/composition/share.js'
 	import useDataList from '@/composition/useDataList.js'
 	import useUploadMedia from '@/pages_note/composition/useUploadMedia.js'
+	import MenusBar from '@/pages_note/components/MenusBar/MenusBar.vue'
 	import {useCateStore, baseStore} from '@/stores/base.js' 
 	const base = baseStore() 
 	const {themeColor, empty} = toRefs(base)
@@ -163,6 +137,7 @@
 	const { setOnlineControl } = share()
 	const $api = inject('$api')
 	const id = ref('') 
+	const note_login = ref('') 
 	const list_col = ref({
 		list1: [],
 		list2: [],
@@ -173,21 +148,22 @@
 	const uToast = ref('') 
 	const waterfall = ref('')
 	const product = ref({})
-	const upload_config = ref({}) 
+	// const upload_config = ref({}) 
 	const options = computed(() => {
 		return {
 			params: {
 				id: id.value, 
+				login: note_login.value
 			},
-			api: 'product_longs',
+			api: 'longs_new',
 			getDataCallBack: (res) => {
 				if (res.code == 1) {
 					dataList.value = [...dataList.value, ...res.list] 
-					product.value = res.product
+					product.value = res.product || {}
 					setOnlineControl(res) 
-					if(res.hasOwnProperty('upload_config')) {
-						upload_config.value = res.upload_config
-					}
+					// if(res.hasOwnProperty('upload_config')) {
+					// 	upload_config.value = res.upload_config
+					// }
 					if(dataList.value.length >= res.total) {
 						loadstatus.value = 'nomore'
 					}
@@ -198,15 +174,15 @@
 			}
 		}
 	})
-	const options2 = computed(() => {
-		return {
-			count: 9,
-			mediaType: ['mix'],
-			sourceType: ['album', 'camera'],
-			maxDuration: 60, 
-			...upload_config.value
-		}
-	})
+	// const options2 = computed(() => {
+	// 	return {
+	// 		count: 9,
+	// 		mediaType: ['mix'],
+	// 		sourceType: ['album', 'camera'],
+	// 		maxDuration: 60, 
+	// 		...upload_config.value
+	// 	}
+	// })
 	
 	const { 
 		dataList,
@@ -216,15 +192,18 @@
 		getDataList,
 		initDataList, 
 	} = useDataList(options)
-	const { 
-		files,
-		getSignature,
-		startUpload,
-		chooseMedia
-	} = useUploadMedia(options2)
+	// const { 
+	// 	files,
+	// 	getSignature,
+	// 	startUpload,
+	// 	chooseMedia
+	// } = useUploadMedia(options2)
 	onLoad(async (options) => { 
 		if (options.hasOwnProperty('id')) {
 			id.value = options.id
+		}     
+		if (options.hasOwnProperty('note_login')) {
+			note_login.value = options.note_login
 		}    
 		await initDataList() 
 		uni.$on('list_refresh',async function() {
@@ -251,25 +230,29 @@
 		list_col.value[e.name].push(e.value);
 	}
 	const customStyle = ref({
-		// boxShadow: '0 -5px 5px rgba(0,0,0,.05)'
-		// paddingBottom: '50px', 
-		background: '#F2F2F2'
+		paddingBottom: '40px',
+		background: 'transparent' , 
 	}) 
+	// const customStyle = ref({
+	// 	// boxShadow: '0 -5px 5px rgba(0,0,0,.05)'
+	// 	// paddingBottom: '50px', 
+	// 	background: '#F2F2F2'
+	// }) 
 	
-	async function chooseBtn() { 
-		biji_step.value = false
-		biji_files.value = []
-		const res = await chooseMedia()
-		if(res) {
-			base.handleGoto({
-				url: '/pages_note/note/noteEdit',
-				params: {
-					id: id.value
-				}
-			})
-		}
+	// async function chooseBtn() { 
+	// 	biji_step.value = false
+	// 	biji_files.value = []
+	// 	const res = await chooseMedia()
+	// 	if(res) {
+	// 		base.handleGoto({
+	// 			url: '/pages_note/note2/noteEdit',
+	// 			params: {
+	// 				id: id.value
+	// 			}
+	// 		})
+	// 	}
 		
-	}
+	// }
 	function showToast(params) {
 		uToast.value.show({
 			position: 'bottom',
@@ -323,10 +306,10 @@ page {
 	}
 	.w {
 		min-height: 100vh;
-		padding-top: 20px;
+		// padding-top: 20px;
 		padding-bottom: 100px;
 		background-color: #fff;
-		border-radius: 20px 20px 0 0;
+		// border-radius: 20px 20px 0 0;
 		
 	} 
 </style>

@@ -100,7 +100,7 @@
 	import zeroLazyLoad from '@/uni_modules/zero-lazy-load/components/zero-lazy-load/zero-lazy-load.vue'
 	import { share } from '@/composition/share.js'
 	// import useDataList from '@/composition/useDataList.js' 
-	import useUploadMedia from '@/composition/useUploadMedia.js'
+	import useUploadMedia from '@/pages_note/composition/useUploadMedia.js'
 	import {useCateStore, baseStore} from '@/stores/base.js'  
 	import {userStore} from '@/stores/user.js'  
 	const user = userStore() 

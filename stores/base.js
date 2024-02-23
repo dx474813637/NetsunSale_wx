@@ -166,6 +166,7 @@ export const menusStore = defineStore('menus', {
 	state: () => {
 		return {  
 			menus: [], 
+			menus_note: [], 
 			menus_51xp: [], 
 			menus_wd: [],
 			menus_wd1: [], 
@@ -184,6 +185,7 @@ export const menusStore = defineStore('menus', {
 	},
 	getters: {
 		menusActive: (state) => state.menus.findIndex(ele => ele.route == state.currPage.route) ,
+		menusNoteActive: (state) => state.menus_note.findIndex(ele => ele.route == state.currPage.route) ,
 	}, 
 	actions: {
 		saveCurPage(data) {
@@ -216,6 +218,26 @@ export const menusStore = defineStore('menus', {
 				this.menus_wd1 = res.list1
 				this.menus_ad = res.ad || {}
 				this.menus_xr = res.xr || {}
+				 
+			} 
+		},
+		async getNoteMenusData($http) {   
+			const res = await apis.longs_memu()  
+			if(res.code == 1) {   
+				//获取底部导航菜单
+				this.menus_note = res.memu.map((ele, index) => {
+					let paramsStr = ele.url.split('?')[1] || ''
+					let paramsObj = {}
+					paramsStr && paramsStr.split('&').forEach(item => {
+						paramsObj[item.split('=')[0]] = item.split('=')[1]
+					})
+					 
+					return {
+						...ele,
+						route: ele.url.split('?')[0],
+						options: paramsObj
+					}
+				})   
 				 
 			} 
 		}

@@ -73,6 +73,10 @@
 				<!-- 订单支付  -->
 				<up-button type="error" shape="circle" @click="orderBuyBtn">{{btnList.button1_title}}</up-button>
 			</view>
+			<view class="item u-p-15" v-if="btnList.button8">
+				<!-- 订单支付  -->
+				<up-button type="error" shape="circle" @click="orderBuyBtn">{{btnList.button8_title}}</up-button>
+			</view> 
 			<view class="item u-p-15" v-if="btnList.button1 && coupon_list.length > 0">
 				<!-- 使用优惠券  -->
 				<up-button type="error" plain shape="circle" @click="orderBuyBtn">使用优惠券</up-button>
@@ -159,6 +163,12 @@
 		@submitEvent="submitEvent2"
 		@closeEvent="refundOrderShow = false"
 	></RefundOrderPopup>
+	<CpyPayInfoPopup
+		:show="showCpyPayInfo" 
+		title="支付说明" 
+		:list="cpy_pay_info"
+		:onUpdateShow="handleChangeShow5" 
+	></CpyPayInfoPopup>
 </template>
 
 <script setup>
@@ -169,7 +179,7 @@
 	import { baseStore } from '@/stores/base'
 	import {userStore} from '@/stores/user'
 	const user = userStore()
-	const { tmp_id_list, user:u  } = toRefs(user)
+	const { tmp_id_list, user:u, user_info  } = toRefs(user)
 	const base = baseStore();
 	const { home, roomList, themeColor } = toRefs(base)
 	import useFilter from '@/composition/useFilter.js'
@@ -184,6 +194,8 @@
 	const coupon_list = ref([])
 	const btnList = ref([])
 	const coupon_id = ref('')
+	const cpy_pay_info = ref('')
+	const showCpyPayInfo = ref(false)
 	const couponListShow = ref(false)
 	const cancelOrderShow = ref(false)
 	const refundOrderShow = ref(false)
@@ -239,6 +251,7 @@
 			// res.list.company = res.sell_info.company
 			// res.list.clogin = res.sell_info.login
 			list.value = res.list
+			cpy_pay_info.value = res.qy
 		}
 	}
 	
@@ -383,6 +396,10 @@
 		});
 	}
 	async function orderBuyBtn () {
+		if(user_info.value.qy == 1) {
+			handleChangeShow5(true)
+			return
+		}
 		if(coupon_list.value.length > 0) {
 			couponListShow.value = true
 		}
@@ -503,6 +520,9 @@
 	}  
 	function handleChangeShow4(data) {
 		couponListShow.value = data
+	}
+	function handleChangeShow5(data) {
+		showCpyPayInfo.value = data
 	}
 	async function finishTime() {
 		uni.showLoading()

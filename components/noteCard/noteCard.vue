@@ -38,8 +38,26 @@
 				{{origin.info}}
 			</view> -->
 			<rich-text class="u-line-2 u-m-b-10" :nodes="origin.info"></rich-text> 
-			
-		</view> 
+			<view class="u-flex u-flex-items-center u-flex-between ">
+				<view class="item u-flex u-flex-items-center">
+					<up-image
+						v-if="origin.user.img"
+						shape="circle"
+						width="20px"
+						height="20px"
+						:src="origin.user.img"
+					></up-image>
+					<view class="icon-w u-flex u-flex-center u-flex-items-center" v-else>
+						<i class="custom-icon-myfill custom-icon"></i>
+					</view> 
+					<view class="u-m-l-10 u-font-24 u-line-1">{{origin.user.name}}</view>
+				</view>
+				<view class="item u-flex u-flex-items-center u-m-l-20">
+					<i class="custom-icon-aixin custom-icon" style="color: #666;"></i>
+					<view class="u-m-l-8 u-font-28">{{origin.dz}}</view>
+				</view>
+			</view>
+		</view>  
 		
 	</view>
 </template>
@@ -61,6 +79,10 @@
 		imgHeight: {
 			type: String,
 			default: ''
+		},
+		urlObj: {
+			type: Object,
+			default: () => ({})
 		}
 	})
 	let regList = [
@@ -88,7 +110,7 @@
 		}
 	)
 	function gotoDetail() {
-		base.handleGoto({
+		base.handleGoto(props.urlObj.url? props.urlObj :{
 			url: '/pages_note/note/note',
 			params: {
 				id: props.origin.id, 
@@ -98,6 +120,16 @@
 </script>
 
 <style lang="scss" scoped>
+	.icon-w {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background-color: rgba(0,0,0,.06);
+		.custom-icon {
+			font-size: 12px;
+			color: rgba(0,0,0,.4);
+		} 
+	}
 	.card {
 		overflow: hidden;
 		width: 100%;

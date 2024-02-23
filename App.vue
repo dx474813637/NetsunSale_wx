@@ -47,7 +47,13 @@
 				}
 			});
 		} 
-		let options = uni.getLaunchOptionsSync() 
+		// let options = uni.getLaunchOptionsSync() 
+		routingIntercept({$http})  
+		user.refreshUserData()
+		user.sendDingyue()
+	});
+	onShow(async (options) => {    
+		
 		if(options.query.hasOwnProperty('scene')) { 
 			let arr = decodeURIComponent(options.query.scene).split('&') 
 			arr.forEach(item => {
@@ -85,11 +91,6 @@
 				clickId: options.query.gdt_vid || options.query.qz_gdt
 			}) 
 		}
-		routingIntercept({$http})  
-		user.refreshUserData()
-		user.sendDingyue()
-	});
-	onShow(async (options) => {   
 		// if(uni.getStorageSync('WebSocketInfo')) $ws.init()
 		 
 		 // if(options.query?.route && options.query.route != '/pages/home/home2' && user.user.login == 0) {

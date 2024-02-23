@@ -51,7 +51,7 @@
 			</view> 
 			<view class="u-flex u-flex-items-center u-p-10 " v-if="catelist1.length > 0">
 				<!-- <view class="text-nowrap u-m-r-20 u-p-10">热点商品</view> -->
-				<view class="u-flex-1 text-white" style="overflow: hidden;">
+				<view class="u-flex-1 text-white tabs-w" style="overflow: hidden;">
 					<u-tabs
 						:list="catelist1"  
 						lineWidth="0"  
@@ -572,6 +572,13 @@
 		&:last-child {
 			margin-right: 0;
 		}
+	}
+}
+.tabs-w {
+	::v-deep {
+		.u-tabs .u-tabs__wrapper__scroll-view-wrapper {
+			-webkit-overflow-scrolling: touch
+		} 
 	}
 }
 </style>

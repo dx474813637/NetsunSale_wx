@@ -47,7 +47,8 @@
 							:key="item.id"
 							>
 							<ProductRowCard
-								:origin="item"
+								:origin="item" 
+								:divideShow="divideShow"
 								:customStyle="{boxShadow: 'none!important' }"
 								@checkedClick="checkedClick"
 							></ProductRowCard>
@@ -87,6 +88,14 @@
 			type: Number,
 			default: 0
 		},
+		asyncEvent: {
+			type: Boolean,
+			default: true
+		},
+		divideShow: {
+			type: Boolean,
+			default: false
+		},
 		xuanList: {
 			type: Array,
 			default: () => {
@@ -94,7 +103,7 @@
 			}
 		}
 	})
-	const emits = defineEmits(['xuanSuccess'])
+	const emits = defineEmits(['xuanSuccess', 'xuanEvent'])
 	const curP = ref(1)
 	const originList = ref([])
 	const dataList = ref([])
@@ -114,7 +123,7 @@
 			// console.log(n)
 			if(props.xuan == 1) {
 				list.value = uni.$u.deepClone(n)
-				initDataCheckState(originList.value, list.value)
+				initDataCheckState(originList.value, list.value) 
 			}
 		},
 		{
@@ -136,17 +145,17 @@
 	function initDataCheckState(origin, xuan) { 
 		let data = uni.$u.deepMerge(origin, dataList.value)
 		let xuanKeys = xuan.map(ele => ele.id)
-		dataList.value = data.map(ele => {
+		dataList.value = data.map((ele, index) => { 
 			let obj = {
 				...ele, 
-				checked: xuanKeys.includes(ele.id)? true: false
-				// checked: true
-			} 
+				checked: xuanKeys.includes(ele.id)? true: false,
+				loading: false
+			}  
 			if(!obj.hasOwnProperty('loading')) {
 				obj.loading = false
-			}
+			} 
 			return obj
-		})
+		}) 
 	}
 	async function scrolltolower() { 
 		await getMoreData()
@@ -163,6 +172,7 @@
 		if (res.code == 1) { 
 			originList.value = [...originList.value, ...res.list] 
 			initDataCheckState(originList.value, list.value)
+			// console.log(dataList.value)
 			if(originList.value.length >= +res.total || terms.value) {
 				loadstatus.value = 'nomore'
 			}
@@ -191,17 +201,23 @@
 	}
 	async function checkedClick(data) { 
 		let i = dataList.value.findIndex(ele => data.origin.id == ele.id) 
-		console.log(i, data)
+		// console.log(i, data, dataList.value)
 		if(i == -1 || dataList.value[i].loading) return
 		let item = dataList.value[i]
-		item.loading = true;
-		const res = await updateShopProduct(item, data.check)
-		item.loading = false;
-		console.log(res)
-		if(res) {
-			item.checked = data.check
-			emits('xuanSuccess', item)
-		}
+		item.checked = data.check 
+		item.loading = true
+		emits('xuanEvent', {data: item, index: i, checked: data.check})
+		// let res 
+		// if(props.asyncEvent) {
+		// 	item.loading = true;
+		// 	res = await updateShopProduct(item, data.check)
+		// 	item.loading = false;
+		// 	console.log(res) 
+		// }
+		// if(res || !props.asyncEvent) {
+		// 	item.checked = data.check
+		// 	emits('xuanSuccess', item)
+		// }
 	}
 	
 	function updateShopProduct(product, check) {

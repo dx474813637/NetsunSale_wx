@@ -224,3 +224,26 @@ export const my_coupon_list = (data) => http.get('my_coupon_list', data)
 export const search_coupon = (data) => http.get('search_coupon', data)
 // use_coupon 使用优惠券 参数id=订单id guid=优惠券guid
 export const use_coupon = (data) => http.get('use_coupon', data)
+
+// tuan_ranking 团长周排行榜 参数cate=0或不传 默认本周排行榜 cate=1 上周排行榜
+export const tuan_ranking = (data) => http.get('tuan_ranking', data)
+// daren_ranking 达人周排行榜 参数cate=0或不传 默认本周排行榜 cate=1 上周排行榜
+export const daren_ranking = (data) => http.get('daren_ranking', data)
+
+// longs_new 笔记列表 参数p login
+export const longs_new = (data) => http.get('longs_new', data)
+// add_longs_new 新增笔记 参数跟前面一直。参数id 商品id可以为空，也可以为多个以英文逗号隔开的字符串。
+export const add_longs_new = (data, config={}) => http.post('add_longs_new', data, config) 
+// longs_detail_new 笔记详情 参数id 笔记id
+export const longs_detail_new = (data) => http.get('longs_detail_new', data)
+// longs_like 点赞笔记 参数id 笔记id
+export const longs_like = (data) => http.get('longs_like', data)
+// edit_longs_product 笔记关联商品编辑  cate=0 新增 1删除 id笔记id pid商品id，这里只能是一个商品的id
+export const edit_longs_product = (data) => http.get('edit_longs_product', data)
+
+
+// save_qy_role 标记企业身份  参数qy=0 一般用户 1 企业用户
+export const save_qy_role = (data) => http.get('save_qy_role', data)
+
+// longs_memu 笔记菜单
+export const longs_memu = (data) => http.get('longs_memu', data)

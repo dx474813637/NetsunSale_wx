@@ -154,7 +154,7 @@
 				<u-line length="100%" margin="10px 0"></u-line>
 				<view class="u-flex u-flex-between u-flex-items-center u-p-10 u-p-b-14 u-p-t-14">
 					<view class="item text-bold">发现笔记</view>
-					<view class="item u-flex u-flex-items-baseline" @click="base.handleGoto({url: 'pages_note/note/noteList', params: {id: product_id}})">
+					<view class="item u-flex u-flex-items-baseline" @click="base.handleGoto({url: 'pages_note/note2/noteList', params: {id: product_id}})">
 						<view class="u-info u-m-r-5 u-font-28">全部({{product_longs.total}})</view>
 						<u-icon name="arrow-right" color="#ccc" size="14"></u-icon>
 					</view>
@@ -164,6 +164,12 @@
 						<noteCard
 							:origin="item"
 							imgHeight="120px"
+							:urlObj="{
+								url: '/pages_note/note2/note',
+								params: {
+									id: item.id, 
+								}
+							}"
 						></noteCard>  
 					</view>
 				</view>

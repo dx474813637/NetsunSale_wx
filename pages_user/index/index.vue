@@ -1,6 +1,14 @@
 <template>
 	<view class="wrapper ">
-		<navBar bgColor="#fff" title="个人中心" ></navBar>
+		<navBar bgColor="#fff" title="个人中心" >
+			<template #navLeft>
+				<view class="u-flex u-flex-items-center " >
+					<view class="u-p-15" @click="changeAccountQy">
+						<i class="custom-icon custom-icon-shenfenqiehuan u-font-40" ></i>
+					</view>   
+				</view>
+			</template>
+		</navBar>
 		<!-- <u-status-bar></u-status-bar> -->
 		<!-- <u-notify ref="notify"></u-notify> -->
 		<view class="bg-white u-m-b-25 u-p-b-20">
@@ -112,12 +120,21 @@
 				</view>
 				<view class="box-row other-menus u-flex u-flex-wrap u-flex-items-center u-p-b-20 ">
 					<view 
-						class="item u-text-center u-m-t-15" 
+						class="item u-text-center u-m-t-15 u-flex-column u-flex-items-center" 
 						v-for="(item, index) in ele.list" 
 						:key="index"
 						@click="handleMenusClick(item)"
 						>
-						<image class="icon-img u-m-b-10" :src="item.icon" mode=""></image>
+						<!-- <image class="icon-img u-m-b-10" :src="item.icon" mode=""></image> -->
+						<view class="u-m-b-10" >
+							<up-image
+								:src="item.icon"
+								mode="heightFix"
+								height="30px"
+								width="100%"
+							></up-image>
+						</view>
+						
 						<text class="u-font-28 u-p-b-10 u-line-1 text-black">{{item.name}}</text>
 					</view>
 				</view>
@@ -162,6 +179,11 @@
 		@getPhone="getPhone"
 		@onUpdateShow="handleChangeShow2" 
 	></UserPhonePopup>
+	<QyChangePopup
+		:show="showQyChange" 
+		title="身份激活"  
+		:onUpdateShow="handleChangeShow3" 
+	></QyChangePopup>
 </template>
 
 
@@ -198,6 +220,7 @@
 	const {user_info, balance} = toRefs(user)
 	const showUserInfo = ref(false)
 	const showUserPhone = ref(false)
+	const showQyChange = ref(false)
 	const linkData = ref({}) 
 	const $api = inject('$api')   
 	onLoad(async () => {
@@ -220,20 +243,21 @@
 		
 	}
 	async function handleXrClick() {
-		if(menus_xr_loading.value) return
-		menus_xr_loading.value = true
-		uni.showLoading();
-		try{
-			const res = await $api.get_coupon({params: {hid: 0}})
-			if(res.code == 1){
-				uni.showToast({
-					title: res.msg
-				})
-			}
-		}catch(e){
-			//TODO handle the exception
-		}
-		menus_xr_loading.value = false
+		handleMenusClick(menus_xr.value)
+		// if(menus_xr_loading.value) return
+		// menus_xr_loading.value = true
+		// uni.showLoading();
+		// try{
+		// 	const res = await $api.get_coupon({params: {hid: 0}})
+		// 	if(res.code == 1){
+		// 		uni.showToast({
+		// 			title: res.msg
+		// 		})
+		// 	}
+		// }catch(e){
+		// 	//TODO handle the exception
+		// }
+		// menus_xr_loading.value = false
 		
 	}
 	function handleMenusClick(item) {
@@ -249,7 +273,7 @@
 				url: item.url
 			})
 		}
-		else if(item.type == 3 ){
+		else{
 			uni.navigateTo({
 				url: item.url
 			})
@@ -268,6 +292,12 @@
 	}
 	function handleChangeShow2(v) {
 		showUserPhone.value = v
+	} 
+	function handleChangeShow3(v) {
+		showQyChange.value = v
+	}
+	function changeAccountQy() {
+		handleChangeShow3(true)
 	}
 </script>
 

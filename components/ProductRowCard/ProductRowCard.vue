@@ -37,7 +37,7 @@
 								<text class="u-font-28">￥</text>
 								<text class="text-bold u-font-38" style="font-family: cursive;">{{origin.price1}}</text> 
 							</view>
-							<!-- <view class="u-info u-font-26 u-m-l-20">{{$u.timeFrom(new Date(origin.uptime).getTime(), false)}}</view> -->
+							<view class="u-warning u-font-24 u-m-l-20" v-if="divideShow">佣金 {{origin.divide}}%</view>
 						</view>
 					</view>
 					<view class="item " v-if="mode == 'switch'">
@@ -77,6 +77,10 @@
 		mode: {
 			type: String,
 			default: 'switch'
+		},
+		divideShow: {
+			type: Boolean,
+			default: false
 		}
 	})
 	
