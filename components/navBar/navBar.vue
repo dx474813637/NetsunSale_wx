@@ -135,12 +135,20 @@
 	
 	
 </script>
-<style >
+<style lang="scss">
 	:deep(.w .u-fixed) {
 		z-index: 11110!important;
 	}
+	.w { 
+		::v-deep {
+			.u-navbar .u-navbar__content {
+				transition: all .3s!important;
+			}
+		}
+	}
 </style>
 <style lang="scss" scoped>
+	
 	.dot-w {
 		position: relative;
 		.dot {

@@ -53,7 +53,8 @@
 							<u--textarea
 								v-model="model.info" 
 								placeholder="简介"
-								 clearable 
+								clearable 
+								:cursorSpacing="80"
 							></u--textarea>  
 						</u-form-item>  
 						<u-form-item
