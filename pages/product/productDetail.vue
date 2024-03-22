@@ -29,7 +29,7 @@
 		</template>
 		<view class="u-p-10 u-p-t-30 u-p-b-30 bg-white u-m-b-20">  
 			<view class="u-flex u-flex-between u-flex-items-center u-p-10">
-				<view class="item u-flex u-flex-items-center" style="color: #F12E24;">
+				<view class="item u-flex u-flex-items-center" :style="{ color: themeColor }">
 					<view>
 						<text class="u-font-28">到手价</text>
 						<text class="u-font-28 text-bold u-m-l-10">￥</text>
@@ -175,6 +175,35 @@
 				</view>
 			</view> 
 		</view>
+		
+		<view class="u-p-20 bg-white u-m-b-20">
+			<view class="u-radius-8 u-flex u-flex-items-center u-p-20" style="background-color: #FAFAFA;" @click="base.handleGoto({url: '/pages_user/shop/shop', params: {login: product_list.login}})">
+				<view class="item u-m-r-20 u-radius-40" :style="{ border: `2px solid ${themeColor}` }">
+					<up-image
+						:src="company_list.logo"
+						width="50px"
+						height="50px"
+						shape="circle"
+						mode="scaleToFill"
+					></up-image>
+				</view>
+				<view class="item u-flex-1 u-flex-column u-flex-items-start">
+					<view class="text-black u-m-b-5">
+						{{company_list.company}}
+					</view>
+					<view class="u-flex u-flex-between u-flex-items-center" style="width: 100%;">
+						<view class="item u-flex-1 u-font-24">
+							<text class="u-p-4 u-p-l-15 u-p-r-15 u-warning u-warning-light-bg u-radius-4">{{company_list.title}}</text>
+						</view>
+						<view class="item">
+							<u-button type="error" size="small" :customStyle="{borderRadius: '5px'}">去旺铺</u-button>
+						</view>
+					</view>
+				</view>
+				
+			</view>
+		</view>
+		
 		<view class="pro-desc">
 			<view class="item">
 				<zeroLazyLoad  
@@ -190,8 +219,11 @@
 		<u-safe-bottom></u-safe-bottom>
 	</view>
 	<view class="fixed-menus bg-white uni-shadow-base">
-		<view class="item-mine u-flex-column u-flex-center u-flex-items-center" @click="base.handleGoto( kefu, 'serviceChat')">
-			<u-icon name="server-man" color="#f00" size="25"></u-icon>
+		<view 
+			class="item-mine u-flex-column u-flex-center u-flex-items-center" 
+			@click="base.handleGoto( kefu, 'serviceChat')"
+		>
+			<u-icon name="server-man" :color="themeColor" size="25"></u-icon>
 			<view class="text-error u-font-24 text-bold">客服</view>
 		</view>
 	</view>
@@ -217,12 +249,12 @@
 				</view> 
 			</view>
 			<view class="item u-flex u-flex-items-center" >
-				<u-button type="warning" @click="addCartBtn" :customStyle="{borderRadius: '20px 0 0 20px', padding: '0 18px'}" >
+				<u-button type="warning" @click="addCartBtn" :customStyle="{borderRadius: '8px 0 0 8px', padding: '0 18px' }" >
 					<view class="u-flex"> 
 						<text class="u-m-l-8 u-p-b-5   text-nowrap">加入购物车</text>
 					</view>
 				</u-button>
-				<u-button type="error" @click="addCartBtn(true)" :customStyle="{borderRadius: '0 20px 20px 0', padding: '0 18px'}"  >
+				<u-button type="error" @click="addCartBtn(true)" :customStyle="{borderRadius: '0 8px 8px 0', padding: '0 18px'}"  >
 					<view class="u-flex"> 
 						<text class="u-m-l-8 u-p-b-5  ">立即购买</text>
 					</view>
@@ -422,6 +454,7 @@
 		padding: 5px;
 		border-radius: 0 30px 30px 0;
 		// padding-left: 10px;
+		z-index: 20;
 		.item-mine {
 			width: 45px;
 			height: 45px;

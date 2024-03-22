@@ -89,7 +89,9 @@ export const order_score = (data) => http.get('order_score', data)
 export const web_danye = (data) => http.get('web_danye', data)
 // cate_list  
 export const cate_list = (data) => http.get('cate_list', data)
-// web_product  参数order=2 按分成从高到低排序， order=3 按销量排序 其他值或不传默认排序
+// web_product  参数cate order=2 按分成从高到低排序， 
+// order=3 按销量排序 order=4 按价格低到高排序  order=5 按价格高到低排序 
+// 其他值或不传默认排序 login=商家账号
 export const web_product = (data) => http.get('web_product', data)
 // web_search  
 export const web_search = (data) => http.get('web_search', data)
@@ -117,6 +119,8 @@ export const web_login_shop = (data) => http.get('web_login_shop', data)
 export const web_home = (data) => http.get('web_home', data)
 // web_home1 首页推荐里的一些数据
 export const web_home1 = (data) => http.get('web_home1', data)
+// web_company 旺铺信息 参数login 必须
+export const web_company = (data) => http.get('web_company', data)
 
 
 // home1  
@@ -247,3 +251,7 @@ export const save_qy_role = (data) => http.get('save_qy_role', data)
 
 // longs_memu 笔记菜单
 export const longs_memu = (data) => http.get('longs_memu', data)
+// search_login_tuan 参数id=团长账号
+export const search_login_tuan = (data) => http.get('search_login_tuan', data)
+// search_shop_product 橱窗商品列表  参数terms 商品搜索 不带就是全部
+export const search_shop_product = (data) => http.get('search_shop_product', data)

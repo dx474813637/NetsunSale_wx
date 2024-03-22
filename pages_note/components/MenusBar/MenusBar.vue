@@ -1,9 +1,9 @@
 <template>
 	<view class="tabbar-w u-p-t-20">
 		<view class="tabbar bg-white" style="box-shadow: `0 0 10rpx rgba(90,90,90,.4)`" >  
-			<view class="u-flex u-flex-around" style="height: 40px;">
+			<view class="u-flex u-flex-around" style="height: 45px;">
 				<view class="item u-flex-column u-flex-center u-flex-items-center u-font-34 text-base"
-					style="height: 40px;"
+					style="height: 45px;"
 					v-for="(item, index) in menusByMode"
 					:key="item.name"
 					@click="tabsClick(index)"

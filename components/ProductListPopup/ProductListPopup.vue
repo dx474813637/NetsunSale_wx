@@ -101,6 +101,10 @@
 			default: () => {
 				return []
 			}
+		},
+		func: {
+			type: String,
+			default: ''
 		}
 	})
 	const emits = defineEmits(['xuanSuccess', 'xuanEvent'])
@@ -137,6 +141,9 @@
 		}
 	)
 	const func = computed(() => {
+		if(props.func) {
+			return props.func
+		}
 		return terms.value ? 'web_search' : 'web_product'
 	})
 	onMounted(async () => { 

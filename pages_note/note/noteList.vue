@@ -1,5 +1,5 @@
 <template>
-	<view class="w" > 
+	<view class="w" v-if="user_info.shenhe == 0"> 
 		<view class="list">
 			<uv-waterfall ref="waterfall"
 				v-model="dataList"

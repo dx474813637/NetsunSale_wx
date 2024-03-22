@@ -69,11 +69,16 @@
 				<!-- <view class="u-p-t-20 u-p-b-20" v-if="item.zt == '1'">
 					<u-button type="error" shape="circle" @click="serviceCardClick(item)">提交快递单号</u-button>
 				</view> -->
-				<view class="u-p-t-20 u-p-b-20 u-flex u-flex-end" v-if="item.return_id"> 
-					<sales-return :returnId="item.return_id">
-					    <up-button shape="circle" type="error" slot="refund">立即退货</up-button>  
-					    <up-button shape="circle" type="primary" plain slot="refund_detail">退货详情</up-button> 
-					</sales-return> 
+				<view class="u-p-t-20 u-p-b-20 u-flex u-flex-between u-flex-items-center" v-if="item.return_id"> 
+					<view class="u-font-24 u-m-r-15">
+						退货方式:可选择自行寄回，上门取件(仅京东快递)
+					</view>
+					<view class="text-nowrap">
+						<sales-return :returnId="item.return_id">
+							<up-button shape="circle" type="error" slot="refund">立即退货</up-button>  
+							<up-button shape="circle" type="primary" plain slot="refund_detail">退货详情</up-button> 
+						</sales-return>  
+					</view>
 				</view>
 			</view>
 			<template v-if="dataList.length == 0">

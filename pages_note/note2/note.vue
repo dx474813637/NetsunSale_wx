@@ -1,5 +1,5 @@
 <template>
-	<view class="w ">  
+	<view class="w " v-if="user_info.shenhe == 0">  
 		<u-status-bar></u-status-bar>
 		<navBar
 			bgColor="#fff" 
@@ -40,7 +40,7 @@
 				
 			</template>
 		</navBar>
-		<view class="u-flex u-flex-between u-p-20" v-if="isMe">
+		<view class="u-flex u-flex-between u-p-20" v-if="isMe && user_info.role != 0">
 			<view class="item"></view>
 			<view class="item">
 				<u-button type="error" size="small" @click="showProductList = true">管理关联商品</u-button>
@@ -172,10 +172,11 @@
 	</TabBar> 
 	<ProductListPopup
 		:show="showProductList" 
-		title="商品列表"  
+		title="橱窗商品列表"  
 		:xuanList="products"
 		:asyncEvent="false"
 		:xuan="xuan"
+		func="search_shop_product"
 		:onUpdateShow="handleChangeShow" 
 		@xuanSuccess="xuanSuccess"
 		@xuanEvent="xuanEvent"

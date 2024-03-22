@@ -377,13 +377,13 @@
 	const shopCurrentData = ref({})
 	const pl_tabs = ref([
 		{
-			name: '精选推荐',
-			value: '0',
+			name: '最新上架',
+			value: '1',
 			disabled: false
 		},
 		{
-			name: '最新上架',
-			value: '1',
+			name: '精选推荐',
+			value: '0',
 			disabled: false
 		},
 	])

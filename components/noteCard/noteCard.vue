@@ -147,7 +147,7 @@
 			width: 100%;
 			height: 100%;
 			background-color: rgba(0,0,0,0.2);
-			z-index: 20;
+			z-index: 8;
 			.video-icon {
 				position: absolute;
 				right: 15px;

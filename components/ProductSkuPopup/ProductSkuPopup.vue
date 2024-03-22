@@ -276,6 +276,7 @@
 		
 	}
 	function onImgClick() {
+		return
 		uni.previewImage({
 			urls: [product_img_preview.value],
 			current: 0,

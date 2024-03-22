@@ -131,33 +131,36 @@
 					</view>
 				</u-scroll-list>
 			</view>
-			<view class="text-base u-font-28 u-p-20">
-				已关联商品
-			</view>
-			<view class="u-p-20 box-border bg-white u-radius-10 u-m-b-20">
-				<view class="product-list u-p-10">
-					<view class="product-item u-flex u-flex-between u-flex-items-center u-m-b-20"
-						v-for="(item, index) in dataList"
-						:key="item.id"
-					>
-						<view class="u-flex-1">
-							<ProductRowCard
-								:origin="item"
-								mode="normal"
-								:customStyle="{
-									'box-shadow': 'none!important'
-								}"
-							></ProductRowCard>
-						</view>
-						<view class="u-flex u-flex-between u-flex-items-center u-m-l-10 u-radius-20 u-p-10" style="background-color: #f00;" @click="removeItem(item)">
-							<u-icon name="trash" size="20" color="#fff"></u-icon>
+			<template v-if="user_info.role != 0">
+				<view class="text-base u-font-28 u-p-20">
+					已关联商品
+				</view>
+				<view class="u-p-20 box-border bg-white u-radius-10 u-m-b-20">
+					<view class="product-list u-p-10">
+						<view class="product-item u-flex u-flex-between u-flex-items-center u-m-b-20"
+							v-for="(item, index) in dataList"
+							:key="item.id"
+						>
+							<view class="u-flex-1">
+								<ProductRowCard
+									:origin="item"
+									mode="normal"
+									:customStyle="{
+										'box-shadow': 'none!important'
+									}"
+								></ProductRowCard>
+							</view>
+							<view class="u-flex u-flex-between u-flex-items-center u-m-l-10 u-radius-20 u-p-10" style="background-color: #f00;" @click="removeItem(item)">
+								<u-icon name="trash" size="20" color="#fff"></u-icon>
+							</view>
 						</view>
 					</view>
+					<view class="u-m-t-10">
+						<u-button type="warning" shape="circle" @click="showProductList = true">添加商品</u-button>
+					</view>
 				</view>
-				<view class="u-m-t-10">
-					<u-button type="warning" shape="circle" @click="showProductList = true">添加商品</u-button>
-				</view>
-			</view>
+			</template>
+			
 			<view class="u-p-20 bg-white u-p-l-40 u-radius-10">
 				<u--form
 					labelPosition="top" 
@@ -215,10 +218,11 @@
 	<u-safe-bottom></u-safe-bottom>
 	<ProductListPopup
 		:show="showProductList" 
-		title="商品列表"  
+		title="橱窗商品列表"  
 		:xuanList="dataList"
 		:asyncEvent="false"
 		:xuan="xuan"
+		func="search_shop_product"
 		:onUpdateShow="handleChangeShow"  
 		@xuanEvent="xuanEvent"
 	></ProductListPopup>
@@ -241,7 +245,7 @@
 	import {useCateStore, baseStore} from '@/stores/base.js'  
 	import {userStore} from '@/stores/user.js' 
 	const user = userStore() 
-	const { biji_files, biji_step, biji_info, biji_linshi  } = toRefs(user)
+	const { biji_files, biji_step, biji_info, biji_linshi, user_info  } = toRefs(user)
 	const base = baseStore() 
 	const {themeColor, empty} = toRefs(base)
 	const { setOnlineControl } = share()
@@ -330,7 +334,7 @@
 		}
 	) 
 	onLoad(async (options) => { 
-		if (options.hasOwnProperty('id')) {
+		if (options.hasOwnProperty('id') && user_info.value.role != 0) {
 			id.value = options.id
 			await initData()  
 		}    

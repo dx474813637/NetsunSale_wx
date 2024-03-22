@@ -63,6 +63,15 @@
 			}
 
 		}, {
+			"path": "pages/cateList/cateProductList",
+			"style": {
+				"navigationBarTitleText": "分类",
+				"enablePullDownRefresh": false,
+				"disableScroll": true,
+				"navigationBarBackgroundColor": "#fae9e9"
+			}
+
+		}, {
 			"path": "pages/product/productList",
 			"style": {
 				"navigationBarTitleText": "商品列表",
@@ -95,14 +104,14 @@
 		// 	}
 
 		// }, 
-		{
-			"path": "pages/shop/shop",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
+		// {
+		// 	"path": "pages/shop/shop",
+		// 	"style": {
+		// 		"navigationBarTitleText": "",
+		// 		"enablePullDownRefresh": false
+		// 	}
 
-		}, 
+		// }, 
 		// {
 		// 	"path": "pages/index/index_51xp",
 		// 	"style": {
@@ -170,7 +179,8 @@
 		"root": "pages_user",
 		"plugins": {
 			"logisticsPlugin": {
-				"version": "2.2.19",
+				// "version": "2.2.19",
+				"version": "2.3.0",
 				"provider": "wx9ad912bf20548d92"
 			}
 		},

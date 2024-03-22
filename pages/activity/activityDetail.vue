@@ -28,13 +28,26 @@
 		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10 u-m-t-20">
 			 <view 
 				class="list-item box-border u-p-14" 
-				style="flex: 0 0 50%"
+				:style="{
+					flex: listMode == 'row' ? '0 0 100%' : '0 0 50%'
+				}"
 				v-for="item in dataList" 
 				:key="item.id"
 				>
-				<ProductColCard
-					:origin="item"
-				> </ProductColCard>  
+				<template v-if="listMode == 'row'">
+					<ProductRowCard
+						:origin="item"
+						mode="normal" 
+						:customStyle="{
+							'padding': '7px'
+						}"
+					></ProductRowCard>
+				</template>
+				<template v-else>
+					<ProductColCard
+						:origin="item"
+					> </ProductColCard>  
+				</template>
 			 </view>	  
 		</view> 
 		<template v-if="id > 0">
@@ -90,6 +103,7 @@
 	
 	const detail = ref({})  
 	const id = ref('') 
+	const listMode = ref('') 
 	const url = ref('') 
 	const showUserPhone = ref(false)
 	const options = computed(() => {
@@ -125,6 +139,9 @@
 	onLoad(async (options) => { 
 		if(options.hasOwnProperty('id')) {
 			id.value = options.id
+		} 
+		if(options.hasOwnProperty('listMode')) {
+			listMode.value = options.listMode
 		} 
 		await initDataList()
 	})  

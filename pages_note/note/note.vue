@@ -1,5 +1,5 @@
 <template>
-	<view class="w">  
+	<view class="w" v-if="user_info.shenhe == 0">  
 		<view class="swiper-w">
 			<u-swiper
 				v-if="swiperlist.length > 0"

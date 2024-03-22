@@ -68,7 +68,7 @@
 						</view>
 						<view class="u-flex u-flex-between u-flex-items-start" style="width: 100%;">
 							<view class="item info-text">
-								<view class="u-font-24" >用户号：{{homeInfo.login}}</view>
+								<view class="u-font-24" >SunMaxx号：{{homeUserInfo.id}}</view>
 							</view> 
 							<view class="item">
 								<!-- <view class="mode-w u-font-28 u-flex u-flex-items-center u-p-8 u-p-l-25 u-p-r-25 u-radius-4" 
@@ -97,7 +97,7 @@
 							<template v-if="homeInfo.info">
 								{{homeInfo.info}}
 							</template>
-							<text v-else @click="showHomeInfo = true">点击这里，填写简介</text>
+							<text v-else @click="eidtEventBtn">点击这里，填写简介</text>
 						</view>
 						<!-- <rich-text :nodes="`<p>${homeInfo.info || '点击这里，填写简介'}</p>`"></rich-text> -->
 					</u-read-more> 
@@ -133,12 +133,12 @@
 			<view style="background-color: rgb(70,70,70);">
 				<view class="u-flex u-flex-items-center u-flex-center u-p-5 box-border mode-w bg-white">
 					<view class="item u-font-30"
-						v-for="(item, index) in mode_list"
+						v-for="(item, index) in mode_list_filter"
 						:key="index"
 						:class="{
 							'active': index == mode_current
 						}"
-						@click="mode_current = index;"
+						@click="HomeModeTabsClick({data: item, index})"
 					>
 						<view class="u-flex u-flex-items-center">
 							<i :class="['custom-icon', item.icon]" ></i>
@@ -182,7 +182,7 @@
 		</view>
 		
 		<template v-if="mode_current == 0">
-			<u-sticky :customNavHeight="79 + $u.sys().statusBarHeight" :offsetTop="0" zIndex="9">
+			<u-sticky :customNavHeight="84 + $u.sys().statusBarHeight" :offsetTop="0" zIndex="9">
 				<view class="tabs-w bg-white u-border-top" style="border-color: #f9f9f9!important;">
 					<u-tabs
 						:list="tabs_list"  
@@ -211,7 +211,7 @@
 			</view>
 			<template v-if="dataList.length == 0">
 				<view class="u-flex u-flex-center u-p-40">
-					<u-empty mode="data" :icon="base.empty" />
+					<u-empty mode="data" :icon="base.empty" text="橱窗为空" />
 				</view>
 				
 			</template>
@@ -274,7 +274,7 @@
 		<template v-if="mode_current == 1">
 			<template v-if="dataList2.length == 0">
 				<view class="u-flex u-flex-center u-p-40">
-					<u-empty mode="data" :icon="base.empty" />
+					<u-empty mode="data" :icon="base.empty" text="笔记为空" />
 				</view>
 				
 			</template>
@@ -287,14 +287,14 @@
 		<u-safe-bottom></u-safe-bottom>
 	</view>
 	
-	<up-picker 
+	<!-- <up-picker 
 		:show="showHomeMode" 
 		:columns="mode_list2"
 		keyName="name"
 		@confirm="homeModeConfirm"
 		closeOnClickOverlay
 		@close="showHomeMode = false"
-	></up-picker>
+	></up-picker> -->
 	
 	
 	<BaseInfoPopup
@@ -325,10 +325,10 @@
 		:onUpdateShow="handleChangeShow"  
 		@xuanEvent="xuanEvent"
 	></ProductListPopup>
-	<TabBar :customStyle="customStyle" v-if="isMe">
+	<TabBar :customStyle="customStyle" v-if="shopProductTabBarShow">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28 button-w" > 
 			<u-button type="error" shape="circle" @click="showProductList = true">
-				管理商品配置
+				橱窗管理
 				<template v-if="!xuan">
 					- 未配置
 				</template>
@@ -377,9 +377,10 @@
 	const curP2 = ref(1) 
 	const dataList2 = ref([]) 
 	const loadstatus2 = ref('loadmore')
-	const showHomeMode = ref(false)
+	// const showHomeMode = ref(false)
 	const showProductList = ref(false)
 	const homeInfo = ref({})
+	const homeUserInfo = ref({})
 	const customStyle = ref({
 		// paddingBottom: '50px',
 		// background: 'transparent' 
@@ -422,12 +423,12 @@
 	const columnGap = ref(8)
 	const uToast = ref('') 
 	const waterfall = ref('')
-	
-	const func = computed(() => {
-		return terms.value ? 'web_search' : 'web_product'
-	})
+	 
 	const isMe = computed(() => {
-		return userid.value == user_info.value.id
+	 	return userid.value == user_info.value.id
+	})
+	const noLimit = computed(() => {
+		return homeUserInfo.value.scene == 0
 	})
 	const scrollPx = ref(0)
 	const maxHeight = ref(50)
@@ -441,13 +442,10 @@
 		() => navBarScrollShow.value,
 		(n) => {
 			if(n) {
-				bgColor.value = 'rgba(70,70,70,1)'
-				uni.setna
-				// scrollPx.value = maxHeight.value
+				bgColor.value = 'rgba(70,70,70,1)'  
 			}
 			else {
-				bgColor.value = 'rgba(70,70,70,0)'
-				// scrollPx.value = e.scrollTop
+				bgColor.value = 'rgba(70,70,70,0)' 
 			}
 		}
 	)
@@ -476,7 +474,15 @@
 			disabled: false
 		},
 	])  
-	const mode_list2 = computed(() => [mode_list.value])
+	const mode_list_filter = computed(() => mode_list.value.map(ele => {
+		if(!isMe.value) return ele
+		if(noLimit.value && ele.value == 1) {
+			ele.disabled = true
+			ele.msg = '成为团长或达人才能开通商品橱窗功能'
+		}
+		return ele
+	}))
+	// const mode_list2 = computed(() => [mode_list.value])
 	const list = ref([])
 	const loading = ref(false)
 	onLoad(async (options) => {  
@@ -486,15 +492,32 @@
 		else {
 			userid.value = user_info.value.id
 		}
-		if(options.hasOwnProperty('mode')) {
-			mode_current.value = +options.mode
+		// if(options.hasOwnProperty('mode')) {
+		// 	mode_current.value = +options.mode
+		// }
+		if(user_info.value.role == 0) {
+			mode_current.value = 1
 		}
 		await initData(true)  
 	})
 	const activeMode = computed(() => mode_list.value[mode_current.value])
 	const activeModeValue = computed(() => mode_list.value[mode_current.value].value)
-	 
-	 
+	
+	const shopProductTabBarShow = computed(() => {
+		return isMe.value && !noLimit.value && activeModeValue.value == '1'
+	}) 
+	
+	watch(
+		() => noLimit.value,
+		(n) => { 
+			if(n) {
+				mode_current.value = 1
+			}
+		},
+		{
+			immediate: true
+		}
+	) 
 	watch(
 		() => activeModeValue.value,
 		(n) => {
@@ -517,9 +540,9 @@
 	function changeList(e){
 		// console.log(e, 'change')
 		list_col.value[e.name].push(e.value);
-	}
+	} 
 	async function getMoreNoteData() {
-		if(loadstatus.value != 'loadmore') return
+		if(loadstatus2.value != 'loadmore') return
 		curP2.value ++
 		await getNoteData()
 	}
@@ -528,6 +551,7 @@
 		loadstatus2.value = 'loading'
 		const res = await $api.longs_new({params: {
 			login: userid.value, 
+			p: curP2.value
 		}})
 		if (res.code == 1) { 
 			dataList2.value = [...dataList2.value, ...res.list]   
@@ -555,6 +579,7 @@
 			dataList.value = res.list.sort((a,b) => b.sid - a.sid )
 			homeInfo.value = res.shop || {}
 			xuan.value = res.xuan
+			homeUserInfo.value = res.info
 			bg.value = res.bj
 			haibao.value = res.haibao
 			hudong.value = res.hudong || {}
@@ -722,20 +747,33 @@
 		initData() 
 	}  
 	
-	function homeModeConfirm(e) {
-		console.log(e)
-		mode_current.value = e.indexs[0]
-		showHomeMode.value = false
-	}
+	// function homeModeConfirm(e) {
+	// 	console.log(e)
+	// 	mode_current.value = e.indexs[0]
+	// 	showHomeMode.value = false
+	// }
 	function eidtEventBtn() {
 		if(!isMe.value) return 
 		showHomeInfo.value = true
 	}
-	
+	function HomeModeTabsClick({data, index}) {
+		console.log(data)
+		if(data.disabled) {
+			uni.showToast({
+				title: data.msg,
+				icon: 'none'
+			})
+			return
+		}
+		mode_current.value = index
+	}
 	
 </script>
 
 <style > 
+page {
+	background-color: #fff;
+}
 </style>
 <style lang="scss" scoped> 
 	.info-text {
@@ -860,16 +898,17 @@
 		
 	}
 	.mode-w {
-		height: 35px;
+		height: 40px;
 		border-radius: 20px 20px 0 0;
 		.item { 
 			color: #666;
 			padding: 3px 8px;
 			margin: 0 5px;
 			&.active {
-				// font-weight: bold;
+				font-weight: bold;
 				// font-size: 16px;
 				color: $u-error;
+				// color: #000;
 			}
 		}
 	}

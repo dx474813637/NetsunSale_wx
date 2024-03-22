@@ -23,7 +23,7 @@
 		<view class="list">  
 			<view class="list-item u-m-b-15" v-for="item in dataList" :key="item.id">
 				
-				<view class="card-header bg-white u-radius-12 uni-shadow-base u-p-30" >
+				<view class="card-header bg-white u-radius-12 uni-shadow-base u-p-30" @click="analysisEvent({data: item})">
 					<view class=" u-flex u-flex-between u-flex-items-center">
 						<up-image
 							showLoading
@@ -54,6 +54,12 @@
 			<u-safe-bottom></u-safe-bottom>
 		</view>	 
 	</view> 
+	<!-- <DarenAnalysisPopup
+		:show="showDarenAnalysis" 
+		title="达人分析" 
+		:list="daren_analysis"
+		:onUpdateShow="handleChangeShow" 
+	></DarenAnalysisPopup> -->
 	<MenusBar></MenusBar>
 </template>
 
@@ -136,14 +142,20 @@
 	}
 	async function analysisEvent({data}) {
 		if(analysis_loading.value) return
-		daren_analysis.value = {}
+		// daren_analysis.value = {}
 		uni.showLoading();
 		analysis_loading.value = true
 		try{
-			const res = await $api.divide_analysis({params: {id: data.did}})
+			const res = await $api.search_login_tuan({params: {id: data.login}})
 			if(res.code == 1) {
-				showDarenAnalysis.value = true
-				daren_analysis.value = res.list
+				// showDarenAnalysis.value = true
+				// daren_analysis.value = res.list
+				if(res.msg) {
+					uni.showToast({
+						title: res.msg,
+						icon: 'none'
+					})
+				}
 			}
 		}catch(e){
 			uni.hideLoading()

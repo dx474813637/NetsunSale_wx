@@ -40,7 +40,7 @@ export function share() {
 		if (res.target && res.target.id && res.target.id.includes('diy_')) {
 
 		} else {
-			console.log(onlineControl.share_title)
+			// console.log(onlineControl.share_title)
 			return {
 				title: onlineControl.share_title,
 				path: onlineControl.path ? onlineControl.path : getPath(),
@@ -50,7 +50,7 @@ export function share() {
 	})
 
 	function setOnlineControl(res) {
-		console.log(res)
+		// console.log(res)
 		onlineControl.share_img = res.share_img
 		if (res.share_title) onlineControl.share_title = res.share_title
 		if (res.title) onlineControl.title = res.title

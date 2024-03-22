@@ -27,7 +27,7 @@ export const baseStore = defineStore('base', {
 				'shareother': uni.getStorageSync('share_other') || '',
 			},
 			share_other: '',
-			themeColor: '#F12E24',
+			themeColor: '#FF3B53',
 			empty: 'https://wx.rawmex.cn/Public/memu/data1.png',
 			online: {
 				count: 0, 
@@ -249,6 +249,7 @@ export const useCateStore = defineStore('cate', {
 	state: () => {
 		return {  
 			cate_list: [],  
+			cate_origin: [],
 			cate_loading: false
 		};
 	},
@@ -262,6 +263,7 @@ export const useCateStore = defineStore('cate', {
 				this.cate_loading = false
 				if(res.code == 1) { 
 					//获取搜索类型数据
+					this.cate_origin = uni.$u.deepClone(res.list)
 					this.cate_list = res.list.map(ele => {
 						ele.children.unshift({
 							name: '全部',
