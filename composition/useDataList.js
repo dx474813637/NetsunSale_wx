@@ -38,6 +38,7 @@ export default function useDataList(data = { value: {params: {}, api: '', noReac
 	} 
 	async function getMoreDataList() {
 		if(loadstatus.value != 'loadmore') return
+		loadstatus.value = 'loading'
 		curP.value ++
 		await getDataList()
 	} 

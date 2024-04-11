@@ -14,6 +14,7 @@ const duration = sys.osName == 'ios' ? 2000 : 3000
 export default function($ws) { 
 	const base = baseStore(pinia)
 	const user = userStore(pinia)
+	const { getNewUserid } = toRefs(user)
 	const http = uni.$u.http
 	// import md5Libs from "@/utils/md5";
 	const getTokenStorage = () => {
@@ -94,8 +95,9 @@ export default function($ws) {
 		// 登录接口和刷新token接口绕过
 		if (config.url.indexOf('xcx_login') >= 0) {
 			return config
-		}
-		if (!token) {
+		} 
+		// if (!token) {
+		if (!getNewUserid.value) {
 			// 立即刷新token
 			if (!isRefreshing) {
 				console.log('刷新token ing', config.url)
@@ -116,7 +118,7 @@ export default function($ws) {
 					http.setToken({
 						userid: userid
 					})
-					
+					getNewUserid.value = true
 					// }
 					// if(res.login == 0) { 
 					// 	getCurrentPages().length > 0 && uni.setStorageSync('prePage', getCurrentPages()[getCurrentPages().length - 1].$page.fullPath)  

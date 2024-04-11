@@ -64,7 +64,7 @@
 							<view 
 								class="u-p-l-8 u-flex u-flex-items-center u-font-28" 
 								style="height: 35px;box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.2)"
-								@click="base.handleGoto('/pages/cateList/cateList')"
+								@click="base.handleGoto('/pages/cateList/cateProductList')"
 								>
 								<u-icon
 									name="list"
@@ -180,7 +180,17 @@
 				</view>
 			</view>
 			
-			 
+			
+			<view class="u-p-10 u-p-t-20"
+				v-for="(item, index) in cpy"
+				:key="index"
+			> 
+				<view class="bg-white u-radius-12 u-p-l-30 u-p-t-30 u-p-r-30 u-p-b-10" >
+					<CompanyRowCard
+						:origin="item"
+					></CompanyRowCard>
+				</view>
+			</view>
 			
 			<view class="u-p-10 u-p-t-20"
 				v-for="item in zt"
@@ -374,6 +384,7 @@
 	
 	const tj = computed(() => originData.value.tj || [])
 	const zt = computed(() => originData.value.zt || [])
+	const cpy = computed(() => originData.value.other_list || [])
 	const shopCurrentData = ref({})
 	const pl_tabs = ref([
 		{

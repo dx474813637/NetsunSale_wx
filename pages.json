@@ -72,6 +72,15 @@
 			}
 
 		}, {
+			"path": "pages/preferred/preferred",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white"
+			}
+
+		}, {
 			"path": "pages/product/productList",
 			"style": {
 				"navigationBarTitleText": "商品列表",

@@ -49,6 +49,7 @@
 		} 
 		// let options = uni.getLaunchOptionsSync() 
 		routingIntercept({$http})  
+		// user.getNewToken()
 		user.refreshUserData()
 		user.sendDingyue()
 	});

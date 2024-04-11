@@ -53,42 +53,52 @@
 				
 			</view>
 			<view class="u-p-15 u-p-l-20 u-p-r-20 u-flex u-flex-between u-flex-items-center bg-white u-font-26" v-if="balance">
-				<view class="num-label item u-p-r-15" >
-					<view class="bg u-flex u-flex-items-center u-flex-between u-p-20 u-radius-5">
-						<view class="u-flex u-flex-items-center">
-							<view class="u-m-r-10 u-info">可提现</view>
+				<view class="num-label item u-p-r-8" >
+					<view class="bg u-flex u-flex-items-center u-flex-between u-p-16 u-radius-5">
+						<view class="u-flex-column u-flex-items-start">
+							<view class="u-info u-m-b-8">可提现</view>
 							<u-count-to 
 								:endVal="balance.extract"
 								decimals="2"
 								separator=","
 								duration="500"
-								fontSize="15"
+								fontSize="16"
 								bold
 								color="#000"
 							></u-count-to>
-						</view>
-						<view>
-							<u-icon name="arrow-right" color="#ccc" size="14"></u-icon>
-						</view>
+						</view> 
 					</view>
 				</view>
-				<view class="num-label item u-p-l-15" >
-					<view class="bg u-flex u-flex-items-center u-flex-between u-p-20 u-radius-5">
-						<view class="u-flex u-flex-items-center">
-							<view class="u-m-r-10 u-info">可分账</view>
+				<view class="num-label item u-p-r-4 u-p-l-4" >
+					<view class="bg u-flex u-flex-items-center u-flex-between u-p-16 u-radius-5">
+						<view class="u-flex-column u-flex-items-start">
+							<view class="u-info u-m-b-8">累计提现</view>
+							<u-count-to 
+								:endVal="balance.withdrawal"
+								decimals="2"
+								separator=","
+								duration="500"
+								fontSize="16"
+								bold
+								color="#000"
+							></u-count-to>
+						</view> 
+					</view>
+				</view>
+				<view class="num-label item u-p-l-8" >
+					<view class="bg u-flex u-flex-items-center u-flex-between u-p-16 u-radius-5">
+						<view class="u-flex-column u-flex-items-start">
+							<view class="u-info u-m-b-8">可分账</view>
 							<u-count-to 
 								:endVal="balance.divide"
 								decimals="2"
 								separator=","
 								duration="500"
-								fontSize="15"
+								fontSize="16"
 								bold
 								color="#000"
 							></u-count-to>
-						</view>
-						<view>
-							<u-icon name="arrow-right" color="#ccc" size="14"></u-icon>
-						</view>
+						</view> 
 					</view>
 				</view>
 			</view> 
@@ -126,7 +136,14 @@
 						@click="handleMenusClick(item)"
 						>
 						<!-- <image class="icon-img u-m-b-10" :src="item.icon" mode=""></image> -->
-						<view class="u-m-b-10" >
+						<view class="u-m-b-10" style="position: relative;">
+							<up-badge 
+								type="error" 
+								max="99" 
+								:value="item.num"
+								:offset="[-2, -10]"
+								absolute
+							></up-badge>
 							<up-image
 								:src="item.icon"
 								mode="heightFix"
@@ -309,7 +326,7 @@
 </style>
 <style lang="scss" scoped>
 	.num-label {
-		flex: 0 0 50%;
+		flex: 0 0 33.3%;
 		box-sizing: border-box;
 		.bg {
 			background-color: #f9f9f9;

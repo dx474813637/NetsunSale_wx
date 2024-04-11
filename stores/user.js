@@ -1,11 +1,11 @@
 import {
 	defineStore
 } from 'pinia';
-import apis from '@/config/apis/index';
-
+import apis from '@/config/apis/index'; 
 export const userStore = defineStore('user', {
 	state: () => {
 		return { 
+			getNewUserid: false,
 			// 微信openID的相关信息
 			user: uni.getStorageSync('user') || {},
 			// 预约信息
@@ -147,6 +147,17 @@ export const userStore = defineStore('user', {
 			}catch(e){
 				return e
 			}
+		},
+		async getNewToken() {
+			this.refreshToken().then(res => {
+				console.log('获取token成功，存入头部',res)
+				this.saveUserInfo(res) 
+				let userid = "" 
+				userid = res.userid
+				uni.$u.http.setToken({
+					userid: userid
+				}) 
+			}) 
 		}
 	},
 });

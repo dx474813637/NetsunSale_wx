@@ -23,7 +23,7 @@ export function useNormal() {
 				options[arr2[0]] = arr2[1]
 			})
 		} 
-		console.log(options, 'xx2') 
+		console.log(options, 'useNormal') 
 	}
 	return { 
 		initArgs

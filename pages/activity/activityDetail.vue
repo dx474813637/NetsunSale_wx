@@ -160,11 +160,11 @@
 			uni.showToast({
 				title: res.msg,
 				success() {
-					setTimeout(() => {
-						uni.reLaunch({
-							url: url.value
-						})
-					}, 1000)
+					// setTimeout(() => {
+					// 	uni.reLaunch({
+					// 		url: url.value
+					// 	})
+					// }, 1000)
 					
 				}
 			})

@@ -26,12 +26,12 @@
 				
 			</template>
 			<template #center>
-				<slot>
+				<slot >
 					<text class="u-line-1" :style="[titleStyle]" v-if="title">
 						{{title}}
 					</text>
 				</slot>
-			</template>
+			</template> 
 		</u-navbar> 
 	</view>
 </template>
@@ -92,6 +92,7 @@
 	const sys = ref({})
 	const msg = ref({})
 	const show = ref(true) 
+	
 	onMounted(() => {
 		sys.value = uni.getSystemInfoSync() 
 		// msg.value = base.msg[0] || {}

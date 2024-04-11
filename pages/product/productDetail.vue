@@ -45,7 +45,7 @@
 						<text style="font-family: cursive;">{{product_list.price}}</text>
 					</view>
 				</view>
-				<view class="item u-font-28 u-info">已售{{product_list.sales_volume}}件</view>
+				<!-- <view class="item u-font-28 u-info">已售{{product_list.sales_volume}}件</view> -->
 			</view>
 			<view class="bg-white u-radius-8 u-p-10">
 				<view class="u-flex u-flex-between u-flex-items-start u-p-t-10 u-p-b-10 u-m-b-20">
@@ -78,7 +78,7 @@
 			</view> 
 		</view> 
 		<view class="u-p-10 bg-white u-m-b-20">  
-			<view class="u-radius-8 bg-white u-m-b-20 u-p-20 u-font-30">   
+			<view class="u-radius-8 bg-white u-p-20 u-font-30">   
 				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14">
 					<view class="item text-base u-m-r-20">
 						发货
@@ -150,9 +150,25 @@
 					<view class="item u-flex-1">
 						{{company_list.service}}
 					</view>
-				</view> 
-				<u-line length="100%" margin="10px 0"></u-line>
-				<view class="u-flex u-flex-between u-flex-items-center u-p-10 u-p-b-14 u-p-t-14">
+				</view>   
+			</view> 
+		</view>
+		<view class="u-p-10 bg-white">  
+			<view class="u-radius-8 bg-white u-p-20 u-font-30">  
+				<view class="u-flex u-flex-items-center u-flex-between u-p-l-10 u-p-r-10  " >
+					<view class="item text-base u-m-r-30">
+						最近销售
+					</view> 
+					<view class="item u-p-l-30 ">
+						<text class="text-black">已售{{product_list.sales_volume}}件</text> 
+					</view> 
+				</view>  
+				<u-line length="100%" margin="10px 0 0 0"></u-line>
+			</view> 
+		</view>
+		<view class="u-p-10 bg-white u-m-b-20">  
+			<view class="u-radius-8 bg-white u-p-l-20 u-p-r-20 u-font-30">  
+				<view class="u-flex u-flex-between u-flex-items-center u-p-l-10 u-p-r-10 u-p-b-14 ">
 					<view class="item text-bold">发现笔记</view>
 					<view class="item u-flex u-flex-items-baseline" @click="base.handleGoto({url: 'pages_note/note2/noteList', params: {id: product_id}})">
 						<view class="u-info u-m-r-5 u-font-28">全部({{product_longs.total}})</view>

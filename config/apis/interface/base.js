@@ -255,3 +255,6 @@ export const longs_memu = (data) => http.get('longs_memu', data)
 export const search_login_tuan = (data) => http.get('search_login_tuan', data)
 // search_shop_product 橱窗商品列表  参数terms 商品搜索 不带就是全部
 export const search_shop_product = (data) => http.get('search_shop_product', data)
+
+// web_preferred 优选列表 参数cate p
+export const web_preferred = (data) => http.get('web_preferred', data)

@@ -1,6 +1,6 @@
 <template>
-	<view class="card u-radius-8 uni-shadow-base bg-white u-flex" :style="customStyle">
-		<view class="img-w" @click.stop="gotoDetail"> 
+	<view class="card u-radius-8 uni-shadow-base bg-white u-flex" :class="{small: size == 'small'}" :style="customStyle">
+		<view class="img-w"  @click.stop="gotoDetail"> 
 			<!-- <image 
 				class="img" 
 				mode="aspectFill"
@@ -17,7 +17,12 @@
 			
 		</view>
 		<slot name="content">
-			<view class="content-w u-p-6 u-p-l-20 u-p-r-20 u-p-b-10 u-font-30 u-flex-1 u-flex-column u-flex-between u-flex-items-start">
+			<view class="content-w u-p-6 u-p-l-20 u-p-r-20 u-p-b-10 u-flex-1 u-flex-column u-flex-between u-flex-items-start"
+				:class="{
+					'u-font-30': size == 'normal',
+					'u-font-26': size == 'small',
+				}"
+			>
 				<view class="u-line-2 u-m-b-10" style="width: 100%;" @click.stop="gotoDetail">
 					{{origin.name}}
 				</view>
@@ -44,13 +49,17 @@
 						<u-switch 
 							v-model="origin.checked" 
 							asyncChange 
+							:size="size == 'small'? 18 : 24"
 							@change="swicthClick" 
 							:loading="origin.loading"
 							activeColor="#f00"
 						></u-switch>
 					</view>
-					<view class="item " v-if="mode == 'normal'" @click.stop="gotoDetail">
-						<view class="u-info u-font-26">已售{{origin.sales_volume}}件</view>
+					<view class="item u-flex-column u-flex-items-end" v-if="mode == 'normal'" @click.stop="gotoDetail">
+						<view class="u-info">
+							<u-icon name="plus-circle-fill" :color="themeColor" size="20"></u-icon>
+						</view>
+						<!-- <view class="u-info u-font-26">已售{{origin.sales_volume}}件</view> -->
 					</view>
 				</view> 
 			</view>
@@ -65,6 +74,7 @@
 	import {useCateStore, baseStore} from '@/stores/base.js'
 	import zeroLazyLoad from '@/uni_modules/zero-lazy-load/components/zero-lazy-load/zero-lazy-load.vue'
 	const base = baseStore()
+	const { themeColor } = toRefs(base) 
 	const props = defineProps({
 		origin: {
 			type: Object,
@@ -81,7 +91,11 @@
 		divideShow: {
 			type: Boolean,
 			default: false
-		}
+		},
+		size: {
+			type: String,
+			default: 'normal'
+		},
 	})
 	
 	const emits = defineEmits(['checkedClick'])
@@ -113,9 +127,22 @@
 <style lang="scss" scoped>
 	.card {
 		overflow: hidden;
+		&.small {
+			.img-w {
+				flex: 0 0 80px;
+				.img {
+					width: 80px;
+					height: 80px; 
+				}
+			}
+			.content-w {
+				flex: 0 0 calc(100% - 80px); 
+				
+			}
+		}
 	}
 	.img-w { 
-		flex: 0 0 100px;
+		flex: 0 0 100px; 
 		.img { 
 			width: 100px;
 			height: 100px;

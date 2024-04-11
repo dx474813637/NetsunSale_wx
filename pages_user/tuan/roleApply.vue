@@ -33,6 +33,26 @@
 		</view>
 
 	</TabBar>
+	<u-popup 
+		:show="show" 
+		mode="center" 
+		round="10" 
+		:safeAreaInsetBottom="false" 
+		:closeOnClickOverlay="false"
+		>
+		<view class="u-p-20 ">
+			<view class="img-w u-m-b-20">
+				<u--image
+					showLoading
+					:src="img"
+					width="80vw"
+					height="auto"
+					mode="widthFix"
+				></u--image>
+			</view>
+			<u-button type="error" @click="returnMine">返回个人中心</u-button>
+		</view>
+	</u-popup>
 </template>
 
 <script setup>
@@ -88,7 +108,8 @@
 			}
 		},
 	])
-
+	const img = ref('')
+	const show = ref(false)
 	const role = computed(() => {
 		return {
 			role: user_info.value.role
@@ -165,18 +186,25 @@
 			}
 		})
 		if (res.code == 1) {
-			uni.showToast({
-				title: res.msg,
-				icon: 'none'
-			}) 
-			setTimeout(() => {
-				// user.refreshUserData()
-				base.handleGoto({
-					type: 'reLaunch',
-					url: '/pages_user/index/index'
-				})
-			}, 500)
+			img.value = res.img;
+			show.value = true
+			// uni.showToast({
+			// 	title: res.msg,
+			// 	icon: 'none'
+			// }) 
+			// setTimeout(() => {
+			// 	// user.refreshUserData()
+			// 	base.handleGoto({
+			// 		type: 'reLaunch',
+			// 		url: '/pages_user/index/index'
+			// 	})
+			// }, 500)
 		}
+	}
+	function returnMine() {
+		uni.reLaunch({
+			url: '/pages_user/index/index'
+		})
 	}
 </script>
 

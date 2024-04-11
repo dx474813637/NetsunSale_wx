@@ -21,7 +21,7 @@
 	<TabBar :customStyle="{boxShadow: '0px -3px 10px rgba(0,0,0,0.1)' }">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28" style="height: 100%;">
 			<view class="item u-flex-1 "  v-if="tlogin">
-				<u-button type="error" shape="circle" @click="accpetEvent">接受邀请成为达人</u-button>
+				<u-button type="error" shape="circle" @click="accpetEvent">获取特卖店授权</u-button>
 			</view> 
 			<view class="item u-flex-1" v-else>
 				<u-button type="primary" shape="circle" openType="share"  >
@@ -33,6 +33,26 @@
 		</view>
 		
 	</TabBar>
+	<u-popup
+		:show="show" 
+		mode="center" 
+		round="10" 
+		:safeAreaInsetBottom="false" 
+		:closeOnClickOverlay="false"
+		>
+		<view class="u-p-20 ">
+			<view class="img-w u-m-b-20">
+				<u--image
+					showLoading
+					:src="img"
+					width="80vw"
+					height="auto"
+					mode="widthFix"
+				></u--image>
+			</view>
+			<u-button type="error" @click="returnMine">返回个人中心</u-button>
+		</view>
+	</u-popup>
 </template>
 
 <script setup>
@@ -49,6 +69,8 @@
 		onlineControl,
 		customShareParams
 	} = share()
+	const img = ref('')
+	const show = ref(false)
 	const $api = inject('$api')    
 	const id = ref('2')
 	const tlogin = ref('')
@@ -82,17 +104,18 @@
 		uni.showLoading()
 		const res = await $api.save_invite({params: {id: tlogin.value}})
 		if(res.code == 1) { 
-			uni.showToast({
-				title: res.msg
-			})
-			setTimeout(() => {
-				// user.refreshUserData()
-				base.handleGoto({
-					type: 'reLaunch',
-					url: '/pages_user/index/index'
-				})
-			}, 500)
-			
+			// uni.showToast({
+			// 	title: res.msg
+			// })
+			// setTimeout(() => {
+			// 	// user.refreshUserData()
+			// 	base.handleGoto({
+			// 		type: 'reLaunch',
+			// 		url: '/pages_user/index/index'
+			// 	})
+			// }, 500) 
+			img.value = res.img;
+			show.value = true
 		}
 	}
 	async function getPhone(data) {
@@ -104,6 +127,11 @@
 	}
 	function handleChangeShow2(v) {
 		showUserPhone.value = v
+	}
+	function returnMine() {
+		uni.reLaunch({
+			url: '/pages_user/index/index'
+		})
 	}
 </script>
 

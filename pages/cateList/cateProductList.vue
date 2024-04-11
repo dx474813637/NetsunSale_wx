@@ -12,13 +12,17 @@
 				></u-search>
 			</view>
 			
-			<view class="tabs-w u-p-t-8 u-p-b-20 u-p-r-60 box-border" 
+			<view class="tabs-w u-p-t-8 u-p-b-20 u-p-r-70 box-border" 
 				:class="{
 					'more-mode': cateAllShow
 				}"> 
 				<template v-if="cateAllShow">
-					<view class="tabs-mask" @click="cateAllShow = false"></view>
-					<view class="tabs-more-list box-border u-p-t-8">
+					<view class="tabs-mask" :class="{ active: cateAllShow }" @click="cateAllShow = false"></view>
+					<view class="tabs-more-list box-border u-p-t-8"
+						:class="{
+							active: cateAllShow
+						}"
+					>
 						<view class="u-flex u-flex-wrap u-flex-items-start">
 							<view class="item-w u-flex-column u-flex-center u-flex-items-center"
 								v-for="(item, index) in tabs_list"
@@ -46,11 +50,11 @@
 					</view>
 				</template>
 				
-				<view class="tabs-right u-font-24 u-flex u-flex-end" @click="cateAllShow = !cateAllShow">
+				<view class="tabs-right u-font-26 text-bold u-flex u-flex-end" @click="cateAllShow = !cateAllShow">
 					<view class="tabs-right-text u-flex-column u-flex-center u-flex-items-center">
 						<text>展</text>
 						<text class="u-m-b-8">开</text>
-						<u-icon name="list-dot" size="16"></u-icon> 
+						<u-icon name="list-dot" size="17"></u-icon> 
 					</view>
 				</view>
 				<u-tabs
@@ -162,8 +166,7 @@
 						 		:origin="item"
 						 		mode="normal" 
 						 		:customStyle="{ 
-									'boxShadow': 'none',
-									'font-weight': '300',
+									'boxShadow': 'none', 
 						 		}"
 						 	></ProductRowCard>
 						 		 
@@ -205,37 +208,37 @@
 	import {useCateStore, baseStore} from '@/stores/base.js'
 	const base = baseStore()
 	const cate = useCateStore()
-	const { cate_origin, cate_loading } = toRefs(cate)
+	const { cate_origin, cate_list, cate_loading } = toRefs(cate)
 	const keyword = ref('')
 	const nav_index = ref(0)
 	const tabs_current = ref(0)
 	const cateAllShow = ref(false)
 	const cate_active_id = computed(() => {
-		if(cate_origin.value.length == 0) return ''
-		return cate_origin.value[tabs_current.value].children[nav_index.value].id
+		if(cate_list.value.length == 0) return ''
+		return cate_list.value[tabs_current.value].children[nav_index.value].id
 	})
 	const cate_active_name = computed(() => {
-		if(cate_origin.value.length == 0) return ''
-		return cate_origin.value[tabs_current.value].name
+		if(cate_list.value.length == 0) return ''
+		return cate_list.value[tabs_current.value].name
 	})
 	const cate_main = computed(() => {
-		if(cate_origin.value.length == 0) return []
-		return cate_origin.value[tabs_current.value].children 
+		if(cate_list.value.length == 0) return []
+		return cate_list.value[tabs_current.value].children 
 	})
 	const cate_main_item = computed(() => {
-		if(cate_origin.value.length == 0) return {}
-		return cate_origin.value[tabs_current.value]
+		if(cate_list.value.length == 0) return {}
+		return cate_list.value[tabs_current.value]
 	})
 	const tabs_list = computed(() => {
-		return cate_origin.value
+		return cate_list.value
 	}) 
-	const order = ref('')
+	const order = ref(3)
 	const filter_index = ref(-1)
 	const filterList = ref([ 
 		{
-			name: '销量',
+			name: '最新',
 			type: 1,
-			order: 3, 
+			order: 0, 
 		},
 		{
 			name: '价格',
@@ -315,7 +318,7 @@
 	}
 	function initCateId(id) { 
 		if(!id) return
-		cate_origin.value.some((ele, index) => {
+		cate_list.value.some((ele, index) => {
 			if(!ele.children || ele.children.length == 0) return false 
 			return ele.children.some((item, i) => { 
 				if(item.id == id) {
@@ -351,7 +354,7 @@
 	}
 	function initFilterData() {
 		filter_index.value = -1
-		order.value = '' 
+		order.value = 3
 	}
 	function filterClick(data, index) {
 		
@@ -457,6 +460,14 @@ page {
 			}
 		}
 	}
+	@keyframes listAnimation {
+	    from { transform: translateY(-100%); } 
+	    to { transform: translateY(0); } 
+	}
+	@keyframes listMaskAnimation {
+	    from { opacity: 0; } 
+	    to { opacity: 1; } 
+	}
 	.tabs-w {
 		// height: 50px;
 		width: 100vw;
@@ -478,6 +489,9 @@ page {
 			.item-w {
 				flex: 0 0 20%
 			}
+			&.active {
+				animation: listAnimation .2s linear;
+			}
 		}
 		.tabs-mask {
 			position: absolute;
@@ -487,11 +501,14 @@ page {
 			height: 100vh;
 			z-index: 20;
 			background-color: rgba(0,0,0,0.6);
+			&.active {
+				animation: listMaskAnimation .1s linear;
+			}
 		}
 		.tabs-right {
 			position: absolute;
 			height: 90%;
-			width: 40px;
+			width: 45px;
 			right: 0;
 			top: 50%;
 			transform: translateY(-50%);
@@ -500,7 +517,7 @@ page {
 			overflow: hidden;
 			.tabs-right-text {
 				height: 100%;
-				width: 30px;
+				width: 35px;
 				box-shadow: -2px 0 10px rgba(0,0,0,.1);
 				background: linear-gradient(to bottom, #fae9e9, #fff);
 				
@@ -509,6 +526,8 @@ page {
 	}
 	.search-w {
 		background-color: #fae9e9;
+		position: relative;
+		z-index: 51;
 	}
 	.item-w {
 		height: 80px;

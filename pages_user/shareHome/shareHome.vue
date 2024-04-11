@@ -199,7 +199,7 @@
 			<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10"> 
 				 <view 
 					class="list-item u-p-14" 
-					v-for="item in dataList" 
+					v-for="item in dataList1" 
 					:key="item.id"
 					>
 				 	<ProductColCard
@@ -209,7 +209,7 @@
 				 		 
 				 </view> 
 			</view>
-			<template v-if="dataList.length == 0">
+			<template v-if="dataList1.length == 0">
 				<view class="u-flex u-flex-center u-p-40">
 					<u-empty mode="data" :icon="base.empty" text="橱窗为空" />
 				</view>
@@ -372,7 +372,10 @@
 	const {user_info, balance} = toRefs(user) 
 	const userid = ref('') 
 	const curP = ref(1) 
+	const pageSize = ref(20) 
+	const dataListSum = ref(0)
 	const dataList = ref([]) 
+	const dataList1 = ref([]) 
 	const loadstatus = ref('loadmore')
 	const curP2 = ref(1) 
 	const dataList2 = ref([]) 
@@ -524,10 +527,20 @@
 			initData() 
 		} 
 	)
+	watch(
+		() => dataList.value,
+		(n) => {
+			dataList1.value = dataList.value.slice(0, curP.value*pageSize.value)
+			dataListSum.value = dataList.value.length
+		},
+		{
+			deep: true
+		}
+	)
 	const backBtnShow = computed(() => {
 		return getCurrentPages().length > 1
 	})
-	onReachBottom( () => {  
+	onReachBottom( () => {   
 		if(activeModeValue.value == '1') {
 			if(xuan.value != 1) return
 			getMoreData()
@@ -555,7 +568,7 @@
 		}})
 		if (res.code == 1) { 
 			dataList2.value = [...dataList2.value, ...res.list]   
-			if(dataList2.value.length >= res.total) {
+			if(dataList2.value.length >= dataListSum.value) {
 				loadstatus2.value = 'nomore'
 			}
 			else {
@@ -564,19 +577,34 @@
 		}
 	}
 	async function getMoreData() {
+		console.log(loadstatus.value)
 		if(loadstatus.value != 'loadmore') return
-		curP.value ++
-		await getData()
+		curP.value ++ 
+		await getDataSelf() //自行处理加载更多分页效果
+	}
+	async function getDataSelf() { 
+		if(loadstatus.value == 'loading') return
+		loadstatus.value = 'loading' 
+		await uni.$u.sleep(300)
+		dataList1.value = dataList.value.slice(0, curP.value*pageSize.value)
+		if(dataList1.value.length >= dataListSum.value) {
+			loadstatus.value = 'nomore'
+		}
+		else {
+			loadstatus.value = 'loadmore'
+		}
 	}
 	async function getData() {
 		if(loadstatus.value == 'loading') return
-		loadstatus.value = 'loading'
+		loadstatus.value = 'loading' 
 		const res = await $api.shop_product_list({params: {
 			login: userid.value,
-			cate: tabs_list.value[tabs_current.value].value
+			cate: tabs_list.value[tabs_current.value].value,
+			// p: curP.value
 		}})
 		if (res.code == 1) { 
-			dataList.value = res.list.sort((a,b) => b.sid - a.sid )
+			dataList.value = res.list.sort((a,b) => b.sid - a.sid )  
+			// dataList.value = [...dataList.value, ...res.list] 
 			homeInfo.value = res.shop || {}
 			xuan.value = res.xuan
 			homeUserInfo.value = res.info
@@ -585,6 +613,7 @@
 			hudong.value = res.hudong || {}
 			others.value = res.other || []
 			notice.value = res.notice || []
+			dataListSum.value = +res.total
 			setOnlineControl(res)
 			tabs_list.value = [
 				{
@@ -601,7 +630,7 @@
 					}
 				})
 			]
-			if(dataList.value.length >= +res.total || res.xuan == 1) {
+			if(dataList1.value.length >= dataListSum.value) {
 				loadstatus.value = 'nomore'
 			}
 			else {
@@ -697,13 +726,13 @@
 				getData()
 			}
 			else if(data.checked) {
-				dataList.value.unshift(data)
+				dataList.value.unshift(data) 
 				// dataList.value = dataList.value.sort((a,b) => b.id - a.id )
 			}
 			else {
 				let i = dataList.value.findIndex(ele => ele.id == data.id)
 				if(i == -1) return;
-				dataList.value.splice(i, 1)
+				dataList.value.splice(i, 1) 
 				if(dataList.value.length == 0) {
 					initDataParams();
 					getData()
