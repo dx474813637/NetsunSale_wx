@@ -322,8 +322,10 @@
 		:divideShow="true"
 		:xuanList="dataList"
 		:xuan="xuan"
+		:ygConfig="yg"
 		:onUpdateShow="handleChangeShow"  
-		@xuanEvent="xuanEvent"
+		@xuanEvent="xuanEvent" 
+		@ygEvent="ygEvent"
 	></ProductListPopup>
 	<TabBar :customStyle="customStyle" v-if="shopProductTabBarShow">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28 button-w" > 
@@ -393,6 +395,7 @@
 		paddingBottom: '80px',
 		background: 'transparent' 
 	})  
+	const yg = ref({})
 	const tabs_current = ref(0)
 	const tabs_list = ref([
 		{
@@ -614,6 +617,7 @@
 			others.value = res.other || []
 			notice.value = res.notice || []
 			dataListSum.value = +res.total
+			yg.value = res.yg
 			setOnlineControl(res)
 			tabs_list.value = [
 				{
@@ -709,6 +713,18 @@
 			}
 			rej(false)
 		})
+	}
+	async function ygEvent () {
+		const res = await $api.add_company_product();
+		if(res.code == 1) {
+			uni.showToast({
+				title: res.msg
+			})
+			setTimeout(async () => {
+				await initData()
+			}, 800)
+			
+		}
 	}
 	async function xuanEvent({data, index, checked}) {
 		// console.log(data, data.checked)

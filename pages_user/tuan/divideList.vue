@@ -1,5 +1,19 @@
 <template>
 	<view class="w">
+		<view class="u-p-20">
+			<view class="u-radius-8" style="overflow: hidden;">
+				<view class="h u-flex u-flex-items-center u-flex-between u-p-15 u-p-l-20 u-p-r-20" style="background-color: #F6EED9;">
+					<view><u-parse :content="info.a"></u-parse></view>
+					<view class="u-border u-radius-10 u-font-24 u-p-l-20 u-p-r-20 u-p-4 text-thin" 
+						@click="base.handleGoto({url: '/pages/rank/rank', params: {role: 1, cate: 0}})">
+						{{info.b}}</view>
+				</view>
+				<view class="f u-p-15 u-p-l-20 u-p-r-20 bg-white">
+					<u-parse :content="info.c"></u-parse>
+				</view>
+			</view>
+			
+		</view> 
 		<u-sticky bgColor="#f8f8f8">
 			<view class="tabs-w">
 				<u-tabs
@@ -59,6 +73,7 @@
 	// 	onlineControl
 	// } = share()
 	const $api = inject('$api')   
+	const info = ref('')  
 	// const role = ref('1') 
 	const tabs_current = ref(0)
 	const tabs_list = ref([]) 
@@ -101,6 +116,7 @@
 	async function initDivideTabsData() {
 		const res = await $api.divide_type()
 		if(res.code == 1 ) { 
+			info.value = res.info 
 			tabs_list.value = res.list.map(ele => {
 				return {
 					...ele,

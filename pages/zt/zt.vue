@@ -59,7 +59,7 @@
 								<view class="u-line-2 u-m-b-10 u-p-l-10 u-p-r-10">
 									{{item.name}}
 								</view>
-								<view class="u-radius-30 u-flex " style="background-color: #EA5743; height: 38px;">
+								<view class="u-radius-30 u-flex u-error-bg" style=" height: 38px;">
 									<view class="item u-flex-1 u-p-t-5 box-border u-p-l-20 u-radius-20 u-flex u-flex-items-center" style="background-color: #FDF3F1; position: relative; left: -2px; height: 100%;">
 										<!-- <view class="text-error u-font-20 u-m-l-10">到手价：</view> -->
 										<view>
@@ -72,7 +72,7 @@
 											></up-text>
 										</view>
 									</view>
-									<view class="item text-white u-flex u-flex-items-center u-p-l-10 u-p-r-10 qiang-btn u-radius-20" style="height: 100%;background-color: #EA5743;">
+									<view class="item text-white u-flex u-flex-items-center u-p-l-10 u-p-r-10 qiang-btn u-radius-20 u-error-bg" style="height: 100%;">
 										<text class="u-m-r-5 text-bold">抢</text>
 										<u-icon name="arrow-right" color="#fff" size="10"></u-icon>
 									</view>
@@ -108,7 +108,7 @@
 								<view class="u-line-2 u-m-b-10 " style="width: 100%;">
 									{{item.name}}
 								</view>
-								<view class="u-radius-30 u-flex " style="background-color: #EA5743; height: 38px; width: 100%;">
+								<view class="u-radius-30 u-flex u-error-bg" style=" height: 38px; width: 100%;">
 									<view class="item u-flex-1 u-p-t-5 box-border u-p-l-20 u-radius-20 u-flex u-flex-items-start" style="background-color: #FDF3F1; position: relative; left: -2px;">
 										<view class="">
 											<view class="text-error u-font-20 u-m-l-10">到手价：</view>
@@ -136,7 +136,7 @@
 										</view>
 										
 									</view>
-									<view class="item text-white u-flex u-flex-items-center u-p-l-10 u-p-r-10 qiang-btn u-radius-20" style="height: 100%;background-color: #EA5743;">
+									<view class="item text-white u-flex u-flex-items-center u-p-l-10 u-p-r-10 qiang-btn u-radius-20 u-error-bg" style="height: 100%;">
 										<text class="u-m-r-5 text-bold">抢</text>
 										<u-icon name="arrow-right" color="#fff" size="10"></u-icon>
 									</view>

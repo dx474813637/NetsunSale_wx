@@ -9,23 +9,34 @@
 					</view> 
 					<view class="item u-info" @click="$attrs.onUpdateShow(false)">取消</view> 
 				</view>
-				<view class="u-flex ">
-					<u-search
-						placeholder="请输入商品关键词" 
-						v-model="terms"
-						bgColor="#f8f8f8" 
-						:showAction="false"
-						shape="square"
-						@search="handleSearch"
-						></u-search>
-						<view class="u-m-l-20">
-							<u-button 
-								type="error"
-								shape="circle"
-								customStyle="height: 34px; border-radius: 6px"
-								@click="handleSearch"
-							>搜索</u-button>
-						</view>
+				<view class="u-flex u-flex-items-center">
+					<view class="u-flex-1 u-flex">
+						<u-search
+							placeholder="请输入商品关键词" 
+							v-model="terms"
+							bgColor="#f8f8f8" 
+							:showAction="false"
+							shape="square"
+							@search="handleSearch"
+							></u-search>
+							<view class="u-m-l-20">
+								<u-button 
+									type="error"
+									shape="circle"
+									customStyle="height: 34px; border-radius: 6px"
+									@click="handleSearch"
+								>搜索</u-button>
+							</view>
+					</view> 
+					<view class="u-m-l-30 u-p-l-30 u-border-left" v-if="ygConfig.zt == 1">
+						<u-button 
+							type="warning"
+							shape="circle" 
+							customStyle="height: 34px; border-radius: 6px"
+							@click="handleYgEvent"
+						>{{ygConfig.title}}</u-button>
+					</view> 
+					
 				</view>
 			</template>
 			<view class="tabs-w u-p-t-10 u-p-b-30 box-border bg-white" v-if="!searchMode">   
@@ -174,9 +185,13 @@
 		func: {
 			type: String,
 			default: ''
-		}
+		},
+		ygConfig: {
+			type: Object,
+			default: () => ({})
+		},
 	})
-	const emits = defineEmits(['xuanSuccess', 'xuanEvent'])
+	const emits = defineEmits(['xuanSuccess', 'xuanEvent', 'ygEvent'])
 	const order = ref(3)
 	const filter_index = ref(-1)
 	const filterList = ref([ 
@@ -190,7 +205,7 @@
 			type: 1,
 			order: 2
 		}, 
-	]) 
+	])  
 	// const curP = ref(1)
 	// const originList = ref([])
 	const dataList = ref([])
@@ -358,6 +373,19 @@
 	}
 	async function handleSearch() { 
 		refreshBtn()
+	}
+	function handleYgEvent() {
+		uni.showModal({
+			title: '提示',
+			content: props.ygConfig.desc,
+			success:async (r) => {
+				if (r.confirm) {
+					emits('ygEvent')
+				} else if (r.cancel) {
+					console.log('用户点击取消');
+				}
+			}
+		});
 	}
 	async function refreshBtn() {
 		listLoading.value = true

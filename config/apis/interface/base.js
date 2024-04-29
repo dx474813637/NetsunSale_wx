@@ -258,3 +258,6 @@ export const search_shop_product = (data) => http.get('search_shop_product', dat
 
 // web_preferred 优选列表 参数cate p
 export const web_preferred = (data) => http.get('web_preferred', data)
+
+// add_company_product 选品员工导入商家全部上架商品
+export const add_company_product = (data) => http.get('add_company_product', data)
