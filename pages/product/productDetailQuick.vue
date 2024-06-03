@@ -205,10 +205,10 @@
 						<text class="text-black">已售{{product_list.sales_volume}}件</text> 
 					</view> 
 				</view>  
-				<u-line length="100%" margin="10px 0 0 0"></u-line>
+				<!-- <u-line length="100%" margin="10px 0 0 0"></u-line> -->
 			</view> 
 		</view>
-		<view class="u-p-10 bg-white u-m-b-20">  
+		<!-- <view class="u-p-10 bg-white u-m-b-20">  
 			<view class="u-radius-8 bg-white u-p-l-20 u-p-r-20 u-font-30">  
 				<view class="u-flex u-flex-between u-flex-items-center u-p-l-10 u-p-r-10 u-p-b-14 ">
 					<view class="item text-bold">发现笔记</view>
@@ -232,7 +232,7 @@
 					</view>
 				</view>
 			</view> 
-		</view>
+		</view> -->
 		
 		<view class="u-p-20 bg-white u-m-b-20">
 			<view class="u-radius-8 u-flex u-flex-items-center u-p-20" style="background-color: #FAFAFA;" @click="base.handleGoto({url: '/pages_user/shop/shop', params: {login: product_list.login}})">
@@ -264,19 +264,30 @@
 		
 		<view class="pro-desc">
 			<view class="item">
-				<zeroLazyLoad  
+				<image  
 					class="lazy-img" 
 					v-for="(item, index) in product_desc_arr" 
 					:key="index"
-					:image="item" 
-					imgMode="widthFix"
-					></zeroLazyLoad>
+					:src="item" 
+					mode="widthFix"
+					></image>
 			</view> 
 			
 		</view>
+		<view class="mubiao u-m-t-30"> 
+			<QuickCreateOrder  
+				:product_base_data="product_list"
+				:product_shop_data="company_list"
+				:sku="product_sku"
+				:spec_prices="spec_prices"
+				:coupon_list="coupon_list"
+				 isOrder 
+				@couponListClick="hanldeCouponListClick"
+			></QuickCreateOrder>
+		</view>
 		<u-safe-bottom></u-safe-bottom>
 	</view>
-	<view class="fixed-menus bg-white uni-shadow-base">
+	<!-- <view class="fixed-menus bg-white uni-shadow-base">
 		<view 
 			class="item-mine u-flex-column u-flex-center u-flex-items-center" 
 			@click="base.handleGoto( kefu, 'serviceChat')"
@@ -284,37 +295,13 @@
 			<u-icon name="server-man" :color="themeColor" size="25"></u-icon>
 			<view class="text-error u-font-24 text-bold">客服</view>
 		</view>
-	</view>
-	<TabBar :customStyle="{boxShadow: 'none', border: '1rpx solid #eee' }">
+	</view> -->
+	<TabBar :customStyle="{boxShadow: 'none', border: '1rpx solid #eee' }" v-if="menusShow">
 		<view class="u-flex u-flex-between u-flex-items-center u-p-l-20 u-p-r-20 u-font-28" style="height: 100%;">
-			<view class="u-flex u-flex-items-center" style="height: 100%;"> 
-				<view class="item u-flex-column u-flex-items-center u-p-l-10 u-p-r-10" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/index/index'})">
-					<u-icon name="account" color="#000" size="28"></u-icon>
-					<view class="u-info">我的</view>
-				</view>
-				<view class="item u-flex-column u-flex-items-center u-p-l-10 u-p-r-10" v-if="!hideHomeBtn" @click="base.handleGoto({type: 'reLaunch', url: '/pages/home/home'})">
-					<u-icon name="home" color="#000" size="28"></u-icon>
-					<view class="u-info">首页</view>
-				</view>
-				<!-- <view class="item u-flex-column u-flex-items-center" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/reservation_list/reservation_list'})">
-					<u-icon name="list-dot" :color="#000" size="28"></u-icon>
-					<view class="u-info">店铺</view>
-				</view> -->
-				<view class="item u-flex-column u-flex-items-center u-p-l-10 u-p-r-10" @click="base.handleGoto({type: 'reLaunch', url: '/pages_user/cart/cart'})" style="position: relative;">
-					<u-icon name="shopping-cart" color="#000" size="28"></u-icon>
-					<view class="u-info">购物车</view>
-					<up-badge :offset="[-5,2]" numberType="overflow"  max="99" :value="cart_list_abled_num" absolute></up-badge>
-				</view> 
-			</view>
-			<view class="item u-flex u-flex-items-center" >
-				<u-button type="warning" @click="addCartBtn" :customStyle="{borderRadius: '8px 0 0 8px', padding: '0 18px' }" >
+			<view class="item u-flex u-flex-items-center u-flex-1" > 
+				<u-button type="error" @click="gotoBottom" shape="circle" >
 					<view class="u-flex"> 
-						<text class="u-m-l-8 u-p-b-5   text-nowrap">加入购物车</text>
-					</view>
-				</u-button>
-				<u-button type="error" @click="addCartBtn(true)" :customStyle="{borderRadius: '0 8px 8px 0', padding: '0 18px'}"  >
-					<view class="u-flex"> 
-						<text class="u-m-l-8 u-p-b-5  ">立即购买</text>
+						<text >点我下单 优先发货</text>
 					</view>
 				</u-button>
 			</view> 
@@ -397,6 +384,7 @@
 	const spec_prices = ref([])
 	const coupon_list = ref([])
 	const swiper_index = ref(0)
+	const menusShow = ref(true)
 	const showUserPhone = ref(false)
 	const couponListShow = ref(false)
 	const showProductAttr = ref(false)
@@ -436,6 +424,13 @@
 	onShow(() => {
 		
 	})
+	onPageScroll ((e) => { 
+		if(e.scrollTop < 500) {
+			menusShow.value = true
+		} else {
+			menusShow.value = false
+		}
+	})
 	onLoad(async (options) => {
 		// console.log(options, 2)
 		if(options.hasOwnProperty('id')) {
@@ -460,7 +455,15 @@
 		await getData()
 		// console.log(cart_list_num.value)
 	}) 
-	
+	function gotoBottom() {
+		uni.pageScrollTo({
+			selector: '.mubiao',
+			duration: 300
+		});
+	} 
+	function hanldeCouponListClick() {
+		couponListShow.value = true
+	}
 	function handleChangeShow(data) {
 		showProductAttr.value = data
 	}
@@ -482,11 +485,11 @@
 	async function getPhone(data) {
 		// uni.showLoading()
 		await user.refreshUserData()
-		showUserPhone.value = false 
+		showUserPhone.value = false  
 		if(eventMode.value == 'coupon') {
 			handleChangeShow5(true)
 			eventMode.value = ''
-		} 
+		}  
 		// uni.showLoading()
 		// await changeRole()
 	}
@@ -630,5 +633,9 @@
 		.item {
 			flex: 0 0 50%
 		}
+	}
+	.pro-desc image {
+		display: block;
+		width: 100%;
 	}
 </style>

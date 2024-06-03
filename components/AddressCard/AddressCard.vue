@@ -16,7 +16,7 @@
 			</view>
 		</view> -->
 		<view class="card-row u-flex u-flex-items-center u-flex-between u-m-b-20"> 
-			<u-icon name="map-fill" size="26" color="#E66449"></u-icon>
+			<u-icon name="map-fill" size="26" :color="themeColor"></u-icon>
 			<view class="item u-flex-1 u-m-l-20">
 				<view class="text-base u-m-b-10">
 					{{origin.area_name}}

@@ -171,10 +171,10 @@
 	const zt = ref('')
 	const info = ref({})
 	onReady(() => {
-		uni.setNavigationBarColor({
-			backgroundColor: themeColor.value,
-			frontColor: '#ffffff'
-		})
+		// uni.setNavigationBarColor({
+		// 	backgroundColor: themeColor.value,
+		// 	frontColor: '#ffffff'
+		// })
 	})
 	onLoad(async (options) => { 
 		if(options.hasOwnProperty('id')) {

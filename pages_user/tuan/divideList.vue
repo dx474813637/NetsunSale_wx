@@ -1,6 +1,6 @@
 <template>
 	<view class="w">
-		<view class="u-p-20">
+		<view class="u-p-20" v-if="info.zt == '1'">
 			<view class="u-radius-8" style="overflow: hidden;">
 				<view class="h u-flex u-flex-items-center u-flex-between u-p-15 u-p-l-20 u-p-r-20" style="background-color: #F6EED9;">
 					<view><u-parse :content="info.a"></u-parse></view>

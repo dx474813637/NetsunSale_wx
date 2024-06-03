@@ -1,14 +1,21 @@
 <template>
 	<view class="w">
 		<view class="list u-p-10">
-			<view class="item u-p-10"
-				v-for="item in indexList"
-				:key="item.id"
-				>
-				<AddressCard
-					:origin="item"
-				></AddressCard>
-			</view>
+			<up-swipe-action>
+				<view class="item u-p-10 " v-for="item in indexList" :key="item.id">
+					<up-swipe-action-item
+						:options="options1" 
+						:name="item.id" 
+						@click="handleDel"
+						>  
+							<AddressCard
+								:origin="item"
+							></AddressCard>  
+					</up-swipe-action-item>
+				</view>
+				
+			</up-swipe-action>
+			
 		</view>
 		<template v-if="indexList.length == 0">
 			<view class="u-flex u-flex-center u-p-40">
@@ -52,6 +59,13 @@
 			p: curP.value,
 		}
 	})
+	const options1 = reactive([{  
+	    text: '删除',
+		style: {  
+			backgroundColor: themeColor.value,  
+			color: '#fff',  
+		} 
+	}]);  
 	onLoad(async () => {
 		if(regional_list.value.length == 0 && !regional_list_loading.value ) {
 			base.get_regional_list()
@@ -119,11 +133,30 @@
 	function addAddrBtn() {
 		base.handleGoto('/pages_user/address/addressDetail')
 	}
+	async function handleDel(e) {
+		console.log(e)
+		uni.showLoading()
+		const res = await $api.address_del({params: {
+			id: e.name
+		}})
+		if(res.code == 1) { 
+			uni.showToast({
+				title: res.msg
+			}) 
+			refreshList()
+		}
+	}
 </script>
 
 <style lang="scss" scoped>
 	.w {
 		padding-bottom: 60px;
 	}
-
+	.list {
+		::v-deep {
+			.u-swipe-action-item {
+				border-radius: 8px;
+			}
+		}
+	}
 </style>

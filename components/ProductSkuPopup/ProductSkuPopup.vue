@@ -18,7 +18,7 @@
 					</view>
 					<view class="u-m-l-20">
 						<view class="text-bold u-line-1 u-m-b-20">{{product_base_data.name}}</view>
-						<view class="text-error">
+						<view class="text-error" v-if="active_sku_price_show">
 							<text class="u-font-28 text-bold">￥</text>
 							<text class=" text-bold u-font-38" style="font-family: cursive; ">{{active_sku_price}}</text> 
 						</view>
@@ -179,7 +179,8 @@
 			img = active_sku_preview_img.value;
 		}
 		return img 
-	})
+	}) 
+	const active_sku_price_show = computed(() => Object.values(sku_form.value).every(ele => ele))
 	const active_sku_price = computed(() => {
 		let price = '';
 		let i = findIndexby()

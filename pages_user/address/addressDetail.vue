@@ -87,7 +87,15 @@
 		</u--form>
 		
 		<view class="u-p-t-20">
-			<u-button type="error" @click="submit">提交</u-button>
+			<u-button type="error" @click="submit" shape="circle">提交</u-button>
+		</view>
+		<view class="u-p-t-20">
+			<u-button type="success" @click="wxChooseAddress" shape="circle">
+				<view class="u-flex u-flex-items-center">
+					<u-icon name="weixin-circle-fill" size="22" color="#fff"></u-icon>
+					<view class="u-m-l-20">从微信导入地址（可粘贴识别）</view>
+				</view>
+			</u-button>
 		</view>
 		<!-- <view class="u-p-t-20 u-m-b-40" v-if="addressData.id">
 			<u-button type="error" @click="delAddrClick">删除地址</u-button>
@@ -204,6 +212,32 @@
 	}
 	function handleValArea(e) { 
 		addressData.value.area_name = e.detail.value.map(ele => ele.text).join('')
+	}
+	
+	function wxChooseAddress() { 
+		uni.chooseAddress({
+			success(res) {
+				console.log(res)
+				let {
+					userName,
+					postalCode,
+					provinceName,
+					cityName,
+					countyName,
+					detailInfo,
+					nationalCode,
+					telNumber
+				} = res; 
+				addressData.value.name = userName
+				addressData.value.tel = telNumber
+				addressData.value.area = nationalCode
+				addressData.value.area_name = `${provinceName}${cityName}${countyName}`
+				addressData.value.address = detailInfo 
+			},
+			fail(err) {
+				console.log(err)
+			}
+		}) 
 	}
 	
 </script>

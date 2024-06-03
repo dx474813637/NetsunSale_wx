@@ -103,6 +103,10 @@
 				<!-- 取消订单 -->
 				<up-button type="info" shape="circle" @click="cancelOrderShow = true">{{btnList.button7_title}}</up-button>
 			</view>
+			<view class="item u-p-20" v-if="btnList.button9">
+				<!-- 订单开发票 -->
+				<up-button type="info" shape="circle" @click="orderInvoiceShow = true">{{btnList.button9_title}}</up-button>
+			</view>
 			<view class="item u-p-20" v-if="btnList.button4"> 
 				<!-- 我要退款 -->
 				<up-button type="error" shape="circle" plain @click="refundOrderShow = true">{{btnList.button4_title}}</up-button>
@@ -147,6 +151,13 @@
 		:onUpdateShow="handleChangeShow2"  
 		@submitService="submitService" 
 	></OrderServicePopup>
+	<OrderInvoicePopup
+		:show="orderInvoiceShow" 
+		title="订单发票"  
+		:list="list"
+		:onUpdateShow="handleChangeShow6"  
+		@submit="submitInvoice" 
+	></OrderInvoicePopup>
 	<OrderExpressPopup
 		:show="orderExpressPopupShow" 
 		title="物流信息"  
@@ -195,6 +206,7 @@
 	const btnList = ref([])
 	const coupon_id = ref('')
 	const cpy_pay_info = ref('')
+	const orderInvoiceShow = ref(false)
 	const showCpyPayInfo = ref(false)
 	const couponListShow = ref(false)
 	const cancelOrderShow = ref(false)
@@ -395,6 +407,32 @@
 			}
 		});
 	}
+	async function submitInvoice(data={}) {
+		uni.showModal({
+			title: '提示',
+			content: '确认发票推送给供应商',
+			success: async function (res) {
+				if (res.confirm) { 
+					const r = await $api.sub_invoice({
+						params: {
+							order: list.value.id, 
+						}
+					})
+					if(r.code == 1) {
+						handleChangeShow6(false)
+						uni.showToast({
+							title: r.msg,
+							icon: 'none'
+						}) 
+						await getData()
+					}
+					orderInvoiceShow.value = false
+				} else if (res.cancel) {
+					console.log('用户点击取消');
+				}
+			}
+		});
+	}
 	async function orderBuyBtn () {
 		if(user_info.value.qy == 1) {
 			handleChangeShow5(true)
@@ -523,6 +561,9 @@
 	}
 	function handleChangeShow5(data) {
 		showCpyPayInfo.value = data
+	}
+	function handleChangeShow6(data) {
+		orderInvoiceShow.value = data
 	}
 	async function finishTime() {
 		uni.showLoading()

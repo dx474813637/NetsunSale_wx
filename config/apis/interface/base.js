@@ -15,6 +15,8 @@ export const address = (data) => http.get('address', data)
 export const address_detail = (data) => http.get('address_detail', data)
 // address_save 地址新增/修改 参数 id修改时需要传 area地区编码 area_name地区 address详细地址 default=1默认 0不默认 name收货人 tel联系电话
 export const address_save = (data) => http.get('address_save', data)
+// address_del 删除地址 参数id
+export const address_del = (data) => http.get('address_del', data)
 
 // xcx_login
 export const xcx_login = (data) => http.get('xcx_login', data)
@@ -67,8 +69,9 @@ export const order_refund = (data, config) => http.post('order_refund', data, co
 //           );
 // json字符串  id是库存的id
 export const create_order = (data) => http.get('create_order', data)
+export const create_order_post = (data, config={}) => http.post('create_order', data, config)
 // xcx_pay  微信支付 参数order_id 订单id
-export const xcx_pay =  (data, config={}) => http.post('xcx_pay', data, config)
+export const xcx_pay = (data, config={}) => http.post('xcx_pay', data, config)
 
 // 订单状态  0 待付款 1付款成功 2待收货 3订单完成 
 // 4评分完成 5支付中 6支付失败
@@ -261,3 +264,14 @@ export const web_preferred = (data) => http.get('web_preferred', data)
 
 // add_company_product 选品员工导入商家全部上架商品
 export const add_company_product = (data) => http.get('add_company_product', data)
+
+// add_invoice 订单开发票 参数order 订单id name公司名称 no纳税人识别号 address地址 tel电话 bank开户行 account银行账号 email邮箱
+export const add_invoice = (data, config={}) => http.post('add_invoice', data, config) 
+
+// sub_invoice 发票推送给供应商 参数order订单id 在推送前，add_invoice接口可以编辑信息。
+export const sub_invoice = (data) => http.get('sub_invoice', data)
+
+// order_invoice 订单开票信息 参数order订单id，会返回一个开票信息列表记录，可以复用这些信息，根据纳税人识别号会过滤相同信息。信息详情里面zt不等于0，就不允许修改了。
+export const order_invoice = (data) => http.get('order_invoice', data)
+
+// 在订单详情接口 button9 申请开票按钮，点按钮就打开一个页面（可以弹窗），就是编辑订单开发票页面，默认就去读取order_invoice接口。

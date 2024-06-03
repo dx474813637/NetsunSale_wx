@@ -48,8 +48,8 @@
 				</scroll-view> 
 			</view>  
 			<template #footer>
-				<view class="u-p-20">
-					<u-button type="error" shape="circle" @click="submit">立即支付</u-button>
+				<view class="u-p-20" v-if="submitBtnText">
+					<u-button type="error" shape="circle" @click="submit">{{submitBtnText}}</u-button>
 				</view>
 			</template>
 		</PopupNormal>
@@ -86,6 +86,10 @@
 		activeId: {
 			type: String,
 			default: ''
+		},
+		submitBtnText: {
+			type: String,
+			default: '立即支付'
 		}
 	})   
 	const emits = defineEmits(['confirmCoupon', 'refresh', 'submit'])
