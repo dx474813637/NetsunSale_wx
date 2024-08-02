@@ -3,10 +3,10 @@
 		<view class="card-header u-p-20 u-radius-8" :style="{
 			backgroundImage: 'linear-gradient(to right, #FCEABE, #BBA16D)'
 		}">
-			<view class="u-flex u-flex-between coupon u-p-10">
-				<view class="item u-flex-1 u-p-l-20 box-border" >
+			<view class="u-flex u-flex-between coupon u-p-0">
+				<view class="item u-flex-1 u-p-l-10 box-border u-flex-column u-flex-between u-flex-items-start" >
 					<view class="coupon-cate">{{origin.cate}}</view>
-					<view class="coupon-money u-flex u-flex-items-baseline u-font-bold u-p-l-10">
+					<view class="coupon-money u-flex u-flex-items-baseline u-font-bold u-p-l-10 u-p-r-10">
 						<view class="num">{{origin.minus}}</view>
 						<view class="num-dw u-p-l-10">元</view>
 					</view>
@@ -76,7 +76,7 @@
 		.icon-w {
 			position: absolute;
 			right: -50px;
-			top: -30px;
+			top: -40px;
 		}
 		.item {
 			height: 90px;
@@ -100,7 +100,7 @@
 		}
 		.coupon-money {
 			.num {
-				font-size: 60px;
+				font-size: 45px;
 				font-family: cursive;
 			}
 		}

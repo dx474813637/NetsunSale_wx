@@ -94,7 +94,7 @@ export const web_danye = (data) => http.get('web_danye', data)
 export const cate_list = (data) => http.get('cate_list', data)
 // web_product  参数cate order=2 按分成从高到低排序， 
 // order=3 按销量排序 order=4 按价格低到高排序  order=5 按价格高到低排序 
-// 其他值或不传默认排序 login=商家账号
+// 其他值或不传默认排序 login=商家账号; zone=1 专区商品
 export const web_product = (data) => http.get('web_product', data)
 // web_search  
 export const web_search = (data) => http.get('web_search', data)
@@ -275,3 +275,10 @@ export const sub_invoice = (data) => http.get('sub_invoice', data)
 export const order_invoice = (data) => http.get('order_invoice', data)
 
 // 在订单详情接口 button9 申请开票按钮，点按钮就打开一个页面（可以弹窗），就是编辑订单开发票页面，默认就去读取order_invoice接口。
+
+
+// vouchers_bind 绑定电子券 参数id卡号 纯数字; guid密码 字符串有符合-
+export const vouchers_bind = (data) => http.get('vouchers_bind', data)
+
+// web_zone  
+export const web_zone = (data) => http.get('web_zone', data)

@@ -86,7 +86,7 @@
 				"navigationBarTitleText": "商品列表",
 				"enablePullDownRefresh": false,
 				"onReachBottomDistance": 80
-			} 
+			}
 		}, {
 			"path": "pages/product/productDetail",
 			"style": {
@@ -98,10 +98,10 @@
 			"path": "pages/product/productDetailQuick",
 			"style": {
 				"navigationBarTitleText": "商品详情",
-				"enablePullDownRefresh": false 
+				"enablePullDownRefresh": false
 			}
 
-		}, 
+		},
 		// {
 		// 	"path": "pages/login/login",
 		// 	"style": {
@@ -188,6 +188,15 @@
 				"enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/zone/zone",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white"
+			}
 		}
 	],
 	"subPackages": [{
@@ -254,7 +263,7 @@
 					"enablePullDownRefresh": false
 				}
 
-			}, 
+			},
 			// {
 			// 	"path": "haibao/haibao",
 			// 	"style": {
@@ -266,14 +275,14 @@
 			{
 				"path": "tuan/darenList",
 				"style": {
-					"navigationBarTitleText": "邀请达人列表",
+					"navigationBarTitleText": "邀请列表",
 					"enablePullDownRefresh": false
 				}
 
 			}, {
 				"path": "tuan/mynewtuan",
 				"style": {
-					"navigationBarTitleText": "员工发展团长列表",
+					"navigationBarTitleText": "员工发展列表",
 					"enablePullDownRefresh": false
 				}
 
@@ -377,12 +386,23 @@
 					"navigationBarTitleText": "我的优惠券",
 					"enablePullDownRefresh": false
 				}
+			},
+			{
+				"path": "shop_rz/shop_rz",
+				"style": {
+					"navigationBarTitleText": "店铺详情"
+				}
+			},
+			{
+				"path": "ecCoupon/bind",
+				"style": {
+					"navigationBarTitleText": "绑定福利券"
+				}
 			}
 		]
 	}, {
 		"root": "pages_note",
-		"pages": [
-			{
+		"pages": [{
 				"path": "note/note",
 				"style": {
 					"navigationBarTitleText": "",

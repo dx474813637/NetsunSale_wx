@@ -239,13 +239,13 @@
 	])  
 	const role_list = ref([
 		{
-			name: '达人排行榜',
+			name: '特卖店排行榜',
 			value: '1',
 			api_name: 'daren_ranking',
 			disabled: false
 		},
 		{
-			name: '团长排行榜',
+			name: '特卖店排行榜',
 			value: '2',
 			api_name: 'tuan_ranking',
 			disabled: false

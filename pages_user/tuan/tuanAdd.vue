@@ -39,14 +39,14 @@
 				</u-form-item>    
 				<u-form-item
 				 	:borderBottom="false"
-				 	label="达人分成比例(%)" 
+				 	label="分成比例(%)" 
 				 	prop="divide"  
 				 	ref="divide"
 				 	required 
 				 	> 
 				 	<up-input 
 				 		v-model="model.divide"
-				 		placeholder="达人分成比例(%)"
+				 		placeholder="分成比例(%)"
 						readonly 
 				 		></up-input> 
 					<!-- <slider :value="model.divide" activeColor="#F12E24" @changing="lokk" showValue  /> -->

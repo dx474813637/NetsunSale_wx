@@ -319,29 +319,56 @@
 			}
 		});
 	}
-	function confirmReceiveBtn() { 
-		uni.showModal({
-			title: '提示',
-			content: '是否确认收货',
-			success: async function (res) {
-				if (res.confirm) {
-					const r = await $api.change_order_status({
-						params: {
-							order_id: list.value.id
-						}
-					})
-					if(r.code == 1) {
-						uni.showToast({
-							title: r.msg,
-							icon: 'none'
-						})  
-						await getData()
-					}
-				} else if (res.cancel) {
-					console.log('用户点击取消');
-				}
+	async function confirmReceiveEvent() {
+		const r = await $api.change_order_status({
+			params: {
+				order_id: list.value.id
 			}
-		});
+		})
+		if(r.code == 1) {
+			uni.showToast({
+				title: r.msg,
+				icon: 'none'
+			})  
+			await getData()
+		}
+	}
+	function confirmReceiveBtn() { 
+		if (wx.openBusinessView && list.value.transaction_id) {
+			  wx.openBusinessView({
+				businessType: 'weappOrderConfirm',
+				extraData: {
+				  // merchant_id: '1230000109',
+				  // merchant_trade_no: '1234323JKHDFE1243252',
+				  transaction_id: list.value.transaction_id
+				},
+				async success(res) {
+				  console.log(res)
+				  //dosomething
+				  await confirmReceiveEvent()
+				},
+				fail(err) {
+				  //dosomething
+				  console.log(err)
+				},
+				complete() {
+				  //dosomething
+				}
+			  });
+		} else {
+			//引导用户升级微信版本
+			uni.showModal({
+				title: '提示',
+				content: '是否确认收货',
+				success: async function (res) {
+					if (res.confirm) {
+						await confirmReceiveEvent()
+					} else if (res.cancel) {
+						console.log('用户点击取消');
+					}
+				}
+			});
+		} 
 	}
 	function applyServiceBtn() { 
 		orderServiceShow.value = true 
@@ -537,6 +564,15 @@
 								guid: guid
 							}
 						}) 
+						if(res.code == 1) {
+							if(res.state == 1) {
+								couponListShow.value = false
+								uni.showLoading()
+								await getData()
+								return
+							}
+						}
+						
 					}
 					couponListShow.value = false
 					uni.showLoading()

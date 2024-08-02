@@ -18,15 +18,14 @@
 				</view>
 				<scroll-view class="main-list u-p-l-30 u-p-r-30" scroll-y >
 					<u--form
-						labelPosition="top" 
+						labelPosition="left" 
 						:model="model"  
 						ref="uForm"
-						labelWidth="100%"
+						labelWidth="120px"
 						:borderBottom="false"
 						:labelStyle="{
 							color: '#7c88a0', 
-							fontSize: '36rpx',  
-							fontWeight: 'bold'
+							fontSize: '32rpx',   
 						}"
 						>
 						<template v-if="invoiceFormShow">
@@ -67,8 +66,7 @@
 								ref="tel"
 								required 
 								>  
-								<up-input
-									type="number"
+								<up-input 
 									v-model="model.tel"
 									placeholder="电话"  
 									:disabled="formItemDisabled"
@@ -134,7 +132,7 @@
 							</u-form-item> 
 						</template>
 						<template v-else>
-							<up-alert description="点击发票信息可快速填入发票信息" type="warning"></up-alert>
+							<up-alert description="点击发票信息可复用信息" type="warning"></up-alert>
 							<template v-if="detail.name">
 								<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-20 u-m-t-20">
 									<view class="item text-base">当前订单发票信息</view>
@@ -174,7 +172,7 @@
 								</view>
 							</template>
 							<view class="u-flex u-flex-between u-flex-items-center u-p-5  u-m-b-20 u-m-t-20">
-								<view class="item text-base">发票推送历史记录</view> 
+								<view class="item text-base">发票推送记录</view> 
 							</view>
 							<view class="u-flex u-flex-items-start u-m-b-20 u-font-30"
 								v-for="(item, index) in invoiceList"
@@ -278,7 +276,7 @@
 	const isFirst = ref(false)
 	const invoiceLoading = ref(false)
 	const modeBtn = computed(() => {
-		if(invoiceFormShow.value) return '历史记录'
+		if(invoiceFormShow.value) return '复用信息'
 		return '返回表单'
 	})
 	const formChange = computed(() => {
@@ -319,20 +317,25 @@
 			message: '不能为空',
 			trigger: ['blur', 'change']
 		},
-		tel: [
-			{
-				required: true, 
-				message: '请输入手机号',
-				trigger: ['change','blur'],
-			},
-			{ 
-				validator: (rule, value, callback) => { 
-					return uni.$u.test.mobile(value);
-				},
-				message: '手机号码不正确', 
-				trigger: ['change','blur'],
-			}
-		],
+		tel: {
+			required: true,
+			message: '不能为空',
+			trigger: ['blur', 'change']
+		},
+		// [
+		// 	{
+		// 		required: true, 
+		// 		message: '请输入手机号',
+		// 		trigger: ['change','blur'],
+		// 	},
+		// 	{ 
+		// 		validator: (rule, value, callback) => { 
+		// 			return uni.$u.test.mobile(value);
+		// 		},
+		// 		message: '手机号码不正确', 
+		// 		trigger: ['change','blur'],
+		// 	}
+		// ],
 		bank: {
 			required: true,
 			message: '不能为空',

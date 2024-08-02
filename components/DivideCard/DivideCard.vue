@@ -34,13 +34,13 @@
 			</view>
 		</view>
 		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.tuan_total_fee">
-			<view class="item u-info">团长分成（元）</view> 
+			<view class="item u-info">分成（元）</view> 
 			<view class="item">
 				<up-text mode="price" :text="props.origin.tuan_total_fee"></up-text> 
 			</view>
 		</view>
 		<view class="u-flex u-flex-between u-flex-items-center u-p-5 u-m-b-10" v-if="props.origin.daren_total_fee">
-			<view class="item u-info">达人分成（元）</view> 
+			<view class="item u-info">分成（元）</view> 
 			<view class="item">
 				<up-text mode="price" :text="props.origin.daren_total_fee"></up-text> 
 			</view>

@@ -18,7 +18,7 @@
 			</view> 
 		</view> -->
 		<view class="u-p-20  text-bold u-info u-font-28">
-			团长列表
+			列表
 		</view>
 		<view class="list">  
 			<view class="list-item u-m-b-15" v-for="item in dataList" :key="item.id">
@@ -126,7 +126,7 @@
 	onUnload(() => {
 		uni.$off('updateData', initDataList)
 	})
-	const title = computed(() => `达人分成比例：${tuan.value.divide}%`)
+	const title = computed(() => `分成比例：${tuan.value.divide}%`)
 	
 	function cardClick() {
 		if(role.value != '2') return

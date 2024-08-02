@@ -41,7 +41,7 @@
 			}"> 
 			<view class="home-info-w u-p-20 u-m-l-30 u-m-r-30 bg-white "> 
 				<view class="u-flex u-flex-items-center u-flex-between"> 
-					<view class="item u-flex u-flex-items-center" style="position: relative;height: 45px;">
+					<view class="item u-flex u-flex-items-center" style="position: relative;height: 45px;" @click="base.handleGoto({url: '/pages_user/shop_rz/shop_rz', params: {pic: homeInfo.rz_pic}})">
 						<view class="avatar-w u-m-r-20 " v-if="homeInfo.logo">
 							<up-image
 								:src="homeInfo.logo"
@@ -51,14 +51,18 @@
 							></up-image> 
 						</view>
 						<view class="u-p-8">
-							<view class="home-nick u-line-1 u-m-b-5 text-bold u-font-34" >
-								<template v-if="homeInfo.company">
-									{{homeInfo.company}}
-								</template>
-								<template v-else>
-									暂无旺铺名
-								</template> 
+							<view class="u-flex u-flex-items-center u-flex-between">
+								<view class="home-nick u-flex-1 u-line-1 u-m-b-5 text-bold u-font-34" >
+									<template v-if="homeInfo.company">
+										{{homeInfo.company}}
+									</template>
+									<template v-else>
+										暂无旺铺名
+									</template> 
+								</view>
+								<u-icon name="arrow-right" color="#999"></u-icon>
 							</view>
+							
 							<view class="home-nick u-line-2 u-font-26" >
 								<text class="text-base u-m-r-20" v-if="sale > 0">已售{{sale}}</text>
 								<!-- <text class="u-p-4 u-p-l-15 u-p-r-15 u-warning u-warning-light-bg u-radius-4" v-if="">{{homeInfo.title}}</text> -->

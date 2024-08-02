@@ -98,12 +98,12 @@
 
 		// },
 		{
-			name: '团长',
+			name: '店长',
 			disabled: false,
 			value: '2',
 			cardData: {
 				bgColor: '#e1093c',
-				title: '成为团长',
+				title: '成为店长',
 				sub: '',
 			}
 		},

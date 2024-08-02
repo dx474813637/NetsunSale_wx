@@ -484,7 +484,7 @@
 		if(!isMe.value) return ele
 		if(noLimit.value && ele.value == 1) {
 			ele.disabled = true
-			ele.msg = '成为团长或达人才能开通商品橱窗功能'
+			ele.msg = '成为店长才能开通商品橱窗功能'
 		}
 		return ele
 	}))
