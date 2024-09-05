@@ -76,6 +76,7 @@
 	const curP = ref(1)
 	const cateId = ref('')
 	const order = ref('')
+	const pf = ref(0)
 	const cate_label = ref('全部')
 	const dataList = ref([])
 	const loadstatus = ref('loadmore')
@@ -90,7 +91,8 @@
 			return {
 				p: curP.value,
 				cate: cateId.value ,
-				order: order.value 
+				order: order.value ,
+				pf: pf.value ,
 			}
 		}
 		
@@ -104,6 +106,9 @@
 		}
 		if(options.hasOwnProperty('order')) {
 			order.value = options.order
+		}
+		if(options.hasOwnProperty('pf')) {
+			pf.value = +options.pf
 		}
 		if(cate_list.value.length == 0) {
 			await cate.getCateData() 

@@ -6,37 +6,31 @@
 		activeColor="#fff"
 	> 
 		<view class="nav-w u-flex u-flex-center box-border u-flex-items-center u-p-l-15 box-border" style="width: 100%; height: 100%;max-width: 100%;"> 
-			<view class="u-flex u-flex-items-center item" > 
-				<!-- <view class="logo-w" @click="base.handleGoto({url: '/pages/home/home', type: 'reLaunch'})" > 
-					<image
-						:src="originData.logo"
-						mode="heightFix"
-					></image>
-				</view>  -->
-			</view>
-			<view class="u-flex u-flex-items-center item nav-center u-flex-1 u-m-r-20 u-m-l-20">
-				<!-- <view class="search-w ">
-					<u-search
-						placeholder="请输入关键字" 
-						v-model="keyword" 
-						:showAction="false"
-						shape="round"
-						:clearabled="false"
-						bgColor="#f8f8f8"
-						@search="handleSearch"
-					></u-search>
-				</view> -->
-				<view class="logo-w" @click="base.handleGoto({url: '/pages/home/home', type: 'reLaunch'})" >
+			<view class="u-flex u-flex-items-center item" >
+				<view class="logo-w" @click="base.handleGoto({url: '/pages/home/home', type: 'reLaunch'})" > 
 					<image
 						:src="originData.logo"
 						mode="heightFix"
 					></image>
 				</view>  
-			</view> 
-			<!-- <view class="right-w item" :style="{
+			</view>
+			<view class="u-flex u-flex-items-center item nav-center u-flex-1 u-m-r-20 u-m-l-20">
+				<view class="search-w ">
+					<u-search
+						placeholder="请输入关键字" 
+						v-model="keyword" 
+						:showAction="false"
+						shape="round"
+						clearabled
+						bgColor="#f8f8f8"
+						@search="handleSearch"
+					></u-search>
+				</view>
+			</view>  
+			<view class="right-w item" :style="{
 				width: `${menuButtonInfo.width}px`,
 				height:'100%'
-			}"></view> -->
+			}"></view> 
 		</view>
 	</navBar> 
 	<view class="w box-border">
@@ -171,8 +165,16 @@
 		<u-safe-bottom></u-safe-bottom>
 		
 	</view>
+	<view class="help-btn u-p-10 u-p-l-30 u-p-r-30 uni-shadow-base" @click="showHelpInfo = true">
+		<u-icon name="question-circle" size="24" color="#007aff"></u-icon>
+	</view>
 	
-	
+	<ProductExpressPopup
+		:show="showHelpInfo" 
+		:title="help_info.title" 
+		:list="help_info.info"
+		:onUpdateShow="handleChangeShow" 
+	></ProductExpressPopup>
 	<MenusBar></MenusBar>
 </template>
 
@@ -200,6 +202,8 @@
 	// 	return tabs_list.value[tabs_current.value].id
 	// })  
 	const cate = ref('')
+	const help_info = ref({})
+	const showHelpInfo = ref(false)
 	const bgColor = ref('rgba(255,255,255,0)')
 	const scrollPx = ref(0)
 	const maxHeight = ref(50)
@@ -231,6 +235,7 @@
 				cate: cate.value,
 				order: order.value,
 				login: '', 
+				terms: keyword.value
 			},
 			api: 'web_zone',
 			getDataCallBack: (res) => {
@@ -266,10 +271,14 @@
 		}
 		initOrderIndex(order.value)
 		// await cate.getCateData()
-		if(options.hasOwnProperty('cateId')) { 
-			cate.value = options.cateId
+		if(options.hasOwnProperty('cate')) { 
+			cate.value = options.cate
+		} 
+		if(options.hasOwnProperty('terms')) { 
+			keyword.value = options.terms
 		} 
 		initDataList() 
+		getHelpInfo()
 	})
 	watch(
 		() => navBarScrollShow.value,
@@ -293,12 +302,7 @@
 		
 	})
 	async function handleSearch() {
-		base.handleGoto({
-			url: '/pages/product/productList',
-			params: {
-				terms: keyword.value
-			}
-		})
+		initDataList() 
 	}
 	function gotoZt(url) {
 		uni.navigateTo({
@@ -318,6 +322,15 @@
 				}
 			}
 		}) 
+	}
+	async function getHelpInfo() {
+		const res = await $api.web_danye({params: {id: '14'}})
+		if(res.code == 1) {
+			help_info.value = res.list
+		}
+	}
+	function handleChangeShow(data) {
+		showHelpInfo.value = data
 	}
 	function initCateId(id) { 
 		if(!id) return
@@ -392,6 +405,14 @@ page {
 }
 </style>
 <style lang="scss" scoped> 
+	.help-btn {
+		position: fixed;
+		bottom: 200px;
+		right: 0;
+		background-color: #e0e7f9;
+		border-radius: 20px 0 0 20px;
+		z-index: 200;
+	}
 	.data-list-item {
 		flex: 0 0 50%;
 		width: 50%;

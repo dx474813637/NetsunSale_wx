@@ -21,7 +21,8 @@ export const useCartStore = defineStore('cart', {
 	state: () => {
 		return { 
 			cart_list: cart_list,
-			is_order_data: []
+			is_order_data: [],
+			is_pf_data: []
 		};
 	},
 	getters: { 
@@ -154,6 +155,17 @@ export const useCartStore = defineStore('cart', {
  
 			this.saveCartData2LocalStorage()
 
+			return true
+		},
+		addOrderProductPf(shop, product) { 
+			//直接购买下单的商品     
+			let datas = {  
+				shop: {
+					...shop,  
+				},
+				products: [product]
+			}  
+			this.is_pf_data.unshift(datas)  
 			return true
 		},
 		addOrderProduct(data) { 

@@ -275,15 +275,31 @@
 			
 		</view>
 		<view class="mubiao u-m-t-30"> 
-			<QuickCreateOrder  
-				:product_base_data="product_list"
-				:product_shop_data="company_list"
-				:sku="product_sku"
-				:spec_prices="spec_prices"
-				:coupon_list="coupon_list"
-				 isOrder 
-				@couponListClick="hanldeCouponListClick"
-			></QuickCreateOrder>
+			<template v-if="pf == 1">
+				<QuickCreatePfOrder
+					:product_base_data="product_list"
+					:product_shop_data="company_list"
+					:sku="product_sku"
+					:spec_prices="spec_prices"
+					:coupon_list="coupon_list"
+					isOrder 
+					:pf="pf"
+					@couponListClick="hanldeCouponListClick"
+				></QuickCreatePfOrder>
+			</template>
+			<template v-else>
+				<QuickCreateOrder
+					:product_base_data="product_list"
+					:product_shop_data="company_list"
+					:sku="product_sku"
+					:spec_prices="spec_prices"
+					:coupon_list="coupon_list"
+					isOrder 
+					:pf="pf"
+					@couponListClick="hanldeCouponListClick"
+				></QuickCreateOrder>
+			</template>
+			
 		</view>
 		<u-safe-bottom></u-safe-bottom>
 	</view>
@@ -313,7 +329,7 @@
 		:list="product_attr"
 		:onUpdateShow="handleChangeShow" 
 	></ProductAttrPopup>
-	<ProductSkuPopup
+	<!-- <ProductSkuPopup
 		:show="showProductSku" 
 		title="商品规格" 
 		:product_base_data="product_list"
@@ -323,7 +339,7 @@
 		:onUpdateShow="handleChangeShow2" 
 		:isOrder="isOrder"
 		@onConfirm="sku2Cart"
-	></ProductSkuPopup>
+	></ProductSkuPopup> -->
 	<ProductExpressPopup
 		:show="showExpressPrice" 
 		title="运费说明" 
@@ -384,6 +400,7 @@
 	const spec_prices = ref([])
 	const coupon_list = ref([])
 	const swiper_index = ref(0)
+	const pf = ref(0)
 	const menusShow = ref(true)
 	const showUserPhone = ref(false)
 	const couponListShow = ref(false)
@@ -435,6 +452,9 @@
 		// console.log(options, 2)
 		if(options.hasOwnProperty('id')) {
 			product_id.value = options.id
+		}
+		if(options.hasOwnProperty('pf')) {
+			pf.value = +options.pf
 		}
 		if (options.hasOwnProperty('tid')) {
 			$http.setToken({
@@ -523,7 +543,7 @@
 		await getData()
 	}
 	function sku2Cart(data) {
-		console.log(data)
+		// console.log(data)
 		handleChangeShow2(false)
 		base.handleGoto({
 			url: '/pages_user/order/orderCreate',
@@ -531,7 +551,7 @@
 		})
 	}
 	async function getData() {
-		const res = await $api.web_product_detail({params: {id: product_id.value}})
+		const res = await $api.web_product_detail({params: {id: product_id.value, pf: pf.value}})
 		if(res.code == 1) {
 			origin.value = res
 			product_list.value = res.list

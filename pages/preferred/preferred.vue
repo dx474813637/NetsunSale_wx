@@ -174,11 +174,10 @@
 	// import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
 	// import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
 	import { share } from '@/composition/share.js'
+	import useDataList from '@/composition/useDataList.js' 
+	import {useCateStore, baseStore} from '@/stores/base.js'
 	const { setOnlineControl } = share()
 	const $api = inject('$api')
-	import useDataList from '@/composition/useDataList.js'
-	
-	import {useCateStore, baseStore} from '@/stores/base.js'
 	const base = baseStore()
 	const { themeColor } = toRefs(base)
 	// const cate = useCateStore()

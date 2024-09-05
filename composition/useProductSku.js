@@ -21,7 +21,7 @@ function useProductSku(){
             obj.children = item[1].split(',').map(item => ({label: (isNumber(item)? +item : item), disabled: false}))
             return obj
         })
-        console.log(arr)
+        // console.log(arr)
         return arr
     }
 

@@ -125,11 +125,11 @@
 						<u-button :type="isEdit ? 'error' : 'primary'" @click="submit" :loading="loading" throttleTime="500">{{config.submitBtnText}}</u-button>
 					</view> 
 				</view> 
-				<view class="u-flex u-flex-items-center u-flex-center" v-if="origin.zt == 1 || origin.zt == 2">
+				<!-- <view class="u-flex u-flex-items-center u-flex-center" v-if="origin.zt == 1 || origin.zt == 2">
 					<view class="item u-flex-1">
 						<u-button type="error" @click="rzShow = true" >认证签约</u-button>
 					</view> 
-				</view> 
+				</view> -->
 				<view class="u-flex u-flex-items-center u-flex-center u-m-t-40">
 					<u-icon name="checkmark-circle" size="15" color="#aaa"></u-icon>
 					<view class="text-light u-font-28 u-m-l-20">信息安全保障中</view>

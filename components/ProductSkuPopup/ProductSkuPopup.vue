@@ -197,17 +197,17 @@
 		() => props.sku,
 		(n) => {
 			sku_arr.value = sku2treeData(n)  
-			console.log(sku_arr.value)
+			// console.log(sku_arr.value)
 			sku_arr.value.forEach(ele => {
 				sku_form.value[ele.label] = ''
 			})
-			console.log(sku_form.value)
+			// console.log(sku_form.value)
 		}
 	)
 	watch(
 		() => product_num_max.value,
 		(val, old) => {
-			console.log(val);
+			// console.log(val);
 			if(val <= product_num.value) {
 				product_num.value = product_num_max.value
 				nextTick(() => {

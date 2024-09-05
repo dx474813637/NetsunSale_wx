@@ -24,6 +24,36 @@
 				
 			</view> 
 			<view class="u-p-30">
+				<view class="item u-m-b-40" v-for="(item, i) in spec_prices_arr" :key="item.id">
+					<view class="u-m-b-10">
+						<text 
+							class="u-font-26 u-p-8 u-p-l-12 u-p-r-12 u-radius-5 u-info-light-bg u-m-r-14" 
+							v-for="(specs, index) in item.specs_arr" 
+							:key="index"
+						>{{specs.label}}：{{specs.value}}</text>
+					</view>
+					<view class="u-flex u-flex-items-center u-flex-between u-font-26 text-base">
+						<view class="u-flex u-flex-items-center">
+							<view class="u-m-r-20">价格：<text class="u-error">{{item.price}}元</text></view>
+							<view>库存：{{item.stock}}</view>
+						</view>
+						<view> 
+							<u-number-box  
+								:ref="el => setRef(el, i)"
+								v-model="item.num"  
+								:max="item.stock"
+								:min="0"
+								asyncChange
+								inputWidth="60" 
+								@change="(e) => {numChange(e, item.id, i)}"
+								@blur="inputBlur"
+								@overlimit="numOverlimit"
+							></u-number-box>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- <view class="u-p-30">
 				<view class="item u-m-b-20"
 					v-for="(item) in sku_arr"
 					:key="item.label"
@@ -74,7 +104,7 @@
 							></u-number-box>
 					</view>
 				</view>
-			</view>
+			</view> -->
 			
 		</view> 
 		<view>  
@@ -268,7 +298,8 @@
 		cart_list_checked_price, 
 		is_order_data, 
 		is_order_data_price,
-		is_order_data_num
+		is_order_data_num,
+		is_pf_data
 	} = toRefs(cart)
 	 
 	const props = defineProps({  
@@ -313,6 +344,7 @@
 	const countRef = ref()
 	const sku_form = ref({})
 	const sku_arr = ref([]) 
+	const countRefs = ref([])
 	const product_num_max = ref(Number.MAX_SAFE_INTEGER)
 	const product_num = ref(1)
 	const active_sku_preview_img = ref('') 
@@ -321,6 +353,7 @@
 	const morenAddress = ref({})
 	const addressList = ref([])
 	const uForm = ref()
+	const spec_prices_arr = ref([]) 
 	const addressData = ref({
 		id: '',
 		name: '',
@@ -397,20 +430,28 @@
 	const createBtnDisabled = computed(() => {
 		return !tuikuan.value || !address_checked.value 
 	})
-	const dataList = computed(() => {
+	const dataList = computed(() => { 
+		if(props.pf == '1') return is_pf_data.value
 		if(is_order_data.value.length > 0) return is_order_data.value
 		return cart_list_checked.value
 	})
 	const address_checked = computed(() => {
 		return addressData.value.id || (addressData.value.name && addressData.value.tel && addressData.value.area && addressData.value.address)
 	})
+	const product_wholesale = computed(() => { 
+		return props.product_base_data?.wholesale || {}
+	})
 	const create_btn_disabled = computed(() => {
-		return createBtnDisabled.value || add_cart_disabled.value 
+		// return createBtnDisabled.value || add_cart_disabled.value 
+		return checked_product_num.value < product_wholesale.value.num || createBtnDisabled.value
+	})
+	const checked_product_num = computed(() => {
+		return spec_prices_arr.value.reduce((prev, items) => prev + items.num, 0)
 	})
 	const btnText = computed(() => {
 		let text = '创建订单'
-		if(product_num_disabled.value) text = '请选择规格'
-		else if(add_cart_disabled.value) text = '请选择数量' 
+		if(product_wholesale.value.num > checked_product_num.value) text = `注意商品起批数量(${checked_product_num.value}/${product_wholesale.value.num})` 
+		// else if(add_cart_disabled.value) text = '请选择数量' 
 		else if(!address_checked.value) text = '请检查收货地址'
 		else if(createBtnDisabled.value) text = '请同意注意事项'
 		return text
@@ -420,17 +461,17 @@
 		() => props.sku,
 		(n) => {
 			sku_arr.value = sku2treeData(n)  
-			console.log(sku_arr.value)
+			// console.log(sku_arr.value)
 			sku_arr.value.forEach(ele => {
 				sku_form.value[ele.label] = ''
 			})
-			console.log(sku_form.value)
+			// console.log(sku_form.value)
 		}
 	)
 	watch(
 		() => product_num_max.value,
 		(val, old) => {
-			console.log(val);
+			// console.log(val);
 			if(val <= product_num.value) {
 				product_num.value = product_num_max.value
 				nextTick(() => {
@@ -452,6 +493,21 @@
 			}
 		} 
 	)
+	watch(
+		() => props.spec_prices,
+		(n) => {
+			let arr = uni.$u.deepClone(n)
+			spec_prices_arr.value = arr.map(ele => {
+				ele.label = Object.keys(ele.specs)
+				ele.values = Object.values(ele.specs)
+				ele.num = 0
+				ele.specs_arr = cart.specs2Obj(ele.specs)
+				ele.stock = +ele.stock
+				return {...ele}
+			}).filter(item => item.stock != 0)
+			console.log(spec_prices_arr.value)
+		} 
+	)
 	onMounted(async () => {   
 		await getInitData()
 		morenAddress.value.area = morenAddress.value.area+''
@@ -466,6 +522,11 @@
 		is_order_data.value = []
 	})  
 	 
+	 function setRef(el, i) { 
+	 	if(el) {
+	 		countRefs.value[i] = el
+	 	}
+	 }
 	function onSelectSku(key, value) { 
 		if(sku_form.value[key] == value) {
 			value = ''
@@ -494,17 +555,23 @@
 		}
 	} 
 	
-	function numChange(e) { 
-		product_num.value = e.value
+	function numChange(e, id, index) {
+		let i = spec_prices_arr.value.findIndex(ele => ele.id == id) 
+		if(i == -1) return;
+		spec_prices_arr.value[i].num = e.value 
 		nextTick(() => {
-			countRef.value.init()
+			countRefs.value[index].init()
 		})
+		// product_num.value = e.value
+		// nextTick(() => {
+		// 	countRef.value.init()
+		// })
 		
 		// console.log(product_num.value)
 	}
 	
 	function numOverlimit(e) {
-		console.log(e)
+		// console.log(e)
 	}
 	
 	function inputBlur(e) {
@@ -514,26 +581,41 @@
 		return props.spec_prices.map(ele => ele.specs).findIndex(ele => isObjectEqual(ele, sku_form.value) );
 	}
 	async function addCartBtn() {
-		let skuItem 
-		let i = findIndexby()  
-		if(i == -1) return
-		let img = props.spec_prices[i].img ? props.spec_prices[i].img : props.product_base_data.pic?.split('|')[0]
-		skuItem = {
-			...props.spec_prices[i],
-			img,
-			shop: props.product_shop_data || {},
-			name: props.product_base_data.name,
-			freight_id: props.product_base_data.freight_id,
-			num: +product_num.value,
-			checked: props.isOrder? true :false,
-		}  
-		cart.addOrderProduct( skuItem )
+		if(props.pf == 1) {
+			let shop = props.product_shop_data || {}
+			let product = {
+				base: props.product_base_data,
+				checked: true,
+				znum: +props.product_base_data.wholesale.num, 
+				list: spec_prices_arr.value.filter(ele => ele.num > 0) 
+			}
+			let flag = cart.addOrderProductPf(shop, product) 
+		}
+		else {
+			// let skuItem 
+			// let i = findIndexby()  
+			// if(i == -1) return
+			// let img = props.spec_prices[i].img ? props.spec_prices[i].img : props.product_base_data.pic?.split('|')[0]
+			// skuItem = {
+			// 	...props.spec_prices[i],
+			// 	img,
+			// 	shop: props.product_shop_data || {},
+			// 	name: props.product_base_data.name,
+			// 	freight_id: props.product_base_data.freight_id,
+			// 	num: +product_num.value,
+			// 	checked: props.isOrder? true :false,
+			// }  
+			// cart.addOrderProduct( skuItem )
+			
+		}
+		
+		
 		emits('onConfirm')
 		uni.showLoading()
 		try{
 			await createOrder()
 		}catch(e){
-			console.log(e)
+			// console.log(e)
 			uni.hideLoading()
 			//TODO handle the exception
 		}
@@ -541,7 +623,8 @@
 	}
 	
 	async function createOrder() {
-		let arr = dataList.value.map(ele => ele.products.map(item => ({id: item.id, num: item.num}))).reduce((a, b) => a.concat(b))
+		let arr = dataList.value.map(ele => ele.products.map(item => item.list.map(s => ({id: s.id, num: s.num})) ).reduce((a, b) => a.concat(b))).reduce((a, b) => a.concat(b))
+		console.log(arr) 
 		let address = {
 			address_id: addressData.value.id
 		}
@@ -550,20 +633,29 @@
 				...addressData.value, 
 			}
 		} 
-		const res = await $api.create_order_post({
-			...address,
-			pid_array: JSON.stringify(arr),
-			info: remark.value, 
-			pf: props.pf
-		})
+		
+		let res
+		try{
+			res = await $api.create_order_post({
+				...address,
+				pid_array: JSON.stringify(arr),
+				info: remark.value, 
+				pf: props.pf
+			})
+		}catch(e){
+			//TODO handle the exception
+		}
+		
+		is_pf_data.value = []
 		if(res.code == 1) {
 			uni.showToast({
 				title: res.msg
 			})
-			if(is_order_data.value.length == 0) {
-				cart.removeProductsById(arr.map(ele => ele.id))
-				cart.saveCartData2LocalStorage()
-			} 
+			
+			// if(is_order_data.value.length == 0) {
+			// 	cart.removeProductsById(arr.map(ele => ele.id))
+			// 	cart.saveCartData2LocalStorage()
+			// } 
 			if(res.order.length == 1) {
 				base.handleGoto({
 					url: '/pages_user/order/orderDetail',
@@ -610,7 +702,7 @@
 	function handleChooseaddress() {
 		uni.chooseAddress({
 			success(res) {
-				console.log(res)
+				// console.log(res)
 				let {
 					userName,
 					postalCode,

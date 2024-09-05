@@ -197,6 +197,14 @@
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "white"
 			}
+		}, 
+		{
+			"path": "pages/webview/webview",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"subPackages": [{
