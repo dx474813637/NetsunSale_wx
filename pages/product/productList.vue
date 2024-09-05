@@ -22,7 +22,21 @@
 			</view>
 		</u-sticky>
 		
-		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10"> 
+		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10" v-if="pf == 1"> 
+			 <view 
+				class="list-item list-item-row u-m-b-20" 
+				v-for="item in dataList" 
+				:key="item.id"
+				>
+			 	<ProductPfCard
+					:origin="item" 
+					@btnClick="btnClick"
+					:customStyle="{boxShadow: 'none!important' }"
+				></ProductPfCard>
+			 		 
+			 </view>	 
+		</view>
+		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10" v-else> 
 			 <view 
 				class="list-item u-p-14" 
 				v-for="item in dataList" 
@@ -33,9 +47,7 @@
 					:customStyle="{boxShadow: 'none!important', border: '1rpx solid #f9f9f9'}"
 				></ProductColCard>
 			 		 
-			 </view>	
-			
-			 		
+			 </view>	 
 		</view>
 		<template v-if="dataList.length == 0">
 			<view class="u-flex u-flex-center u-p-40">
@@ -55,6 +67,12 @@
 		:onUpdateShow="handleChangeShow"
 		@onConfirm="handleChangeCate"
 	></CateProductPopup>
+	<QuickCreatePfOrderPopup
+		:show="showPfOrder" 
+		title="拼团下单" 
+		:id="prodId"
+		:onUpdateShow="handleChangeShow2"
+	></QuickCreatePfOrderPopup>
 	<MenusBar></MenusBar>
 </template>
 
@@ -73,10 +91,12 @@
 	const nav_index = ref(0)
 	
 	const showCateList = ref(false)
+	const showPfOrder = ref(false)
 	const curP = ref(1)
 	const cateId = ref('')
 	const order = ref('')
 	const pf = ref(0)
+	const prodId = ref('')
 	const cate_label = ref('全部')
 	const dataList = ref([])
 	const loadstatus = ref('loadmore')
@@ -84,7 +104,8 @@
 		if(terms.value) {
 			return {
 				p: curP.value, 
-				terms: terms.value
+				terms: terms.value,
+				pf: pf.value ,
 			}
 		}
 		else {
@@ -134,7 +155,7 @@
 		loadstatus.value = 'loading'
 		const res = await $api[func.value]({params: params.value})
 		if (res.code == 1) { 
-			dataList.value = [...dataList.value, ...res.list]
+			dataList.value = [...dataList.value, ...res.list] 
 			setOnlineControl(res)
 			if(dataList.value.length >= +res.total) {
 				loadstatus.value = 'nomore'
@@ -153,12 +174,18 @@
 		initDataParams();
 		await getData()
 	} 
-	
+	function btnClick({id}) {
+		prodId.value = id;
+		showPfOrder.value = true
+	}
 	async function handleSearch() {
 		await initData()
 	}
 	function handleChangeShow(data) {
 		showCateList.value = data
+	}
+	function handleChangeShow2(data) {
+		showPfOrder.value = data
 	}
 	function handleChangeCate(obj) {
 		cateId.value = obj.data.id 
@@ -200,6 +227,9 @@
 			>.list-item {
 				flex: 0 0 50%;
 				box-sizing: border-box;
+				&.list-item-row {
+					flex: 0 0 100%;
+				}
 			}
 		}
 	}

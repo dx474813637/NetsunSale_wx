@@ -37,11 +37,11 @@
 							<view class="u-m-r-20">价格：<text class="u-error">{{item.price}}元</text></view>
 							<view>库存：{{item.stock}}</view>
 						</view>
-						<view> 
+						<view > 
 							<u-number-box  
 								:ref="el => setRef(el, i)"
 								v-model="item.num"  
-								:max="item.stock"
+								:max="item.stock" 
 								:min="0"
 								asyncChange
 								inputWidth="60" 
@@ -505,6 +505,12 @@
 				ele.stock = +ele.stock
 				return {...ele}
 			}).filter(item => item.stock != 0)
+			nextTick(() => {
+				countRefs.value.forEach(ele => {
+					ele.init()
+				})
+			})
+			
 			console.log(spec_prices_arr.value)
 		} 
 	)

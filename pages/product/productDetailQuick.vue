@@ -138,7 +138,7 @@
 					</view>
 				</view>  
 				<u-line length="100%" margin="10px 0"></u-line>
-				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14" @click="addCartBtn">
+				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14" @click="gotoBottom()">
 					<view class="item text-base u-m-r-30">
 						选择
 					</view>
@@ -377,6 +377,7 @@
 	import {useCartStore} from '@/stores/cart.js'
 	import {userStore} from '@/stores/user.js'
 	import {useCateStore, baseStore} from '@/stores/base.js'
+import { nextTick } from 'vue';
 	// import useNormal from '@/composition/useNormal';
 	const {
 	    sku2treeData
@@ -473,6 +474,7 @@
 		}
 		uni.showLoading()
 		await getData()
+		 
 		// console.log(cart_list_num.value)
 	}) 
 	function gotoBottom() {
