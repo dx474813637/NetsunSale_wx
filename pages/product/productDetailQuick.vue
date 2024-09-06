@@ -71,26 +71,47 @@
 					v-if="coupon_list.length == 0"
 					>
 					<view class="item u-flex u-flex-items-center" :style="{ color: themeColor }">
-						<view>
+						<view v-if="pf == 1 && product_list.wholesale">
+							<text class="u-font-28">拼团价</text>
+							<text class="u-font-28 text-bold u-m-l-10">￥</text>
+							<text class="text-bold" style="font-family: cursive; font-size: 24px;" >{{product_list.wholesale.price}}</text>
+							<text class="u-font-28 u-p-l-10">起</text>
+						</view>
+						<view v-else>
 							<text class="u-font-28">到手价</text>
 							<text class="u-font-28 text-bold u-m-l-10">￥</text>
 							<text class="text-bold" style="font-family: cursive; font-size: 24px;">{{product_list.price1}}</text>
 							<text class="u-font-28 u-p-l-10">起</text>
 						</view>
 						<view 
+							v-if="pf == 1"
+							class="u-font-28 u-p-l-10 u-p-r-10 u-m-l-20" 
+							style="background-color: #f9dada; text-decoration: line-through;" 
+						> 
+							<text>特￥</text>
+							<text style="font-family: cursive;">{{product_list.price1}}</text>
+						</view>
+						<view 
 							class="u-font-28 u-p-l-10 u-p-r-10 u-m-l-20" 
 							style="background-color: #f9dada; text-decoration: line-through;"
 							v-if="product_list.price"
 						> 
-							<text>￥</text>
+							<text>原￥</text>
 							<text style="font-family: cursive;">{{product_list.price}}</text>
 						</view>
 					</view>
 					<!-- <view class="item u-font-28 u-info">已售{{product_list.sales_volume}}件</view> -->
 				</view>
 				<view class="bg-white u-radius-8 u-p-10">
-					<view class="u-flex u-flex-between u-flex-items-start u-p-t-10 u-p-b-10 u-m-b-20">
-						<view class="item u-font-36">
+					<view class=" u-p-t-10 u-p-b-10 u-m-b-20" v-if="pf == 1">
+						<text class="u-radius-30 u-error-bg text-white u-p-6 u-p-l-20 u-p-r-20 u-m-t-4 u-font-28 u-m-r-8">{{product_list.weight}}人团</text>
+						<text class="item u-font-36 ">{{product_list.name}}</text> 
+					</view>
+					<view class="u-flex u-flex-between u-flex-items-start u-p-t-10 u-p-b-10 u-m-b-20" v-else>
+						<!-- <view class="item u-p-r-20">
+							<view class="u-radius-30 u-error-bg text-white u-p-6 u-p-l-20 u-p-r-20 u-m-t-4 u-font-28">{{product_list.weight}}人团</view>
+						</view> -->
+						<view class="item u-font-36 u-flex-1">
 							{{product_list.name}}
 						</view> 
 						<view class="item u-p-l-20">
@@ -114,6 +135,14 @@
 						</view>
 						<view class="item u-info u-p-l-30" style="white-space: nowrap;">
 							<!-- {{$u.timeFrom(new Date(product_list.ctime).getTime(), false)}} -->
+						</view>
+					</view>
+					<view class="u-flex u-flex-between u-flex-items-center u-font-28 u-m-t-20" v-if="pf == 1">
+						<view class="item text-base u-info-light-bg u-p-10 u-p-l-20 u-p-r-20 u-radius-10"> 
+							{{product_list.share_title1}}
+						</view>
+						<view class="u-m-l-10"> 
+							<view class="u-p-10 u-p-l-16 u-p-r-16 u-font-28 u-radius-40 text-white u-error-bg" @click="showProductShare = true">{{product_list.share_title2}}</view>
 						</view>
 					</view>
 				</view> 
@@ -275,6 +304,9 @@
 			
 		</view>
 		<view class="mubiao u-m-t-30"> 
+			<!-- <view class="u-m-b-20" v-if="product_list.share">
+				<image :src="product_list.share" mode="widthFix" style="width: 100%;" @click="showProductShare = true"></image>
+			</view> -->
 			<template v-if="pf == 1">
 				<QuickCreatePfOrder
 					:product_base_data="product_list"
@@ -317,7 +349,7 @@
 			<view class="item u-flex u-flex-items-center u-flex-1" > 
 				<u-button type="error" @click="gotoBottom" shape="circle" >
 					<view class="u-flex"> 
-						<text >点我下单 优先发货</text>
+						<text >{{product_list.share_title3}}</text>
 					</view>
 				</u-button>
 			</view> 

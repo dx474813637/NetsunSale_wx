@@ -1,11 +1,15 @@
 <template>
 	<view>
-		<PopupNormal v-bind="$attrs" @open="open" >  
-			<view class="list-w ">   
+		<PopupNormal v-bind="$attrs" @open="open" @close="close" >  
+			<view class="list-w ">     
+				<view class="load-bg u-flex u-flex-items-center u-flex-center" v-if="productLoading">
+					<u-loading-icon color="#f00"></u-loading-icon>
+				</view>
 				<scroll-view class="main-list u-p-l-20 u-p-r-20" scroll-y >
 					<QuickCreatePfOrder
 						:product_base_data="product_list"
 						:product_shop_data="company_list"
+						:loading="productLoading"
 						:sku="product_sku"
 						:spec_prices="spec_prices"
 						:coupon_list="coupon_list"
@@ -52,6 +56,7 @@
 			default: '',
 		}
 	})   
+	const productLoading = ref(false)
 	const product_list = ref({})
 	const company_list = ref({})
 	const coupon_list = ref({})
@@ -75,9 +80,23 @@
 	}) 
 	onMounted(async () => { 
 	})  
+	function close() { 
+		origin.value = {}
+		product_list.value = {}
+		company_list.value = {}
+		spec_prices.value = []
+		coupon_list.value = [] 
+	}
 	async function open() {
-		uni.showLoading()
-		await getData() 
+		productLoading.value = true
+		try{
+			await getData() 
+			
+		}catch(e){
+			console.log(e)
+			//TODO handle the exception
+		}
+		productLoading.value = false
 	}
 	async function getData() {
 		const res = await $api.web_product_detail({params: {id: props.id, pf: 1}})

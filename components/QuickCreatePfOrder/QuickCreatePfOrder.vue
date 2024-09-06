@@ -1,58 +1,62 @@
 <template>
 	<view class="main-list">  
 		<view class="list-w bg-white u-m-b-30">   
-			<view class="u-flex u-flex-items-start u-p-20">
-				<view class="item">
-					<u--image
-						showLoading
-						width="60px"
-						height="60px"
-						radius="8px"
-						:customStyle="{
-							border: '1px solid #f8f8f8'
-						}"
-						:src="product_img_preview" 
-					></u--image>
-				</view>
-				<view class="u-m-l-20">
-					<view class="text-bold u-line-1 u-m-b-20">{{product_base_data.name}}</view>
-					<view class="text-error" v-if="active_sku_price_show">
-						<text class="u-font-28 text-bold">￥</text>
-						<text class=" text-bold u-font-38" style="font-family: cursive; ">{{active_sku_price}}</text> 
+			<template v-if="!loading">
+				<view class="u-flex u-flex-items-start u-p-20">
+					<view class="item">
+						<u--image
+							showLoading
+							width="60px"
+							height="60px"
+							radius="8px"
+							:customStyle="{
+								border: '1px solid #f8f8f8'
+							}"
+							:src="product_img_preview" 
+						></u--image>
 					</view>
-				</view>
-				
-			</view> 
-			<view class="u-p-30">
-				<view class="item u-m-b-40" v-for="(item, i) in spec_prices_arr" :key="item.id">
-					<view class="u-m-b-10">
-						<text 
-							class="u-font-26 u-p-8 u-p-l-12 u-p-r-12 u-radius-5 u-info-light-bg u-m-r-14" 
-							v-for="(specs, index) in item.specs_arr" 
-							:key="index"
-						>{{specs.label}}：{{specs.value}}</text>
-					</view>
-					<view class="u-flex u-flex-items-center u-flex-between u-font-26 text-base">
-						<view class="u-flex u-flex-items-center">
-							<view class="u-m-r-20">价格：<text class="u-error">{{item.price}}元</text></view>
-							<view>库存：{{item.stock}}</view>
-						</view>
-						<view > 
-							<u-number-box  
-								:ref="el => setRef(el, i)"
-								v-model="item.num"  
-								:max="item.stock" 
-								:min="0"
-								asyncChange
-								inputWidth="60" 
-								@change="(e) => {numChange(e, item.id, i)}"
-								@blur="inputBlur"
-								@overlimit="numOverlimit"
-							></u-number-box>
+					<view class="u-m-l-20">
+						<view class="text-bold u-line-1 u-m-b-20">{{product_base_data.name}}</view>
+						<view class="text-error" v-if="active_sku_price_show">
+							<text class="u-font-28 text-bold">￥</text>
+							<text class=" text-bold u-font-38" style="font-family: cursive; ">{{active_sku_price}}</text> 
 						</view>
 					</view>
+					
+				</view> 
+				<view class="u-p-30">
+					<view class="item u-m-b-40" v-for="(item, i) in spec_prices_arr" :key="item.id">
+						<view class="u-m-b-10">
+							<text 
+								class="u-font-26 u-p-8 u-p-l-12 u-p-r-12 u-radius-5 u-info-light-bg u-m-r-14" 
+								v-for="(specs, index) in item.specs_arr" 
+								:key="index"
+							>{{specs.label}}：{{specs.value}}</text>
+						</view>
+						<view class="u-flex u-flex-items-center u-flex-between u-font-26 text-base">
+							<view class="u-flex u-flex-items-center">
+								<view class="u-m-r-20">价格：<text class="u-error">{{item.price}}元</text></view>
+								<view>库存：{{item.stock}}</view>
+							</view>
+							<view > 
+								<u-number-box  
+									:ref="el => setRef(el, item.id)"
+									v-model="item.num"  
+									:name="item.id"
+									:max="+item.stock" 
+									:min="0"
+									asyncChange
+									inputWidth="60" 
+									@change="(e) => {numChange(e, item.id, i)}"
+									@blur="inputBlur"
+									@overlimit="numOverlimit"
+								></u-number-box>
+							</view>
+						</view>
+					</view>
 				</view>
-			</view>
+			</template>
+			
 			<!-- <view class="u-p-30">
 				<view class="item u-m-b-20"
 					v-for="(item) in sku_arr"
@@ -338,13 +342,17 @@
 		isOrder: {
 			type: Boolean,
 			default: false
+		},
+		loading: {
+			type: Boolean,
+			default: false
 		}
 	})   
 	const emits = defineEmits(['onConfirm', 'couponListClick'])
 	const countRef = ref()
 	const sku_form = ref({})
 	const sku_arr = ref([]) 
-	const countRefs = ref([])
+	const countRefs = reactive({});
 	const product_num_max = ref(Number.MAX_SAFE_INTEGER)
 	const product_num = ref(1)
 	const active_sku_preview_img = ref('') 
@@ -450,7 +458,7 @@
 	})
 	const btnText = computed(() => {
 		let text = '创建订单'
-		if(product_wholesale.value.num > checked_product_num.value) text = `注意商品起批数量(${checked_product_num.value}/${product_wholesale.value.num})` 
+		if(product_wholesale.value.num > checked_product_num.value) text = `确认商品选购数量(${checked_product_num.value}/${product_wholesale.value.num})` 
 		// else if(add_cart_disabled.value) text = '请选择数量' 
 		else if(!address_checked.value) text = '请检查收货地址'
 		else if(createBtnDisabled.value) text = '请同意注意事项'
@@ -468,31 +476,31 @@
 			// console.log(sku_form.value)
 		}
 	)
-	watch(
-		() => product_num_max.value,
-		(val, old) => {
-			// console.log(val);
-			if(val <= product_num.value) {
-				product_num.value = product_num_max.value
-				nextTick(() => {
-					countRef.value.init()
-				})
+	// watch(
+	// 	() => product_num_max.value,
+	// 	(val, old) => {
+	// 		// console.log(val);
+	// 		if(val <= product_num.value) {
+	// 			product_num.value = product_num_max.value
+	// 			nextTick(() => {
+	// 				countRef.value.init()
+	// 			})
 				
-			} else product_num.value = 1
-		} 
-	)
-	watch(
-		() => product_num.value,
-		(val, old) => {
-			// console.log(val); 
-			if(val > product_num_max.value) {
-				product_num.value = product_num_max.value
-				nextTick(() => {
-					countRef.value.init()
-				})
-			}
-		} 
-	)
+	// 		} else product_num.value = 1
+	// 	} 
+	// )
+	// watch(
+	// 	() => product_num.value,
+	// 	(val, old) => {
+	// 		// console.log(val); 
+	// 		if(val > product_num_max.value) {
+	// 			product_num.value = product_num_max.value
+	// 			nextTick(() => {
+	// 				countRef.value.init()
+	// 			})
+	// 		}
+	// 	} 
+	// )
 	watch(
 		() => props.spec_prices,
 		(n) => {
@@ -504,16 +512,11 @@
 				ele.specs_arr = cart.specs2Obj(ele.specs)
 				ele.stock = +ele.stock
 				return {...ele}
-			}).filter(item => item.stock != 0)
-			nextTick(() => {
-				countRefs.value.forEach(ele => {
-					ele.init()
-				})
-			})
-			
+			}).filter(item => item.stock != 0)   
 			console.log(spec_prices_arr.value)
 		} 
 	)
+	 
 	onMounted(async () => {   
 		await getInitData()
 		morenAddress.value.area = morenAddress.value.area+''
@@ -528,9 +531,9 @@
 		is_order_data.value = []
 	})  
 	 
-	 function setRef(el, i) { 
+	 function setRef(el, i) {  
 	 	if(el) {
-	 		countRefs.value[i] = el
+	 		countRefs[i] = el
 	 	}
 	 }
 	function onSelectSku(key, value) { 
@@ -566,7 +569,7 @@
 		if(i == -1) return;
 		spec_prices_arr.value[i].num = e.value 
 		nextTick(() => {
-			countRefs.value[index].init()
+			countRefs[e.name].init()
 		})
 		// product_num.value = e.value
 		// nextTick(() => {

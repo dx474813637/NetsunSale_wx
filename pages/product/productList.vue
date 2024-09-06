@@ -76,11 +76,10 @@
 	<MenusBar></MenusBar>
 </template>
 
-<script setup>
-	// import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
+<script setup> 
 	// import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
 	import { share } from '@/composition/share.js'
-	const { setOnlineControl, customShareParams } = share()
+	const { setOnlineControl, customShareParams } = share({shareDisabled: true})
 	const $api = inject('$api')
 	
 	import {useCateStore, baseStore} from '@/stores/base.js'
@@ -139,9 +138,7 @@
 			initCateLabel()
 		}
 		await initData() 
-	})
-	
-	
+	}) 
 	onReachBottom( () => { 
 		getMoreData()
 	}) 
@@ -190,7 +187,7 @@
 	function handleChangeCate(obj) {
 		cateId.value = obj.data.id 
 		cate_label.value = obj.cate_label
-		customShareParams.cate = obj.data.id 
+		// customShareParams.cate = obj.data.id 
 		handleChangeShow(false)
 		initData()
 	}

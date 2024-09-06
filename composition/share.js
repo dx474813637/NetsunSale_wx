@@ -9,7 +9,7 @@ import {
 	onShareAppMessage,
 	onShareTimeline
 } from '@dcloudio/uni-app'
-export function share() {
+export function share(config={}) {
 	const $http = inject('$http')
 	const onlineControl = reactive({
 		share_img: '',
@@ -30,24 +30,27 @@ export function share() {
 		// 	})
 		// }
 	})  
-	onShareTimeline(() => { 
-		return {
-			title: onlineControl.share_title,
-			query: getQuery(),
-		}
-	})
-	onShareAppMessage(res => {  
-		if (res.target && res.target.id && res.target.id.includes('diy_')) {
-
-		} else {
-			// console.log(onlineControl.share_title)
+	if(config.shareDisabled) {
+		onShareTimeline(() => {
 			return {
 				title: onlineControl.share_title,
-				path: onlineControl.path ? onlineControl.path : getPath(),
-				imageUrl: onlineControl.share_img
-			};
-		}
-	})
+				query: getQuery(),
+			}
+		})
+		onShareAppMessage(res => {  
+			if (res.target && res.target.id && res.target.id.includes('diy_')) {
+		
+			} else {
+				// console.log(onlineControl.share_title)
+				return {
+					title: onlineControl.share_title,
+					path: onlineControl.path ? onlineControl.path : getPath(),
+					imageUrl: onlineControl.share_img
+				};
+			}
+		})
+	}
+	
 
 	function setOnlineControl(res) {
 		// console.log(res)

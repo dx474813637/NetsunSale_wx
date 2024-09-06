@@ -23,17 +23,20 @@
 					'u-font-26': size == 'small',
 				}"
 			>
-				<view class="u-line-2 u-font-28 text-bold" style="width: 100%;" >
+				<view class="u-line-2 u-font-32 text-bold" style="width: 100%;" >
 					{{origin.name}}
 				</view>
 				<view class="" style="width: 100%;">
-					<view class="u-flex u-flex-items-center u-m-b-8" v-if="tuan_user.length > 0">
-						<up-avatar-group
-							:urls="tuan_user"
-							size="20"
-							gap="0.4"
-						></up-avatar-group>
-						<view class="u-info u-font-26 u-m-l-10">
+					<view class="u-flex u-flex-items-center u-m-b-8" >
+						<view class="u-m-r-10" v-if="tuan_user.length > 0">
+							<up-avatar-group 
+								:urls="tuan_user"
+								size="20"
+								gap="0.4"
+							></up-avatar-group>
+						</view>
+						
+						<view class="u-info u-font-26">
 							<template v-if="origin.tuan_zt == 1">
 								拼团成功
 							</template>
@@ -43,29 +46,29 @@
 								<text>成团</text>
 							</template>
 						</view>
-					</view>
-					<view class="u-error-light-bg u-radius-6 u-flex u-flex-between u-flex-items-center" style="height: 44px; ">
+					</view> 
+					<view class="u-error-light-bg u-radius-6 u-flex u-flex-between u-flex-items-center" style="height: 48px; ">
 						<view class="u-flex-1 u-error u-flex u-flex-items-center u-p-l-10" style="flex: 0 0 calc(100% - 60px)">
 							<view class="u-font-24" style="width: 100%;">
-								<view class="u-flex u-flex-items-baseline u-m-b-6">
+								<view class="u-flex u-flex-items-center u-m-b-4">
 									<text class="u-error-bg u-radius-5 text-white u-p-l-8 u-p-r-8">团</text>
 									<text>￥</text>
-									<text class="u-font-32 text-bold">{{origin.price2}}</text>
+									<text class="u-font-32 text-bold">{{origin.pprice}}</text>
 								</view>
 								<view class="u-flex u-flex-items-center u-line-1" style="opacity: .6; ">
 									<text >
 										<text class="u-error-bg u-radius-5 text-white u-p-l-8 u-p-r-8" style="background-color: #fd943a;">特</text>
-										<text >￥{{origin.price1}}</text>
+										<text >￥{{origin.price}}</text>
 									</text>
 									<text class="u-m-l-14">
 										<text class="u-error-bg u-radius-5 text-white u-p-l-8 u-p-r-8" style="background-color: #fd943a;">原</text> 
-										<text >￥{{origin.price}}</text>
+										<text >￥{{origin.zprice}}</text>
 									</text>
 								</view>
 							</view>
 						</view>
 						<view class="text-white u-flex u-flex-center u-flex-items-center u-error-bg u-radius-6" style="flex: 0 0 60px; height: 100%;"  @click.stop="btnClick(origin.id)">
-							<view class="u-font-26">拼 单</view>
+							<view class="u-font-30">拼 单</view>
 						</view>
 					</view>
 				</view>
@@ -156,15 +159,15 @@
 		}
 	}
 	.img-w { 
-		flex: 0 0 110px; 
+		flex: 0 0 120px; 
 		.img { 
-			width: 110px;
-			height: 110px;
+			width: 120px;
+			height: 120px;
 			display: block;
 		}
 	}
 	.content-w {
-		flex: 0 0 calc(100% - 110px); 
+		flex: 0 0 calc(100% - 120px); 
 		box-sizing: border-box;
 	}
 </style>
