@@ -70,10 +70,8 @@
 							
 						</view>
 					</view>
-					<view class="item u-flex u-flex-items-center u-p-r-10 u-m-l-10">
-						<!-- <u-button type="error" shape="circle" size="small" v-if="isMe" @click="showHomeInfo = true">编辑</u-button> 
-						<u-button type="error" shape="circle" size="small" v-else @click="followEvent">关注</u-button> 
- -->
+					<view class="item u-flex u-flex-items-center u-p-r-10 u-m-l-10" v-if="coupon_list.length > 0">
+						<u-button type="error" shape="circle"  @click="couponListShow = true">券</u-button>
 					</view> 
 				</view> 
 			</view>
@@ -148,6 +146,20 @@
 	</view>
 	 
 	
+	<CouponListPopup
+		:show="couponListShow" 
+		title="点击领取优惠券"  
+		:list="coupon_list" 
+		submitBtnText=""
+		:onUpdateShow="handleChangeShow5"  
+		@confirmCoupon="confirmCoupon"
+		@refresh="refreshCoupon" 
+	></CouponListPopup>
+	<UserPhonePopup
+		:show="showUserPhone"
+		@getPhone="getPhone"
+		@onUpdateShow="handleChangeShow6" 
+	></UserPhonePopup>
 	<!-- <BaseInfoPopup
 		:show="showBaseInfo" 
 		:title="baseInfo.name1" 
@@ -243,6 +255,9 @@ import { nextTick } from 'vue';
 			disabled: false
 		}
 	])  
+	const eventMode = ref('')
+	const showUserPhone = ref(false)
+	const couponListShow = ref(false)
 	const showBaseInfo = ref(false)
 	const showHomeInfo = ref(false)
 	const showShare = ref(false)
@@ -252,7 +267,7 @@ import { nextTick } from 'vue';
 	const haibao = ref('') 
 	const others = ref([])
 	const notice = ref([])
-	
+	const coupon_list = ref([])
 	const list_col = ref({
 		list1: [],
 		list2: [],
@@ -365,6 +380,14 @@ import { nextTick } from 'vue';
 			setOnlineControl(res) 
 		}
 	}
+	async function getCouponData() { 
+		const res = await $api.web_login_coupon({params: {
+			login: login.value, 
+		}})
+		if (res.code == 1) {  
+			coupon_list.value = res.list || [] 
+		}
+	}
 	function initDataParams() {
 		curP.value = 1;
 		dataList.value = []
@@ -375,6 +398,7 @@ import { nextTick } from 'vue';
 		initDataParams();
 		await getShopData()
 		await getData() 
+		getCouponData()
 	} 
 	 
 	 function handleChangeShow(data) {
@@ -396,6 +420,52 @@ import { nextTick } from 'vue';
    			loop: true
    		})
    	}
+	function handleChangeShow5(data) {
+		couponListShow.value = data
+	}
+	function handleChangeShow6(v) {
+		showUserPhone.value = v
+	}
+	async function getPhone(data) {
+		// uni.showLoading()
+		await user.refreshUserData()
+		showUserPhone.value = false 
+		if(eventMode.value == 'coupon') {
+			handleChangeShow5(true)
+			eventMode.value = ''
+		} 
+		// uni.showLoading()
+		// await changeRole()
+	}
+	async function confirmCoupon({origin}) { 
+		if(!user_info.value.phonenumber) {
+			showUserPhone.value = true  
+			eventMode.value = 'coupon'
+			handleChangeShow5(false)
+			return
+		}
+		uni.showLoading();
+		const res = await $api.get_coupon({
+			params: {
+				hid: origin.id
+			}
+		})
+		if(res.code == 1) {
+			uni.showToast({
+				title: res.msg,
+				success() {
+					handleChangeShow5(false)
+					setTimeout(() => {
+						refreshCoupon()
+					}, 1000) 
+				}
+			})
+		}
+	}
+	async function refreshCoupon() {
+		uni.showLoading()
+		await getCouponData()
+	}
 	function updateShopProduct(product, check) {
 		return new Promise(async (res, rej) => {
 			const result = await $api.shop_product({

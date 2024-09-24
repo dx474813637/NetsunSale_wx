@@ -110,6 +110,7 @@
 	])
 	const img = ref('')
 	const show = ref(false)
+	const customParams = ref({})
 	const role = computed(() => {
 		return {
 			role: user_info.value.role
@@ -129,6 +130,7 @@
 		if (options.hasOwnProperty('id')) {
 			id.value = options.id
 		}
+		customParams.value = options || {}
 		uni.showLoading()
 		await getData()
 	})
@@ -136,7 +138,8 @@
 	async function getData() {
 		const res = await $api.web_danye({
 			params: {
-				id: id.value
+				id: id.value,
+				...customParams.value
 			}
 		})
 		if (res.code == 1) {
@@ -182,7 +185,8 @@
 	async function changeRole(data) {
 		const res = await $api.change_role({
 			params: {
-				role: data.value
+				role: data.value,
+				...customParams.value
 			}
 		})
 		if (res.code == 1) {

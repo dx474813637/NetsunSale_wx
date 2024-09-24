@@ -1,25 +1,48 @@
 <template>
 	<view class="card" @click="click">
-		<view class="card-header u-p-20 u-radius-8" :style="{
-			backgroundImage: 'linear-gradient(to right, #FCEABE, #BBA16D)'
-		}">
-			<view class="u-flex u-flex-between coupon u-p-0">
-				<view class="item u-flex-1 u-p-l-10 box-border u-flex-column u-flex-between u-flex-items-start" >
-					<view class="coupon-cate">{{origin.cate}}</view>
-					<view class="coupon-money u-flex u-flex-items-baseline u-font-bold u-p-l-10 u-p-r-10">
-						<view class="num">{{origin.minus}}</view>
-						<view class="num-dw u-p-l-10">元</view>
+		<template v-if="cate == '商品券'">
+			<view class="card-header u-p-20 u-radius-8" :style="{
+				backgroundImage: 'linear-gradient(to right, #FCEABE, #BBA16D)'
+			}">
+				<view class="u-flex u-flex-between coupon u-p-0">
+					<view class="item u-flex-1 u-p-l-10 box-border u-flex-column u-flex-between u-flex-items-start" >
+						<view class="coupon-cate">{{origin.cate}}</view>
+						<view class="coupon-money u-flex u-flex-items-baseline u-font-bold u-p-l-10 u-p-r-10">
+							<view class="num">{{origin.minus}}</view>
+							<view class="num-dw u-p-l-10">元</view>
+						</view>
+					</view>
+					<view class="item u-border-left u-flex-column u-flex-items-start u-flex-center box-border u-p-l-40" style="flex: 0 0 40%;border-color: #a28c61!important;">
+						<view class="u-font-34">{{origin.title}}</view> 
+						<slot name="btn"></slot>
+					</view>
+					<view class="icon-w">
+						<u-icon name="rmb-circle" size="140" color="#B09762"></u-icon>
 					</view>
 				</view>
-				<view class="item u-border-left u-flex-column u-flex-items-start u-flex-center box-border u-p-l-40" style="flex: 0 0 40%;border-color: #a28c61!important;">
-					<view class="u-font-34">{{origin.title}}</view> 
-					<slot name="btn"></slot>
-				</view>
-				<view class="icon-w">
-					<u-icon name="rmb-circle" size="140" color="#B09762"></u-icon>
+			</view>
+		</template>
+		<template v-else>
+			<view class="card-header u-p-20 u-radius-8 other" style="background-color: #DC0703;">
+				<view class="u-flex u-flex-between coupon u-p-0 text-white">
+					<view class="item u-flex-1 u-p-l-10 box-border u-flex-column u-flex-between u-flex-items-start" >
+						<view class="coupon-cate">{{origin.cate}}</view>
+						<view class="coupon-money u-flex u-flex-items-baseline u-font-bold u-p-l-10 u-p-r-10">
+							<view class="num">{{origin.minus}}</view>
+							<view class="num-dw u-p-l-10">元</view>
+						</view>
+					</view>
+					<view class="item u-border-left u-flex-column u-flex-items-start u-flex-center box-border u-p-l-40" style="flex: 0 0 40%;border-color: #a28c61!important;">
+						<view class="u-font-34">{{origin.title}}</view> 
+						<slot name="btn"></slot>
+					</view>
+					<view class="icon-w">
+						<u-icon name="rmb-circle" size="140" color="#f55e3c"></u-icon>
+					</view>
 				</view>
 			</view>
-		</view>
+		</template>
+		
 		<view class="card-footer u-flex u-radius-8 bg-white u-flex-between u-flex-items-center u-font-24 u-p-20">
 			<view class="item">
 				使用时间：
@@ -45,6 +68,10 @@
 			type: Object,
 			default: () => ({})
 		}, 
+		cate: {
+			type: String,
+			default: '商品券'
+		}
 	})
 	
 	const emits = defineEmits(['cardClick'])
@@ -63,16 +90,27 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> 
 	.card-header {
 		overflow: hidden;
 	}
 	.card-footer {
 		color: #795107;
 	}
+	.card-header {
+		&.other {
+			.coupon-cate { 
+				&:before {
+					background: #f55e3c;
+				}
+			}
+		}
+	}
+	
 	.coupon {
 		color: #654B18;
 		position: relative;
+		
 		.icon-w {
 			position: absolute;
 			right: -50px;

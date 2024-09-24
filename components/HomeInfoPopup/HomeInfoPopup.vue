@@ -73,6 +73,22 @@
 								@oversize="handleoversize"
 							></u-upload>
 						</u-form-item>
+						<u-form-item
+							:borderBottom="false"
+							label="微信二维码" 
+							prop="img2"  
+							ref="img2" 
+							> 
+							<u-upload
+								:fileList="fileLists.img2"
+								@afterRead="afterRead"
+								@delete="deletePic"
+								name="img2" 
+								:maxCount="1"
+								:maxSize="2048000"
+								@oversize="handleoversize"
+							></u-upload>
+						</u-form-item>
 					</u--form> 
 				</scroll-view> 
 			</view>  
@@ -119,10 +135,12 @@
 		name: '', 
 		info: '',
 		img: '', 
+		img2: '', 
 		bg: '', 
 	})
 	const uForm = ref(null)
 	const fileLists = reactive({
+		img2: [],
 		img: [],
 		bg: []
 	});
@@ -162,6 +180,10 @@
 		let homeInfo = props.homeInfo
 		model.value.name = homeInfo.name
 		model.value.info = homeInfo.info 
+		if(homeInfo.img2) {
+			model.value.img2 = homeInfo.img2
+			fileLists.img2 = [{url: homeInfo.img2}]
+		}
 		if(homeInfo.img) {
 			model.value.img = homeInfo.img
 			fileLists.img = [{url: homeInfo.img}]

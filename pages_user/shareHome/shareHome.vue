@@ -338,7 +338,10 @@
 		</view>
 	</TabBar>   
 	<view class="u-flex-column u-flex-items-center u-p-l-20 u-p-r-20 u-font-28 fixed-menus-w" > 
-		<view class="u-m-b-30 share-btn btns-w u-radius-30 u-flex u-flex-center u-flex-items-center u-border" @click="showShare = true" style="background-color: #ffeeee;border-color: #ffc7c7;">
+		<view class="u-m-b-30 share-btn btns-w u-radius-30 u-flex u-flex-center u-flex-items-center u-border" 
+			@click="showShare = true" 
+			style="background-color: #ffeeee;border-color: #ffc7c7;" 
+		>
 			<view class="u-flex-column u-flex-center u-flex-items-center text-black u-p-5"> 
 				<u-icon name="share-square" color="#f00" size="24"></u-icon>
 				<text class="u-font-26 text-nowrap text-error text-thin">分享</text>
@@ -351,6 +354,27 @@
 		</view>
 		<u-safe-bottom></u-safe-bottom>
 	</view> 
+	<view class="u-flex-column u-flex-items-center u-p-l-20 u-p-r-20 u-font-28 fixed-menus-w" style="left: 0; right: auto" v-if="kf.zt == 1"> 
+		<view class="share-btn btns-w u-radius-30 u-flex u-flex-center u-flex-items-center u-border" 
+			@click="showKfImg = true" 
+			style="background-color: #ffeeee;border-color: #ffc7c7;" 
+		>
+			<view class="u-flex-column u-flex-center u-flex-items-center text-black u-p-8">  
+				<text class="u-font-30 text-error u-text-center">专属客服</text>
+			</view>
+		</view> 
+		<u-safe-bottom></u-safe-bottom>
+	</view>  
+	<u-popup mode="center" round="8" :show="showKfImg" :safeAreaInsetBottom="false" @close="showKfImg = false">
+		<view class="wrapper box-border" style="width: 80vw;"> 
+			<view class="wrapper-main u-p-20 bg-white box-border u-radius-8" > 
+				<view class="u-text-center u-p-20">专属客服二维码</view>
+				<view class="u-flex u-flex-center u-p-20">
+					<up-image radius="8" :src="kf.img" width="60vw" height="auto" mode="widthFix"></up-image> 
+				</view>
+			</view> 
+		</view>
+	</u-popup>
 </template>
 
 <script setup>
@@ -384,6 +408,7 @@
 	const loadstatus2 = ref('loadmore')
 	// const showHomeMode = ref(false)
 	const showProductList = ref(false)
+	const showKfImg = ref(false)
 	const homeInfo = ref({})
 	const homeUserInfo = ref({})
 	const customStyle = ref({
@@ -395,6 +420,7 @@
 		paddingBottom: '80px',
 		background: 'transparent' 
 	})  
+	const kf = ref({})
 	const yg = ref({})
 	const tabs_current = ref(0)
 	const tabs_list = ref([
@@ -618,6 +644,7 @@
 			notice.value = res.notice || []
 			dataListSum.value = +res.total
 			yg.value = res.yg
+			kf.value = res.kf
 			setOnlineControl(res)
 			tabs_list.value = [
 				{
@@ -828,6 +855,7 @@ page {
 		background-color: transparent;
 		color: #000;
 		line-height: 20px;
+		border-color: $uni-color-error!important;
 		&:after {
 			border: 0;
 		}
@@ -972,6 +1000,22 @@ page {
 				top: 0;
 			}
 			
+		}
+	}
+	.fixed-menus {
+		position: fixed;
+		left: 0;
+		bottom: 110px;
+		padding: 5px;
+		border-radius: 0 30px 30px 0;
+		// padding-left: 10px;
+		z-index: 20;
+		.item-mine {
+			width: 45px;
+			height: 45px;
+			border-radius: 30px;
+			border: 2px solid $u-error;
+			background-color: $u-error-light;
 		}
 	}
 </style>

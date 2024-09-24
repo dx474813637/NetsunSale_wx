@@ -30,7 +30,7 @@ export function share(config={}) {
 		// 	})
 		// }
 	})  
-	if(config.shareDisabled) {
+	if(!config.shareDisabled) {
 		onShareTimeline(() => {
 			return {
 				title: onlineControl.share_title,

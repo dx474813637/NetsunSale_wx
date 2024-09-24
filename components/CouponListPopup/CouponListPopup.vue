@@ -28,6 +28,7 @@
 							</view>
 							<CouponRowCard
 								:origin="item"
+								:cate="item.cate"
 								@cardClick="couponSelect"
 							></CouponRowCard>
 						</view>

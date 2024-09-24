@@ -142,8 +142,53 @@
 							{{product_list.share_title1}}
 						</view>
 						<view class="u-m-l-10"> 
-							<view class="u-p-10 u-p-l-16 u-p-r-16 u-font-28 u-radius-40 text-white u-error-bg" @click="showProductShare = true">{{product_list.share_title2}}</view>
+							<view class="u-p-10 u-p-l-16 u-p-r-16 u-font-28 u-radius-40 text-white u-success-bg" @click="showProductShare = true">{{product_list.share_title2}}</view>
 						</view>
+					</view>
+					<view class="u-flex u-flex-between u-flex-items-center u-m-t-30 u-m-6" v-if="pf == 1 && tuan_user.length > 0">
+						<view class="item">
+							<up-avatar-group
+								:urls="tuan_user"
+								keyName="img"
+								size="26"
+								gap="0.3"
+								maxCount="8"
+							></up-avatar-group>
+						</view>
+						<view class="item " v-if="endtime > 0">
+							<!-- <up-count-down :time="endtime" format="HH:mm:ss" autoStart @change="onEndtimeChange"></up-count-down> -->
+							<up-count-down
+								:time="endtime"
+								format="DD:HH:mm:ss"
+								autoStart
+								millisecond
+								@change="onEndtimeChange"
+							>
+								<view class="time u-flex u-flex-items-center">
+									<view class="time__custom u-error-light-bg u-error u-radius-5 u-p-10 u-font-36 u-flex u-flex-items-center">
+										<text class="time__custom__item text-bold u-p-l-4 u-p-r-4 u-text-center" style="font-family: fantasy;width: 26px">{{ endtimeData.days>=10?endtimeData.days:'0'+endtimeData.days}}</text>
+										<text class="time__custom__item u-font-28">天</text>
+										<text class="time__custom__item text-bold u-p-l-4 u-p-r-4 u-text-center" style="font-family: fantasy;width: 26px">{{ endtimeData.hours>=10?endtimeData.hours:'0'+endtimeData.hours}}</text>
+										<text class="time__custom__item u-font-28">时</text>
+										<text class="time__custom__item text-bold u-p-l-4 u-p-r-4 u-text-center" style="font-family: fantasy;width: 26px">{{ endtimeData.minutes>=10?endtimeData.minutes:'0'+endtimeData.minutes}}</text>
+										<text class="time__custom__item u-font-28">分</text>
+										<text class="time__custom__item text-bold u-p-l-4 u-p-r-4 u-text-center" style="font-family: fantasy;width: 26px">{{ endtimeData.seconds>=10?endtimeData.seconds:'0'+endtimeData.seconds}}</text>
+										<text class="time__custom__item u-font-28">秒</text>
+									</view>
+									<!-- <view class="time__custom u-error-bg u-radius-5 u-p-5 u-p-l-10 u-p-r-10 text-white u-font-32">
+										<text class="time__custom__item">{{ endtimeData.hours>=10?endtimeData.hours:'0'+endtimeData.hours}}</text>
+									</view>
+									<text class="time__doc u-p-l-6 u-p-r-6 u-error">:</text>
+									<view class="time__custom u-error-bg u-radius-5 u-p-5 u-p-l-10 u-p-r-10 text-white u-font-32">
+										<text class="time__custom__item">{{ endtimeData.minutes }}</text>
+									</view>
+									<text class="time__doc u-p-l-6 u-p-r-6 u-error">:</text>
+									<view class="time__custom u-error-bg u-radius-5 u-p-5 u-p-l-10 u-p-r-10 text-white u-font-32">
+										<text class="time__custom__item">{{ endtimeData.seconds }}</text>
+									</view> -->
+								</view>
+							</up-count-down>
+						</view> 
 					</view>
 				</view> 
 			</view> 
@@ -433,6 +478,8 @@ import { nextTick } from 'vue';
 	const spec_prices = ref([])
 	const coupon_list = ref([])
 	const swiper_index = ref(0)
+	const endtime = ref(0)
+	const endtimeData = ref({});  
 	const pf = ref(0)
 	const menusShow = ref(true)
 	const showUserPhone = ref(false)
@@ -446,6 +493,12 @@ import { nextTick } from 'vue';
 	const kefu = ref({})
 	const product_longs = ref({})
 	const $http = inject('$http')
+	const tuan_user = computed(() => {
+		if(product_list.value.hasOwnProperty('tuan_user') && product_list.value.tuan_user.length > 0 ) {
+			return product_list.value.tuan_user 
+		}
+		return []
+	})
 	
 	const cate_active_name = computed(() => {
 		if(!product_list.value.id || cate_list.value.length == 0) return '' 
@@ -591,6 +644,7 @@ import { nextTick } from 'vue';
 			product_list.value = res.list
 			express_info.value = res.info
 			company_list.value = res.company
+			endtime.value = res.endtime
 			spec_prices.value = res.spec_prices
 			kefu.value = res.kefu
 			coupon_list.value = res.coupon_list || []
@@ -598,6 +652,10 @@ import { nextTick } from 'vue';
 			setOnlineControl(res)
 		}
 	}
+	// 定义 onChange 方法  
+	const onEndtimeChange = (e) => {   
+		endtimeData.value = e;  
+	};  
 	function swiperChange({current, currentItemId, source}) { 
 		swiper_index.value = current
 	}

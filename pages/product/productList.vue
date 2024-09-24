@@ -2,6 +2,15 @@
 	<view class="w ">
 		<u-sticky>
 			<view class="header bg-white u-p-10 u-p-l-20 u-p-r-20 u-flex u-flex-items-center">
+				<view class="item " v-if="!terms && pf != 1">
+					<view class="nav-w bg-white u-p-20 u-flex">
+						<view class="item item-cate u-flex u-flex-items-center u-font-28" @click="showCateList = true">
+							<view class="u-info">筛选类别：</view>
+							<view class="u-error u-p-r-10">{{cate_label}}</view>
+							<u-icon name="arrow-down-fill" color="#ccc" size="12"></u-icon>
+						</view> 
+					</view>
+				</view>
 				<view class="item u-flex-1">
 					<u-search
 						placeholder="请输入关键字" 
@@ -13,13 +22,42 @@
 				</view>
 				
 			</view>
-			<view class="nav-w bg-white u-p-20 u-flex" v-if="!terms">
+			<!-- <view class="nav-w bg-white u-p-20 u-flex" v-if="!terms">
 				<view class="item item-cate u-flex u-flex-items-center u-font-28" @click="showCateList = true">
 					<view class="u-info">筛选类别：</view>
 					<view class="u-error u-p-r-10">{{cate_label}}</view>
 					<u-icon name="arrow-down-fill" color="#ccc" size="12"></u-icon>
 				</view> 
+			</view> -->
+			<view class="bg-white " v-if="pf == 1" >
+				<view class="nav-w u-p-t-14 u-flex u-flex-items-center u-flex-center u-font-28 " 
+					style="color: #B86C1B; border-radius: 10px 10px 0 0; background-image: linear-gradient(to bottom, #FFF7EF, #fff);"
+					v-if="notice_obj"
+					>
+					<view class="u-m-r-10">
+						<u-icon name="bell-fill" color="#B86C1B"></u-icon>
+					</view> 
+					<view class="item u-flex u-flex-items-center">
+						<view>{{notice_obj.num1_title}}</view>
+						<view>{{notice_obj.num1}}</view> 
+					</view>
+					<view class="u-m-l-20 u-m-r-20">
+						<up-line color="#D5A68F" direction="col" length="14px"></up-line>
+					</view> 
+					<view class="item u-flex u-flex-items-center">
+						<view>{{notice_obj.num2_title}}</view>
+						<view>{{notice_obj.num2}}</view> 
+					</view>
+				</view>
+				<view class="notice-w bg-white u-p-10 u-p-l-20 u-p-r-20" v-if="notice_list.length != 0">
+					<view class="u-radius-4" style="border: 1rpx solid #f1d6b0;overflow: hidden; background-image: linear-gradient(to bottom, #FFF7EF, #fff);">
+						<up-notice-bar :text="notice_list" direction="column" bgColor="transparent" color="#934505" ></up-notice-bar>
+					</view>
+					
+				</view>
 			</view>
+			
+			
 		</u-sticky>
 		
 		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10" v-if="pf == 1"> 
@@ -77,9 +115,10 @@
 </template>
 
 <script setup> 
+	// import { onLoad, onReady, onShareTimeline, onShareAppMessage, onReachBottom } from "@dcloudio/uni-app";
 	// import { ref, reactive, computed, toRefs, inject, watch, onMounted } from 'vue'
 	import { share } from '@/composition/share.js'
-	const { setOnlineControl, customShareParams } = share({shareDisabled: true})
+	const { setOnlineControl, customShareParams } = share()
 	const $api = inject('$api')
 	
 	import {useCateStore, baseStore} from '@/stores/base.js'
@@ -97,7 +136,9 @@
 	const pf = ref(0)
 	const prodId = ref('')
 	const cate_label = ref('全部')
-	const dataList = ref([])
+	const dataList = ref([]) 
+	const notice_list = ref([])
+	const notice_obj = ref({})
 	const loadstatus = ref('loadmore')
 	const params = computed(() => {
 		if(terms.value) {
@@ -116,7 +157,7 @@
 			}
 		}
 		
-	})
+	}) 
 	const func = computed(() => {
 		return terms.value ? 'web_search' : 'web_product'
 	})
@@ -130,10 +171,10 @@
 		if(options.hasOwnProperty('pf')) {
 			pf.value = +options.pf
 		}
-		if(cate_list.value.length == 0) {
+		if(cate_list.value.length == 0 && pf.value != 1) {
 			await cate.getCateData() 
 		}
-		if(options.hasOwnProperty('cate')) {
+		if(options.hasOwnProperty('cate') && pf.value != 1) {
 			cateId.value = options.cate
 			initCateLabel()
 		}
@@ -153,6 +194,8 @@
 		const res = await $api[func.value]({params: params.value})
 		if (res.code == 1) { 
 			dataList.value = [...dataList.value, ...res.list] 
+			notice_list.value = res.notice || []
+			notice_obj.value = res.noticebar || false
 			setOnlineControl(res)
 			if(dataList.value.length >= +res.total) {
 				loadstatus.value = 'nomore'

@@ -10,6 +10,7 @@
 				> 
 					<view class="u-p-10 u-flex u-flex-items-center">
 						<u-icon name="star-fill" color="#B09762"></u-icon>
+						<view class="u-m-l-10 u-error-bg text-white u-radius-30 u-font-26 u-p-6 u-p-b-8 u-p-l-16 u-p-r-16" v-if="item.cate == '商家券'">店铺专属</view>
 						<view class="u-m-l-10">{{item.title1}}</view>
 					</view>
 					<CouponRowCard

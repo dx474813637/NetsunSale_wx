@@ -2,13 +2,13 @@
 	<view 
 		class="wrapper " 
 		:style="{
-			backgroundImage: `url(${detail.img})`,
+			backgroundImage: detail.cate == '商品券' ? `url(${detail.img})` : 'none',
 			backgroundSize: '100% auto',
 			backgroundRepeat: 'no-repeat',
 		}"
 	> 
-		<view class=" u-m-b-20">  
-			<view class="">
+		<view class=" u-m-b-20" v-if="detail.cate == '商品券'">
+			<view >
 				<u-parse :content="detail.info"></u-parse> 
 			</view> 
 			<view class="u-m-t-30 u-p-20"> 
@@ -22,6 +22,38 @@
 						</view>
 					</template>
 				</CouponRowCard>
+			</view>
+			
+		</view>
+		<view v-else> 
+			<view class="u-p-20">
+				<CouponRowCard
+					:origin="detail"
+					:cate="detail.cate"
+					@cardClick="cardClick"
+				>
+					<template #btn>
+						<view class=" u-radius-4 u-p-10 u-p-l-25 u-p-r-25 u-font-26 u-m-t-20" style="background-color: #FFEDB2; color: #D70602;">
+							立即领取
+						</view>
+					</template>
+				</CouponRowCard>
+				<view class="u-flex u-radius-8 bg-white u-flex-between u-flex-items-center u-font-28 u-p-20" v-if="detail.company">
+					<view class="item u-flex-1">商家:{{detail.company.company}}</view>
+					<view class="item u-error">
+						<view @click="base.handleGoto({url: '/pages_user/shop/shop', params: {login: detail.company.login}})">
+							进店使用>>
+						</view> 
+					</view>
+				</view>
+			</view>
+			<view class="u-p-20">
+				<view class="bg-white u-radius-10 u-p-20 u-font-28">
+					<view class="u-text-center u-error u-m-b-10">活动内容说明</view>
+					<view class="u-p-20 u-radius-10 " style="background-color: #f8f8f8; color: #666;">
+						<u-parse :content="detail.info"></u-parse>
+					</view>
+				</view>
 			</view>
 		</view> 
 		  

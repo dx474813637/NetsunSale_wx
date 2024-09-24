@@ -23,8 +23,9 @@
 					'u-font-26': size == 'small',
 				}"
 			>
-				<view class="u-line-2 u-font-32 text-bold" style="width: 100%;" >
-					{{origin.name}}
+				<view class="u-line-2 u-font-32 " style="width: 100%;" >
+					<text class="u-error-bg u-radius-5 text-white u-p-4 u-p-l-8 u-p-r-8 u-font-26 u-m-r-6" v-if="origin.tuan_role == 1">单团</text>
+					<text class="text-bold">{{origin.name}}</text> 
 				</view>
 				<view class="" style="width: 100%;">
 					<view class="u-flex u-flex-items-center u-m-b-8" >

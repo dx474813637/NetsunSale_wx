@@ -282,3 +282,5 @@ export const vouchers_bind = (data) => http.get('vouchers_bind', data)
 
 // web_zone  
 export const web_zone = (data) => http.get('web_zone', data)
+// web_login_coupon 商家券活动列表 参数login=商家账号
+export const web_login_coupon = (data) => http.get('web_login_coupon', data)

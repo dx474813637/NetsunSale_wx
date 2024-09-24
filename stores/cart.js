@@ -170,6 +170,7 @@ export const useCartStore = defineStore('cart', {
 		},
 		addOrderProduct(data) { 
 			//直接购买下单的商品
+			this.is_order_data = []
 			let { id: shopId } = data.shop;
 			data = {
 				...data, 
@@ -188,7 +189,9 @@ export const useCartStore = defineStore('cart', {
 				},
 				products: [data]
 			}
-			this.is_order_data.unshift(datas)  
+			// this.is_order_data.unshift(datas)  
+			this.is_order_data = [datas]
+			console.log(this.is_order_data)
 			return true
 		},
 		setPidSku(arr, idStr) { 

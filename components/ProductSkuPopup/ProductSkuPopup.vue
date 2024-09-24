@@ -310,6 +310,7 @@
 			checked: props.isOrder? true :false,
 		}  
 		if(props.isOrder) {
+			console.log(skuItem)
 			let flag = cart.addOrderProduct( skuItem )
 			if(flag) {
 				emits('onConfirm')

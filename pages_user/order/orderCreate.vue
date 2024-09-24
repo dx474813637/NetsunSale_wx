@@ -178,6 +178,7 @@
 		return !tuikuan.value || !addressData.value.id
 	})
 	const dataList = computed(() => {
+		console.log(is_order_data.value)
 		if(is_order_data.value.length > 0) return is_order_data.value
 		return cart_list_checked.value
 	})
@@ -204,8 +205,8 @@
 		})
 	})
 	onUnload(() => {
-		uni.$off('create_order_address_update')
-		is_order_data.value = []
+		console.log('onUnload')
+		uni.$off('create_order_address_update') 
 	})
 	
 	async function getInitData() {

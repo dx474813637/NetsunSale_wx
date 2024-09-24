@@ -528,7 +528,7 @@
 	})  
 	onUnmounted(async () => {  
 		uni.$off('create_order_address_update')
-		is_order_data.value = []
+		// is_order_data.value = []
 	})  
 	 
 	 function setRef(el, i) {  
