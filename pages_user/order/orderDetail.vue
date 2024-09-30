@@ -117,6 +117,14 @@
 			</view>
 		</view>  
 		
+		<!-- <view class="u-flex u-flex-center u-p-30 ">
+			<up-text type="primary" decoration="underline" align="center" text="点击查看退货流程"  @click="base.handleGoto({url: '/pages/web_danye/web_danye_4', params: {id: '18'}})"></up-text>
+		</view> -->
+		<view class="bg-white u-radius-12 u-flex u-flex-end u-flex-wrap btns-w u-m-t-40 u-m-b-20" style="padding-left: 90px;">
+			<view class="item u-p-20" >
+				<up-button type="info" shape="circle" plain  @click="base.handleGoto({url: '/pages/web_danye/web_danye_4', params: {id: '18'}})">退货流程</up-button>
+			</view> 
+		</view>
 		
 	</view>
 	<u-safe-bottom></u-safe-bottom>

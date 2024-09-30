@@ -124,8 +124,15 @@
 						</view>
 						<view class="text-light u-font-26 u-p-l-10" v-if="ele.title">{{ele.title}}</view>
 					</view>
-					<view class=" u-flex u-flex-items-center u-flex-items-center" v-if="ele.right_icon && ele.right_url">
-						<image style="width: 20px;height:20px;" :src="ele.right_icon" mode="" @click="base.handleGoto(ele.right_url)"></image>
+					<view class=" u-flex u-flex-items-center u-flex-items-center" >
+						<template v-if="ele.right_icon">
+							<image style="height:22px;" mode="heightFix" :src="ele.right_icon" @click="base.handleGoto(ele.right_url)"></image>
+						</template>
+						<template v-else-if="ele.right_text">
+							<view class="text-base u-font-28" @click="base.handleGoto(ele.right_url)">
+								{{ele.right_text}}
+							</view> 
+						</template> 
 					</view>
 				</view>
 				<view class="box-row other-menus u-flex u-flex-wrap u-flex-items-center u-p-b-20 ">

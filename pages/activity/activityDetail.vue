@@ -2,30 +2,12 @@
 	<view 
 		class="wrapper " 
 		:style="{
-			backgroundImage: detail.cate == '商品券' ? `url(${detail.img})` : 'none',
+			backgroundImage: detail.cate != '商家券' ? `url(${detail.img})` : 'none',
 			backgroundSize: '100% auto',
 			backgroundRepeat: 'no-repeat',
 		}"
-	> 
-		<view class=" u-m-b-20" v-if="detail.cate == '商品券'">
-			<view >
-				<u-parse :content="detail.info"></u-parse> 
-			</view> 
-			<view class="u-m-t-30 u-p-20"> 
-				<CouponRowCard
-					:origin="detail"
-					@cardClick="cardClick"
-				>
-					<template #btn>
-						<view class=" u-radius-4 u-p-10 u-p-l-25 u-p-r-25 u-font-26 u-m-t-20" style="background-color: #fff5dc;">
-							立即领取
-						</view>
-					</template>
-				</CouponRowCard>
-			</view>
-			
-		</view>
-		<view v-else> 
+	>  
+		<view v-if="detail.cate == '商家券'">
 			<view class="u-p-20">
 				<CouponRowCard
 					:origin="detail"
@@ -56,6 +38,25 @@
 				</view>
 			</view>
 		</view> 
+		<view class=" u-m-b-20" v-else>
+			<view >
+				<u-parse :content="detail.info"></u-parse> 
+			</view> 
+			<view class="u-m-t-30 u-p-20"> 
+				<CouponRowCard
+					:origin="detail"
+					@cardClick="cardClick"
+				>
+					<template #btn>
+						<view class=" u-radius-4 u-p-10 u-p-l-25 u-p-r-25 u-font-26 u-m-t-20" style="background-color: #fff5dc;">
+							立即领取
+						</view>
+					</template>
+				</CouponRowCard>
+			</view>
+			
+		</view>
+		
 		  
 		<view class="list u-flex u-flex-wrap u-flex-items-start u-p-10 u-m-t-20">
 			 <view 
