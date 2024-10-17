@@ -101,6 +101,21 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/productCommunity/productList",
+			"style": {
+				"navigationBarTitleText": "商品列表",
+				"enablePullDownRefresh": false,
+				"onReachBottomDistance": 80 ,
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/productCommunity/productDetailQuick",
+			"style": {
+				"navigationBarTitleText": "商品详情",
+				"enablePullDownRefresh": false
+			}
+
 		},
 		// {
 		// 	"path": "pages/login/login",
@@ -225,6 +240,12 @@
 						"softinputMode": "adjustPan"
 					}
 				}
+			},{
+				"path": "indexCommunity/indexCommunity",
+				"style": {
+					"navigationBarTitleText": "社区团购管理",
+					"navigationStyle": "custom" 
+				}
 			}, {
 				"path": "address/addressList",
 				"style": {
@@ -237,6 +258,21 @@
 				"path": "address/addressDetail",
 				"style": {
 					"navigationBarTitleText": "地址详情",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "addressCommunity/addressCommunityList",
+				"style": {
+					"navigationBarTitleText": "自提地址管理",
+					"enablePullDownRefresh": false,
+					"onReachBottomDistance": 80
+				}
+
+			}, {
+				"path": "addressCommunity/addressCommunityDetail",
+				"style": {
+					"navigationBarTitleText": "自提地址详情",
 					"enablePullDownRefresh": false
 				}
 
@@ -257,6 +293,38 @@
 
 			}, {
 				"path": "order/orderList",
+				"style": {
+					"navigationBarTitleText": "订单列表",
+					"enablePullDownRefresh": false,
+					"onReachBottomDistance": 80,
+					"navigationBarBackgroundColor": "#f8f8f8"
+				}
+
+			}, {
+				"path": "orderCommunity/orderDetailUser",
+				"style": {
+					"navigationBarTitleText": "订单详情",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "orderCommunity/orderListUser",
+				"style": {
+					"navigationBarTitleText": "订单列表",
+					"enablePullDownRefresh": false,
+					"onReachBottomDistance": 80,
+					"navigationBarBackgroundColor": "#f8f8f8"
+				}
+
+			}, {
+				"path": "orderCommunity/orderDetailCaptain",
+				"style": {
+					"navigationBarTitleText": "订单详情",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "orderCommunity/orderListCaptain",
 				"style": {
 					"navigationBarTitleText": "订单列表",
 					"enablePullDownRefresh": false,

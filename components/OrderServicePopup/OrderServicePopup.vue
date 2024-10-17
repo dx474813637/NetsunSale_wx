@@ -286,7 +286,10 @@
 		() => props.list.pid,
 		(n) => {
 			console.log(n);
-			products.value = uni.$u.deepClone(n).map(ele => ({...ele, checked: false, count: 1, disabled: false}))
+			if(n) {
+				products.value = uni.$u.deepClone(n).map(ele => ({...ele, checked: false, count: 1, disabled: false}))
+			}
+			
 		},
 		{
 			deep: true

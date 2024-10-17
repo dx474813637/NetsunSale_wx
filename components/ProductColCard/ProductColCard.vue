@@ -1,5 +1,5 @@
 <template>
-	<view class="card u-radius-8 uni-shadow-base bg-white" :style="customStyle" @click.stop="gotoDetail">
+	<view class="card u-radius-8 uni-shadow-base bg-white" :style="customStyle" @click.stop="cardClick">
 		<view class="img-w">
 			<!-- <view class="img">
 				<up-image
@@ -67,8 +67,12 @@
 			type: Object,
 			default: () => ({})
 		},
+		cardClickDefault: {
+			type: Boolean,
+			default: true
+		}
 	})
-	
+	const emits = defineEmits(['cardClick'])
 	const previewImg = ref('');
 	watch(
 		() => props.origin,
@@ -87,6 +91,13 @@
 				id: props.origin.id, 
 			}
 		})
+	}
+	function cardClick() {
+		if(props.cardClickDefault) {
+			gotoDetail()
+			return
+		}
+		emits('cardClick', {data: props.origin})
 	}
 </script>
 

@@ -166,6 +166,7 @@ export const menusStore = defineStore('menus', {
 	state: () => {
 		return {  
 			menus: [], 
+			menus_community: [], 
 			menus_note: [], 
 			menus_51xp: [], 
 			menus_wd: [],
@@ -219,6 +220,15 @@ export const menusStore = defineStore('menus', {
 				this.menus_ad = res.ad || {}
 				this.menus_xr = res.xr || {}
 				 
+			} 
+		},
+		async getCommunityMenusData($http) {   
+			const res = await apis.memu2()  
+			if(res.code == 1) {  
+				let user = userStore()
+				// user.saveUserInfo(res.info)
+				user.getUserInfo(res.info)  
+				this.menus_community = res.list 
 			} 
 		},
 		async getNoteMenusData($http) {   

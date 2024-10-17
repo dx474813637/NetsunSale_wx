@@ -18,6 +18,7 @@ export const address_save = (data) => http.get('address_save', data)
 // address_del 删除地址 参数id
 export const address_del = (data) => http.get('address_del', data)
 
+
 // xcx_login
 export const xcx_login = (data) => http.get('xcx_login', data)
 // // syblogin
@@ -59,6 +60,7 @@ export const change_service_status = (data) => http.get('change_service_status',
 export const order_detail = (data) => http.get('order_detail', data)
 // orderConfirm 创建订单 地址参数 
 export const orderConfirm = (data) => http.get('orderConfirm', data)
+
 // order_refund 发起退款 参数id 订单id  订单状态为支付成功的时候 cate=退货 换货  info具体说明  img可以多图
 export const order_refund = (data, config) => http.post('order_refund', data, config)
  
@@ -102,7 +104,7 @@ export const web_search = (data) => http.get('web_search', data)
 export const web_product_detail = (data) => http.get('web_product_detail', data)
 // web_pid_sku1  
 export const web_pid_sku1 = (data) => http.get('web_pid_sku1', data)
-  
+
  // web_help 帮助中心
 export const web_help = (data) => http.get('web_help', data)
  // web_help_detail 帮助页详情 参数id
@@ -284,3 +286,37 @@ export const vouchers_bind = (data) => http.get('vouchers_bind', data)
 export const web_zone = (data) => http.get('web_zone', data)
 // web_login_coupon 商家券活动列表 参数login=商家账号
 export const web_login_coupon = (data) => http.get('web_login_coupon', data)
+
+
+// community_address 自提地址列表 参数p
+export const community_address = (data) => http.get('community_address', data)
+// community_address_detail 地址详情 参数id
+export const community_address_detail = (data) => http.get('community_address_detail', data)
+// community_address_save 地址新增/修改 参数 id修改时需要传 address_name 自提点名称 area地区编码 area_name地区 address详细地址 default=1默认 0不默认 name收货人 tel联系电话
+export const community_address_save = (data) => http.get('community_address_save', data)
+// community_address_del 删除地址 参数id
+export const community_address_del = (data) => http.get('community_address_del', data)
+
+// orderConfirm1 参数id 商品id tid团id（这个是根据url里面参数tid来，没有就传0）
+export const orderConfirm1 = (data) => http.get('orderConfirm1', data)
+// web_product1 社区团购商品列表 多一个字段terms  直接在这个接口搜索。
+export const web_product1 = (data) => http.get('web_product1', data)
+// web_product_detail1 社区团购商品详情
+export const web_product_detail1 = (data) => http.get('web_product_detail1', data)
+export const create_order_post1 = (data, config={}) => http.post('create_order1', data, config)
+// order_list1 订单列表
+export const order_list1 = (data) => http.get('order_list1', data)
+// order_detail1 订单详情 
+export const order_detail1 = (data) => http.get('order_detail1', data)
+  
+// order_list2 社区团购 团长查看的订单列表 参数一致 多一个参数tel  根据手机号或尾号搜索 最多返回一页数据。
+export const order_list2 = (data) => http.get('order_list2', data)
+// order_detail2 订单详情 社区团购 团长查看的订单详情 参数一致
+// 订单详情页  确认提货 拒绝提货 2个按钮  对应接口button2_handle button4_handle 参数都是id 订单id
+export const order_detail2 = (data) => http.get('order_detail2', data)
+// button2_handle  确认提货
+export const button2_handle = (data) => http.get('button2_handle', data)
+// button4_handle 拒绝提货
+export const button4_handle = (data) => http.get('button4_handle', data)
+// memu2  
+export const memu2 = (data) => http.get('memu2', data)

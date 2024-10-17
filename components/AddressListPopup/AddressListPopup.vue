@@ -7,8 +7,8 @@
 					<view class="u-text-center">
 						{{$attrs.title}}
 					</view> 
-					<view class="item u-font-28 u-error-dark" @click="gotoManage">管理</view>
-					
+					<view class="item u-font-28 u-error-dark" v-if="mode == '1'" @click="gotoManage">管理</view>
+					<view v-else ></view>
 				</view>
 			</template>
 			<view class="list-w ">   
@@ -17,11 +17,21 @@
 						v-for="(item, index) in list"
 						:key="index"
 					>
-						<AddressCard
-							:origin="item"
-							:cardClickToEdit="false"
-							@cardClick="addressSelect(item)"
-						></AddressCard>
+						<template v-if="mode == '1'">
+							<AddressCard
+								:origin="item"
+								:cardClickToEdit="false"
+								@cardClick="addressSelect(item)"
+							></AddressCard>
+						</template>
+						<template v-else-if="mode == '2'">
+							<AddressCommunityCard
+								:origin="item"
+								:cardClickToEdit="false"
+								@cardClick="addressSelect(item)"
+							></AddressCommunityCard>
+						</template>
+						
 					</view>
 					<view class="u-p-b-20"> 
 						<template v-if="list.length == 0">
@@ -67,6 +77,10 @@
 			default: () => {
 				return []
 			},
+		},
+		mode: {
+			type: String,
+			default: '1'
 		}
 	})   
 	const emits = defineEmits(['confirmAddress', 'refresh'])
@@ -77,9 +91,17 @@
 		emits('confirmAddress', data) 
 	}
 	function gotoManage() {  
-		uni.navigateTo({
-			url: '/pages_user/address/addressList'
-		})
+		if(props.mode == '1') {
+			uni.navigateTo({
+				url: '/pages_user/address/addressList'
+			})
+		}
+		else if(props.mode == '2') {
+			uni.navigateTo({
+				url: '/pages_user/addressCommunity/addressCommunityList'
+			})
+		}
+		
 	}
 	 
 </script>
