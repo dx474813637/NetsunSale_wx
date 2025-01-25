@@ -474,6 +474,27 @@
 				"style": {
 					"navigationBarTitleText": "绑定福利券"
 				}
+			},
+			{
+				"path" : "pidPicText/pidPicTextAdd",
+				"style" : 
+				{
+					"navigationBarTitleText": "新增商品图文"
+				}
+			}, 
+			{
+				"path" : "pidPicText/pidPicTextList",
+				"style" : 
+				{
+					"navigationBarTitleText": "商品图文列表"
+				}
+			},
+			{
+				"path" : "pidPicText/pidPicTextMy",
+				"style" : 
+				{
+					"navigationBarTitleText": "我的图文列表"
+				}
 			}
 		]
 	}, {

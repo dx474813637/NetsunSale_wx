@@ -18,8 +18,7 @@
 			<view v-if="list.id">
 				<OrderCard
 					:origin="list"
-					:gotoDetail="false"
-					gotoProduct
+					:gotoDetail="false" 
 				></OrderCard>
 			</view>
 			
@@ -51,11 +50,7 @@
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">订单状态</view>
 				<view class="item u-flex-1 u-text-right text-base">{{ order_zt2str }}</view>
-			</view>
-			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
-				<view class="item text-nowrap u-p-r-20">无忧退货（运费险最高8元）</view>
-				<view class="item u-flex-1 u-text-right text-base">商家赠送</view>
-			</view>
+			</view> 
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
 				<view class="item text-nowrap u-p-r-20">总金额</view>
 				<view class="item u-flex-1 u-text-right text-base">{{ list.total_fee }} 元</view>

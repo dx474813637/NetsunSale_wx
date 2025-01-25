@@ -42,7 +42,7 @@
 				<view class="item u-flex-1 u-text-right text-base">{{ order_zt2str }}</view>
 			</view>
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
-				<view class="item text-nowrap u-p-r-20">无忧退货（运费险最高8元）</view>
+				<view class="item text-nowrap u-p-r-20">无忧退货（运费险最高10元）</view>
 				<view class="item u-flex-1 u-text-right text-base">商家赠送</view>
 			</view>
 			<view class="u-flex u-flex-items-start u-m-b-20 u-flex-between u-font-28">
@@ -177,6 +177,12 @@
 		@submitEvent="submitEvent"
 		@closeEvent="cancelOrderShow = false"
 	></CancleOrderPopup>
+	<FengkongPopup
+		:show="fengkongShow"
+		:info="list.fengkong" 
+		@submitEvent="fksubmitEvent"
+		@closeEvent="fengkongShow = false"
+	></FengkongPopup>
 	<RefundOrderPopup
 		:show="refundOrderShow"
 		@submitEvent="submitEvent2"
@@ -213,7 +219,8 @@
 	const coupon_list = ref([])
 	const btnList = ref([])
 	const coupon_id = ref('')
-	const cpy_pay_info = ref('')
+	const cpy_pay_info = ref('') 
+	const fengkongShow = ref(false)
 	const orderInvoiceShow = ref(false)
 	const showCpyPayInfo = ref(false)
 	const couponListShow = ref(false)
@@ -410,10 +417,18 @@
 		}
 		cancelOrderShow.value = false
 	}
+	async function fksubmitEvent() {
+		uni.showLoading() 
+		fengkongShow.value = false 
+		wxPay()
+	}
 	async function submitEvent2() {
 		uni.showLoading()
 		await refundEvent()
-		refundOrderShow.value = false
+		refundOrderShow.value = false;
+		uni.reLaunch({
+			url: '/pages_user/order/orderList'
+		})
 	}
 	async function refundEvent(data = {}) {
 		const r = await $api.order_refund({ 
@@ -473,7 +488,10 @@
 			handleChangeShow5(true)
 			return
 		}
-		if(coupon_list.value.length > 0) {
+		if(list.value.fengkong) {
+			fengkongShow.value = true 
+		}
+		else if(coupon_list.value.length > 0) {
 			couponListShow.value = true
 		}
 		else { 

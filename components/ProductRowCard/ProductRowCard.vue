@@ -96,9 +96,13 @@
 			type: String,
 			default: 'normal'
 		},
+		cardClickDefault: {
+			type: Boolean,
+			default: true
+		}
 	})
 	
-	const emits = defineEmits(['checkedClick'])
+	const emits = defineEmits(['checkedClick', 'cardClick'])
 	const previewImg = ref('');
 	watch(
 		() => props.origin,
@@ -110,13 +114,18 @@
 			deep: true
 		}
 	)
-	function gotoDetail() {
-		base.handleGoto({
-			url: '/pages/product/productDetail',
-			params: {
-				id: props.origin.id, 
-			}
-		})
+	function gotoDetail() { 
+		if(props.cardClickDefault) {
+			base.handleGoto({
+				url: '/pages/product/productDetail',
+				params: {
+					id: props.origin.id, 
+				}
+			})
+			return
+		}
+		emits('cardClick', {data: props.origin})
+		
 	}
 	function swicthClick(e) { 
 		

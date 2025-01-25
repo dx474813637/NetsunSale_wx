@@ -113,7 +113,7 @@
 		initDataList()
 	} 
 	async function initOrderTabsData() {
-		const res = await $api.order_type()
+		const res = await $api.order_type({params: {type: 1}})
 		if(res.code == 1 ) { 
 			tabs_list.value = res.list.map(ele => {
 				return {

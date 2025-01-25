@@ -121,7 +121,7 @@
 					</view>
 				</view>  
 				<view class=" bg-white u-p-20 u-p-t-30 u-p-t-30 u-flex u-flex-between u-flex-items-center">
-					<view class="text-base">如遇缺货无法发出直接退款？</view>
+					<view class="text-base">如遇缺货无法自提直接退款？</view>
 					<view class="u-flex-1 u-p-l-30 u-flex u-flex-end  ">
 						<view class="u-flex u-info u-flex-items-center">
 							<view class="u-p-10" :class="{
@@ -141,10 +141,7 @@
 						
 					</view>
 				</view>	
-				<view class="bg-white u-m-b-30 u-p-20 u-p-t-30 u-p-t-30 u-flex u-flex-between u-flex-items-center u-font-30">
-					<view class="text-base">无忧退货（运费险最高8元）</view>
-					<view class="u-flex-1 u-p-l-30 u-flex u-flex-end">商家赠送</view>
-				</view>
+				 
 			</view>
 			
 		</view>

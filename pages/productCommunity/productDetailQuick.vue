@@ -252,7 +252,7 @@
 				</view>  
 				<view class="u-flex u-flex-items-center u-p-10 u-p-b-14 u-p-t-14" @click="showExpressPrice= true">
 					<view class="item text-base u-m-r-30">
-						运费
+						保障
 					</view>
 					<u-line direction="col" length="15px"></u-line> 
 					<view class="item u-p-l-30 u-flex-1 u-line-1 ">
@@ -281,60 +281,9 @@
 				</view>  
 				<!-- <u-line length="100%" margin="10px 0 0 0"></u-line> -->
 			</view> 
-		</view>
-		<!-- <view class="u-p-10 bg-white u-m-b-20">  
-			<view class="u-radius-8 bg-white u-p-l-20 u-p-r-20 u-font-30">  
-				<view class="u-flex u-flex-between u-flex-items-center u-p-l-10 u-p-r-10 u-p-b-14 ">
-					<view class="item text-bold">发现笔记</view>
-					<view class="item u-flex u-flex-items-baseline" @click="base.handleGoto({url: 'pages_note/note2/noteList', params: {id: product_id}})">
-						<view class="u-info u-m-r-5 u-font-28">全部({{product_longs.total}})</view>
-						<u-icon name="arrow-right" color="#ccc" size="14"></u-icon>
-					</view>
-				</view>
-				<view class="biji-list u-flex" v-if="product_longs.total > 0">
-					<view class="item u-p-10 box-border" v-for="item in product_longs.list" :key="item.id"> 
-						<noteCard
-							:origin="item"
-							imgHeight="120px"
-							:urlObj="{
-								url: '/pages_note/note2/note',
-								params: {
-									id: item.id, 
-								}
-							}"
-						></noteCard>  
-					</view>
-				</view>
-			</view> 
-		</view> -->
+		</view> 
 		
-		<view class="u-p-20 bg-white u-m-b-20">
-			<view class="u-radius-8 u-flex u-flex-items-center u-p-20" style="background-color: #FAFAFA;" @click="base.handleGoto({url: '/pages_user/shop/shop', params: {login: product_list.login}})">
-				<view class="item u-m-r-20 u-radius-40" :style="{ border: `2px solid ${themeColor}` }">
-					<up-image
-						:src="company_list.logo"
-						width="50px"
-						height="50px"
-						shape="circle"
-						mode="scaleToFill"
-					></up-image>
-				</view>
-				<view class="item u-flex-1 u-flex-column u-flex-items-start">
-					<view class="text-black u-m-b-5">
-						{{company_list.company}}
-					</view>
-					<view class="u-flex u-flex-between u-flex-items-center" style="width: 100%;">
-						<view class="item u-flex-1 u-font-24">
-							<text class="u-p-4 u-p-l-15 u-p-r-15 u-warning u-warning-light-bg u-radius-4">{{company_list.title}}</text>
-						</view>
-						<view class="item">
-							<u-button type="error" size="small" :customStyle="{borderRadius: '5px'}">去旺铺</u-button>
-						</view>
-					</view>
-				</view>
-				
-			</view>
-		</view>
+		 
 		
 		<view class="pro-desc">
 			<view class="item">
@@ -402,7 +351,7 @@
 	></ProductSkuPopup> -->
 	<ProductExpressPopup
 		:show="showExpressPrice" 
-		title="运费说明" 
+		title="保障规则" 
 		:list="express_info"
 		:onUpdateShow="handleChangeShow3" 
 	></ProductExpressPopup>
@@ -457,7 +406,7 @@ import { nextTick } from 'vue';
 	const tid = ref('')
 	const origin = ref({})
 	const product_list = ref({})
-	const express_info = ref({})
+	const express_info = ref('')
 	const company_list = ref({})
 	const spec_prices = ref([])
 	const coupon_list = ref([])
@@ -628,7 +577,7 @@ import { nextTick } from 'vue';
 		if(res.code == 1) {
 			origin.value = res
 			product_list.value = res.list
-			express_info.value = res.info
+			express_info.value = res.company.service1
 			company_list.value = res.company
 			endtime.value = res.endtime
 			spec_prices.value = res.spec_prices

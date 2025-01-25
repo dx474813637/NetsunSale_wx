@@ -51,7 +51,7 @@ export const order_type = (data) => http.get('order_type', data)
 // json格式，每一条记录包含： cid表示旺铺ID，pid商品ID，num表示购买的商品数量
 // export const create_order = (data = {}) => all_api(uni.$u.deepMerge(data, {params: {api: 'create_order'}}))
 // `order_list` 订单列表  参数type 1待付款 2待收货 3已完成 role=1 买家的订单列表 不传或传其他值 卖家的订单列表 p页数
-export const order_list = (data) => http.get('order_list', data)
+export const order_list = (data) => http.get('order_list', data) 
 // service_list 售后列表 参数p
 export const service_list = (data) => http.get('service_list', data)
 // change_service_status 提交快递单号 参数id售后id，express 快递单号 只有zt=1的时候显示
@@ -320,3 +320,13 @@ export const button2_handle = (data) => http.get('button2_handle', data)
 export const button4_handle = (data) => http.get('button4_handle', data)
 // memu2  
 export const memu2 = (data) => http.get('memu2', data)
+
+
+// add_pic_text 新增图文库 参数id 商品id info文 pic图
+export const add_pic_text = (data, config={}) => http.post('add_pic_text', data, config)
+// pic_text_list 我的图文列表 参数p
+export const pic_text_list = (data) => http.get('pic_text_list', data)
+// pid_pic_text_list 商品图文列表 参数 pid商品id p
+export const pid_pic_text_list = (data) => http.get('pid_pic_text_list', data)
+// pic_text_list_all 全部商品图片列表 参数p
+export const pic_text_list_all = (data) => http.get('pic_text_list_all', data)

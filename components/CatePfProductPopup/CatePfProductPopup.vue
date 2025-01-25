@@ -70,7 +70,7 @@
 	import {useCateStore, baseStore} from '@/stores/base.js'
 	const base = baseStore()
 	const cate = useCateStore()
-	const { cate_list, cate_loading } = toRefs(cate)
+	const { cate_list2, cate_loading } = toRefs(cate)
 	const { themeColor } = toRefs(base)
 	const props = defineProps({ 
 		current: {
@@ -83,20 +83,20 @@
 	const emits = defineEmits(['onConfirm'])
 	const nav_current = ref(1) 
 	const nav_left = computed(() => {
-		if(cate_list.value.length == 0) return []
+		if(cate_list2.value.length == 0) return []
 		return [{
 			name: '全部',
 			id: ''
-		}, ...cate_list.value]
+		}, ...cate_list2.value]
 	})
 	const mainList = computed(() => {
 		if(nav_left.value.length == 0) return []
 		return nav_left.value[nav_current.value].children
 	})
 	onMounted(async () => {
-		if(cate_list.value.length == 0 && !cate_loading.value) {
+		if(cate_list2.value.length == 0 && !cate_loading.value) {
 			uni.showLoading()
-			await cate.getCateData()
+			await cate.getCate2Data()
 		} 
 	})
 	watch(

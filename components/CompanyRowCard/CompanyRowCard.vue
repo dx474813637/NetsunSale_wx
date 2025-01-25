@@ -4,18 +4,21 @@
 			<view class="">
 				<up-image
 					:src="origin.company.logo"
-					width="50px"
-					height="50px"
+					:width="mode == 'small'? '40px' : '50px'"
+					:height="mode == 'small'? '40px' : '50px'"
 					radius="8"
 				></up-image>
 			</view>
 			<view class="u-flex-column u-flex-between u-m-l-20">
-				<view class="u-line-1 text-bold u-m-b-10">{{origin.company.company}}</view>
-				<view class="u-line-1 text-base u-font-28">{{origin.company.info}}</view>
+				<view class="u-line-1 " :class="{
+					'text-bold': mode == 'normal',
+					'u-m-b-10': mode == 'normal'
+				}">{{origin.company.company}}</view>
+				<view class="u-line-1 text-base u-font-24">{{origin.company.info}}</view>
 			</view>
 		</view> 
 		<view class="item">
-			<u-button type="error" size="small" :customStyle="{borderRadius: '5px'}"  @click="gotoUrl(origin.url)">去旺铺</u-button>
+			<u-button size="small" :customStyle="{borderRadius: '5px', background: '#FFF7EC', color: '#4E361E', border: 'none'}"  @click="gotoUrl(origin.url)">去旺铺</u-button>
 		</view> 
 	</view> 
 	<view class="u-radius-12 bg-white" >
@@ -28,8 +31,25 @@
 					v-for="ele in origin.product"
 					:key="ele.id" 
 				>
-					<view style="width: 120px;" class="u-radius-8">
-						<ProductColCard
+					<view style="width: 100px;" class="u-radius-8" >
+						<view class="product-w u-radius-8"  @click="base.handleGoto({
+								url: '/pages/product/productDetail',
+								params: {
+									id: ele.id, 
+								}
+							})"> 
+							<view class="img" > 
+								<zeroLazyLoad   
+									:image="ele.pic.split('|')[0]" 
+									imgMode="scaleToFill"
+									height="100%"
+									></zeroLazyLoad>
+							</view> 
+							<view class="product-price u-p-l-10 u-p-5 u-p-b-10 u-p-r-10 u-font-26">
+								￥{{ele.price1}} 
+							</view>
+						</view>
+						<!-- <ProductColCard
 							:origin="ele"
 							:customStyle="{
 								'box-shadow': 'none!important'
@@ -51,17 +71,21 @@
 									</view>
 								</view>
 							</template>
-						</ProductColCard>
+						</ProductColCard> -->
 					</view>  
 				</view>
 				<view 
-					style="width: 120px; height: 160px; background: linear-gradient(to bottom, #E4E3EF, #F9DFF1);" 
+					style=" background: linear-gradient(to bottom, #E4E3EF, #F9DFF1);" 
+					:style="{
+						width: mode== 'small'? '80px' : '120px',
+						height: mode== 'small'? '100px' : '160px',
+					}"
 					class="u-radius-8 u-flex u-flex-items-center u-flex-center"
 					@click="gotoUrl(origin.url)"
 				>
 					<view class="u-flex-column u-flex-items-center u-flex-center">
 						<u-icon name="bag" color="#333" size="25"></u-icon>
-						<view class="u-m-t-10 text-black">全部商品</view>
+						<view class="u-m-t-10 u-info u-font-28">全部商品</view>
 					</view>
 				</view> 
 			</view>
@@ -73,6 +97,7 @@
 	import { onLoad, onReady, onReachBottom } from "@dcloudio/uni-app";
 	import { ref, reactive, computed, toRefs, inject, watch } from 'vue'
 	// import { share } from '@/composition/share.js'
+	import zeroLazyLoad from '@/uni_modules/zero-lazy-load/components/zero-lazy-load/zero-lazy-load.vue'
 	import { baseStore } from '@/stores/base'
 	import {userStore} from '@/stores/user' 
 	const user = userStore()
@@ -86,6 +111,10 @@
 				return {}
 			}
 		}, 
+		mode: {
+			type: String,
+			default: 'normal'
+		}
 	})
 	function gotoUrl(url) {
 		if(!url) return
@@ -95,6 +124,27 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
+	.product-w {
+		width: 100%;
+		padding-top: 100%;
+		position: relative;
+		overflow: hidden;
+		.img {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+		}
+		.product-price {
+			position: absolute;
+			bottom: -1px;
+			right: -1px;
+			background: linear-gradient(to left, #F5D1AF, #FFF7EC);
+			color: #453E2E;
+			border-radius: 10px 0 0 0;
+		}
+	}
 </style>

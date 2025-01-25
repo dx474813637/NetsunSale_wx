@@ -15,11 +15,15 @@
 					<view class="u-radius-5 u-p-12 u-p-l-20 u-font-28" :class="{
 						'u-success-light-bg': item.zt == '1',
 						'u-success-dark': item.zt == '1',
-						'u-warning-light-bg': item.zt != '1',
-						'u-warning-dark': item.zt != '1'
+						'u-error-light-bg': item.zt == '3',
+						'u-error-dark': item.zt == '3',
+						'u-warning-light-bg': item.zt == '0',
+						'u-warning-dark': item.zt == '0'
 					}">
-						<template v-if="item.zt == '1'">审核通过</template>
-						<template v-else >待审核</template> 
+						<template v-if="item.zt == '0'">待审核</template>
+						<template v-else-if="item.zt == '1'">审核通过</template>
+						<template v-else-if="item.zt == '2'">删除</template>
+						<template v-else-if="item.zt == '3'">审核拒绝</template> 
 					</view>
 				</view>
 				

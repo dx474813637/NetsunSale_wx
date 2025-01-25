@@ -123,9 +123,12 @@
 								<ProductRowCard
 									:origin="item" 
 									size="small"
+									:mode="singleMode? 'normal': 'switch'"
+									:cardClickDefault="!singleMode"
 									:divideShow="divideShow"
 									:customStyle="{boxShadow: 'none!important', 'font-weight': '300' }"
 									@checkedClick="checkedClick"
+									@cardClick="cardClick"
 								></ProductRowCard>
 									 
 							 </view>	
@@ -182,6 +185,10 @@
 				return []
 			}
 		},
+		singleMode: {
+			type: Boolean,
+			default: false
+		},
 		func: {
 			type: String,
 			default: ''
@@ -191,7 +198,7 @@
 			default: () => ({})
 		},
 	})
-	const emits = defineEmits(['xuanSuccess', 'xuanEvent', 'ygEvent'])
+	const emits = defineEmits(['xuanSuccess', 'xuanEvent', 'ygEvent', 'cardClick'])
 	const order = ref(3)
 	const filter_index = ref(-1)
 	const filterList = ref([ 
@@ -393,6 +400,10 @@
 		initFilterData()
 		await initDataList()
 		listLoading.value = false
+	}
+	function cardClick({data}) {
+		if(!props.singleMode) return
+		emits('cardClick', {data: data})
 	}
 	async function checkedClick(data) { 
 		let i = dataList.value.findIndex(ele => data.origin.id == ele.id) 

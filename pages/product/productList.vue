@@ -2,16 +2,17 @@
 	<view class="w ">
 		<u-sticky>
 			<view class="header bg-white u-p-10 u-p-l-20 u-p-r-20 u-flex u-flex-items-center">
-				<view class="item " v-if="!terms && pf != 1">
-					<view class="nav-w bg-white u-p-20 u-flex">
-						<view class="item item-cate u-flex u-flex-items-center u-font-28" @click="showCateList = true">
-							<view class="u-info">筛选类别：</view>
+				<view class="item u-p-r-20" v-if="!terms">
+					<view class="nav-w u-p-16 u-flex u-radius-6" style="background-color: #F2F2F2;">
+						<view class="item item-cate u-flex u-flex-items-center u-font-28"  
+						@click="showCateList = true">
+							<view class="u-info">分类：</view>
 							<view class="u-error u-p-r-10">{{cate_label}}</view>
 							<u-icon name="arrow-down-fill" color="#ccc" size="12"></u-icon>
 						</view> 
 					</view>
 				</view>
-				<view class="item u-flex-1">
+				<view class="item u-flex-1 " >
 					<u-search
 						placeholder="请输入关键字" 
 						v-model="terms" 
@@ -82,6 +83,8 @@
 				>
 			 	<ProductColCard
 					:origin="item"
+					:cardClickDefault="pic != 1"
+					@cardClick="cardClick"
 					:customStyle="{boxShadow: 'none!important', border: '1rpx solid #f9f9f9'}"
 				></ProductColCard>
 			 		 
@@ -98,13 +101,24 @@
 		</template>  
 		<u-safe-bottom></u-safe-bottom>
 	</view>
+	<template v-if="pf == 1">
+		<CatePfProductPopup
+			:show="showCateList" 
+			title="商品分类" 
+			:onUpdateShow="handleChangeShow"
+			@onConfirm="handleChangeCate"
+		></CatePfProductPopup>
+	</template>
+	<template v-else>
+		<CateProductPopup
+			:show="showCateList" 
+			title="商品分类" 
+			:onUpdateShow="handleChangeShow"
+			@onConfirm="handleChangeCate"
+		></CateProductPopup>
+	</template>
 	
-	<CateProductPopup
-		:show="showCateList" 
-		title="商品分类" 
-		:onUpdateShow="handleChangeShow"
-		@onConfirm="handleChangeCate"
-	></CateProductPopup>
+	
 	<QuickCreatePfOrderPopup
 		:show="showPfOrder" 
 		title="拼团下单" 
@@ -124,7 +138,7 @@
 	import {useCateStore, baseStore} from '@/stores/base.js'
 	const base = baseStore()
 	const cate = useCateStore()
-	const { cate_list, cate_loading } = toRefs(cate)
+	const { cate_list, cate_list2, cate_loading } = toRefs(cate)
 	const terms = ref('')
 	const nav_index = ref(0)
 	
@@ -134,6 +148,7 @@
 	const cateId = ref('')
 	const order = ref('')
 	const pf = ref(0)
+	const pic = ref(0)
 	const prodId = ref('')
 	const cate_label = ref('全部')
 	const dataList = ref([]) 
@@ -154,6 +169,7 @@
 				cate: cateId.value ,
 				order: order.value ,
 				pf: pf.value ,
+				pic: pic.value ,
 			}
 		}
 		
@@ -171,8 +187,14 @@
 		if(options.hasOwnProperty('pf')) {
 			pf.value = +options.pf
 		}
+		if(options.hasOwnProperty('pic')) {
+			pic.value = +options.pic
+		}
 		if(cate_list.value.length == 0 && pf.value != 1) {
 			await cate.getCateData() 
+		}
+		if(cate_list2.value.length == 0 && pf.value == 1) {
+			await cate.getCate2Data() 
 		}
 		if(options.hasOwnProperty('cate') && pf.value != 1) {
 			cateId.value = options.cate
@@ -249,6 +271,14 @@
 				})
 			}
 			return ele.id == cateId.value
+		})
+	}
+	function cardClick({data}) {
+		base.handleGoto({
+			url: '/pages_user/pidPicText/pidPicTextList',
+			params: {
+				pid: data.id, 
+			}
 		})
 	}
 	 
